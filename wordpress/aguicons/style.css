@@ -96,10 +96,10 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 /* ---------- Portada ---------- */
 .agui-banner { position: relative; overflow: hidden; background: #fff; }
 .agui-banner-img { width: 100%; height: min(62vw, 84vh); min-height: 460px; max-height: 820px; object-fit: cover; object-position: 50% 72%; }
-.agui-banner-fade { position: absolute; inset: 0 0 auto 0; height: 15rem; background: linear-gradient(to bottom, #fff 0%, #fff 42%, rgba(255, 255, 255, 0.78) 58%, rgba(255, 255, 255, 0.4) 78%, rgba(255, 255, 255, 0) 100%); }
-.agui-banner-logo { position: absolute; top: 1rem; left: 0; right: 0; display: flex; justify-content: center; }
+.agui-banner-fade { position: absolute; inset: 0 0 auto 0; height: 17rem; background: linear-gradient(to bottom, #fff 0%, #fff 48%, rgba(255, 255, 255, 0.78) 58%, rgba(255, 255, 255, 0.4) 78%, rgba(255, 255, 255, 0) 100%); }
+.agui-banner-logo { position: absolute; top: 3.6rem; left: 0; right: 0; display: flex; justify-content: center; }
 .agui-banner-logo img { width: 96px; height: auto; }
-.agui-banner-title { position: absolute; left: 0; right: 0; top: 28%; margin: 0; padding: 0 0.5rem; text-align: center; color: #fff; text-transform: uppercase; font-size: clamp(1.5rem, 5.6vw, 3.75rem); letter-spacing: 0.02em; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35); }
+.agui-banner-title { position: absolute; left: 0; right: 0; top: max(28%, 11rem); margin: 0; padding: 0 0.5rem; text-align: center; color: #fff; text-transform: uppercase; font-size: clamp(1.5rem, 5.6vw, 3.75rem); letter-spacing: 0.02em; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35); }
 .agui-banner-title em { font-weight: 400; font-style: italic; text-transform: none; margin: 0 0.15em; }
 .agui-banner-btn { position: absolute; right: 1.5rem; bottom: 1.5rem; border: 2px solid rgba(255, 255, 255, 0.9); }
 .agui-banner-btn a { display: block; background: var(--gold); color: #fff; text-decoration: none; font-size: 1.1rem; line-height: 1.25; padding: 0.75rem 1.25rem; max-width: 11rem; }
@@ -221,15 +221,15 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 .agui-page.is-gold .agui-contactbar a:not(.agui-btn) { color: #fff; }
 .agui-page.is-gold .agui-btn { background: #fff; color: #000; border-color: #fff; }
 .agui-page.is-gold .agui-btn-outline { background: transparent; color: #fff; border-color: #fff; }
-.agui-team .wp-block-column > .wp-block-group { background: #fff; color: #000; border: 1px solid var(--border); min-height: 300px; display: flex; align-items: center; justify-content: center; }
-.agui-team h3 { color: #000 !important; margin: 0; text-align: center; }
+.agui-team .wp-block-column > .wp-block-group { background: #fff; color: #000; border: 1px solid var(--border); min-height: 300px; display: flex; align-items: center; justify-content: center; margin: 0.75rem 0; }
+.agui-team .wp-block-column > .wp-block-heading { color: #fff !important; text-align: center; text-transform: uppercase; letter-spacing: 0.06em; font-size: 1.15rem; margin: 0; }
 
 /* ---------- Pie ---------- */
-.agui-footer { background: #000; color: #fff; text-align: center; padding: 2rem 1rem; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; margin-top: 2rem; }
+.agui-footer { background: #000; color: #fff; padding: 1rem 1rem 1.75rem; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; margin-top: 0; border-top: 1px solid rgba(255, 255, 255, 0.18); }
 .agui-footer-logo { width: 96px; height: auto; }
 .agui-footer-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
 .agui-footer-menu a { color: #fff; text-decoration: none; font-size: 0.85rem; }
-.agui-footer-copy { margin: 0; font-size: 0.75rem; color: rgba(255, 255, 255, 0.7); }
+.agui-footer-copy { margin: 0; font-size: 0.75rem; color: rgba(255, 255, 255, 0.75); align-self: flex-start; }
 
 /* ---------- WhatsApp y cookies ---------- */
 .agui-whatsapp { position: fixed; right: 1.5rem; bottom: 1.5rem; z-index: 90; width: 56px; height: 56px; border-radius: 50%; background: #25d366; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); transition: transform 0.2s; }
@@ -338,3 +338,63 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 .agui-header.is-gold .agui-burger span { background: #fff; }
 .agui-page.is-gold .agui-prose > h1:first-child, .agui-page.is-gold .agui-prose > h2:first-child { text-align: center; font-size: 1.75rem; margin-top: 0; }
 .agui-page.is-gold .agui-section:first-child { padding-top: 1rem; }
+
+/* Portada: el menú va centrado arriba y el logo queda debajo (sin encimarse) */
+@media (min-width: 782px) {
+  .agui-header.is-home .agui-header-inner { justify-content: center; }
+  .agui-header.is-home .agui-menu { flex-wrap: wrap; justify-content: center; }
+}
+@media (max-width: 781px) {
+  .agui-banner-logo { top: 1rem; }
+  .agui-banner-title { top: max(28%, 8.5rem); }
+}
+
+/* ---------- Parte inferior negra en las páginas de línea (otras líneas + contacto + pie) ---------- */
+.agui-dark { background: #000; color: #fff; }
+.agui-dark .agui-otherlines { padding: 2rem 1rem 0.5rem; }
+.agui-dark .agui-otherlines a { color: #fff; border-color: var(--gold); }
+.agui-dark .agui-otherlines a:hover { background: var(--gold); }
+.agui-contactbar.is-dark { background: #000; color: #fff; }
+.agui-contactbar.is-dark a { color: #fff; }
+.agui-contactbar.is-dark .agui-btn { background: var(--gold); border-color: var(--gold); color: #fff; }
+.agui-contactbar.is-dark .agui-btn-outline { background: #000; border-color: var(--gold); color: #fff; }
+.agui-contactbar.is-dark .agui-btn-outline:hover { background: var(--gold); }
+
+/* ---------- Franja de tarjetas: título sobre blanco y tarjetas sobre negro ---------- */
+.agui-cardsband { padding: 2rem 0 0; }
+.agui-cardsband .agui-h2 { margin-bottom: 1.25rem; }
+.agui-cardsdark { background: #000; padding: 2rem 0 2.5rem; }
+.agui-cardsdark .agui-card { border-color: var(--gold); }
+
+/* ---------- Formularios sobre fondo negro ---------- */
+.agui-dark .agui-h2, .agui-dark .agui-h3 { color: #fff; }
+.agui-dark .agui-form { border-color: rgba(255, 255, 255, 0.28); }
+.agui-dark .agui-form label { color: #fff; }
+.agui-dark .agui-small, .agui-dark .agui-small a { color: rgba(255, 255, 255, 0.8); }
+.agui-dark .agui-form-error { color: #ff8a8a; }
+.agui-dark .agui-form-done { border-color: var(--gold); color: #fff; }
+.agui-dark .agui-form-done .agui-btn { background: var(--gold); color: #fff; }
+.agui-dark .agui-leads { padding-top: 1.5rem; }
+
+/* ---------- Portada con el título ya dibujado en la foto (16:9, sin recortar los costados) ---------- */
+.agui-banner.has-title .agui-banner-img { height: auto; aspect-ratio: 16 / 9; min-height: 0; max-height: 86vh; object-fit: cover; object-position: 50% 42%; }
+.agui-banner.has-title .agui-banner-fade { height: 11rem; background: linear-gradient(to bottom, #fff 0%, rgba(255, 255, 255, 0.9) 35%, rgba(255, 255, 255, 0.45) 70%, rgba(255, 255, 255, 0) 100%); }
+@media (max-width: 781px) {
+  /* En celular la foto es baja: el logo va arriba, sobre blanco, para no tapar el título */
+  .agui-banner.has-title { padding-top: 5.2rem; }
+  .agui-banner.has-title .agui-banner-fade { display: none; }
+  .agui-banner.has-title .agui-banner-logo { top: 0.6rem; }
+  .agui-banner.has-title .agui-banner-logo img { width: 64px; }
+  .agui-banner.has-title .agui-banner-btn { right: 0.6rem; bottom: 0.6rem; }
+  .agui-banner.has-title .agui-banner-btn a { font-size: 0.8rem; padding: 0.4rem 0.7rem; max-width: 8rem; }
+}
+
+/* ---------- Submenú (Otros servicios > Construcción / Movimiento de suelo) ---------- */
+.agui-menu li { position: relative; }
+.agui-menu .menu-item-has-children > a::after { content: '▾'; font-size: 0.7em; margin-left: 0.35em; }
+.agui-menu .sub-menu { display: none; position: absolute; left: 0; top: 100%; min-width: 220px; margin: 0; padding: 0.4rem 0; list-style: none; background: #fff; border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14); z-index: 60; }
+.agui-menu li:hover > .sub-menu, .agui-menu li:focus-within > .sub-menu { display: block; }
+.agui-menu .sub-menu a { display: block; padding: 0.5rem 1.1rem; white-space: nowrap; color: #111 !important; text-decoration: none !important; }
+.agui-menu .sub-menu a:hover { color: var(--gold) !important; }
+.agui-mobile-menu .sub-menu { list-style: none; margin: 0.25rem 0 0.25rem 1rem; padding: 0; }
+.agui-mobile-menu .sub-menu a { font-size: 0.9rem; }

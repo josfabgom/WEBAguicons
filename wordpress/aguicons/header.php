@@ -25,7 +25,7 @@ $is_gold = is_page() && get_post_meta(get_queried_object_id(), '_agui_bg', true)
         <?php endif; ?>
 
         <nav class="agui-nav" aria-label="Principal">
-            <?php wp_nav_menu(['theme_location' => 'primary', 'container' => false, 'menu_class' => 'agui-menu', 'fallback_cb' => false, 'depth' => 1]); ?>
+            <?php wp_nav_menu(['theme_location' => 'primary', 'container' => false, 'menu_class' => 'agui-menu', 'fallback_cb' => false, 'depth' => 2]); ?>
         </nav>
 
         <button type="button" class="agui-burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="agui-mobile">
@@ -33,7 +33,7 @@ $is_gold = is_page() && get_post_meta(get_queried_object_id(), '_agui_bg', true)
         </button>
     </div>
     <nav id="agui-mobile" class="agui-mobile" aria-label="Menú móvil" hidden>
-        <?php wp_nav_menu(['theme_location' => 'primary', 'container' => false, 'menu_class' => 'agui-mobile-menu', 'fallback_cb' => false, 'depth' => 1]); ?>
+        <?php wp_nav_menu(['theme_location' => 'primary', 'container' => false, 'menu_class' => 'agui-mobile-menu', 'fallback_cb' => false, 'depth' => 2]); ?>
         <p class="agui-mobile-title">LÍNEAS EDILICIAS</p>
         <ul class="agui-mobile-lines">
             <?php foreach (agui_lines(['post_parent' => 0]) as $l) : ?>

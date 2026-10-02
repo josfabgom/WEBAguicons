@@ -55,27 +55,20 @@ function agui_banner(): string
     if (!$img) {
         return '';
     }
-    if (agui_opt('hero_baked') === '1') {
-        // La imagen ya trae logo, título y botón: se muestra completa y el botón queda clicable.
-        ob_start();
-        ?>
-        <section class="agui-banner is-baked">
-            <h1 class="screen-reader-text"><?php echo esc_html(trim(agui_opt('hero_before') . ' ' . agui_opt('hero_accent') . ' ' . agui_opt('hero_after'))); ?></h1>
-            <?php echo wp_get_attachment_image($img, 'full', false, ['class' => 'agui-banner-img', 'fetchpriority' => 'high', 'alt' => 'Aguicons - Construimos tu futuro']); ?>
-            <?php if (agui_opt('hero_url')) : ?>
-                <a class="agui-banner-hit" href="<?php echo esc_url(agui_href(agui_opt('hero_url'))); ?>"><span class="screen-reader-text"><?php echo esc_html(agui_opt('hero_button') ?: 'Conocé a la empresa'); ?></span></a>
-            <?php endif; ?>
-        </section>
-        <?php
-        return ob_get_clean();
-    }
+    // Si la foto ya trae el título dibujado, no se vuelve a escribir encima (queda solo para lectores de pantalla).
+    $has_title = agui_opt('hero_baked') === '1';
+    $title = trim(agui_opt('hero_before') . ' ' . agui_opt('hero_accent') . ' ' . agui_opt('hero_after'));
     ob_start();
     ?>
-    <section class="agui-banner">
-        <?php echo wp_get_attachment_image($img, 'full', false, ['class' => 'agui-banner-img', 'fetchpriority' => 'high', 'alt' => 'Aguicons']); ?>
+    <section class="agui-banner<?php echo $has_title ? ' has-title' : ''; ?>">
+        <?php echo wp_get_attachment_image($img, 'full', false, ['class' => 'agui-banner-img', 'fetchpriority' => 'high', 'alt' => $has_title ? 'Aguicons - ' . $title : 'Aguicons']); ?>
         <div class="agui-banner-fade"></div>
         <div class="agui-banner-logo"><?php echo agui_logo('full', 'oro'); ?></div>
-        <h1 class="agui-banner-title"><?php echo esc_html(agui_opt('hero_before')); ?> <em><?php echo esc_html(agui_opt('hero_accent')); ?></em> <?php echo esc_html(agui_opt('hero_after')); ?></h1>
+        <?php if ($has_title) : ?>
+            <h1 class="screen-reader-text"><?php echo esc_html($title); ?></h1>
+        <?php else : ?>
+            <h1 class="agui-banner-title"><?php echo esc_html(agui_opt('hero_before')); ?> <em><?php echo esc_html(agui_opt('hero_accent')); ?></em> <?php echo esc_html(agui_opt('hero_after')); ?></h1>
+        <?php endif; ?>
         <?php if (agui_opt('hero_button')) : ?>
             <div class="agui-banner-btn"><a href="<?php echo esc_url(agui_href(agui_opt('hero_url'))); ?>"><?php echo esc_html(agui_opt('hero_button')); ?></a></div>
         <?php endif; ?>
@@ -162,11 +155,11 @@ function agui_stats(): string
 
 /* --- Barra de contacto --------------------------------------------------------------------- */
 
-function agui_contact_bar(bool $back = true): string
+function agui_contact_bar(bool $back = true, bool $dark = false): string
 {
     ob_start();
     ?>
-    <section class="agui-contactbar agui-reveal">
+    <section class="agui-contactbar agui-reveal<?php echo $dark ? ' is-dark' : ''; ?>">
         <?php if (agui_opt('address')) : ?><p class="agui-address">📍 <?php echo esc_html(agui_opt('address')); ?></p><?php endif; ?>
         <a class="agui-btn" href="<?php echo esc_url(home_url('/contacto/')); ?>">CONVERSÁ CON NOSOTROS</a>
         <p class="agui-small"><a href="mailto:<?php echo esc_attr(agui_opt('email_contact')); ?>"><?php echo esc_html(agui_opt('email_contact')); ?></a> - <?php echo esc_html(agui_opt('phone')); ?></p>
@@ -214,19 +207,21 @@ function agui_cards(string $title, array $posts): string
     }
     ob_start();
     ?>
-    <section class="agui-section agui-reveal">
-        <div class="agui-container">
-            <?php if ($title) : ?><h2 class="agui-h2"><?php echo esc_html($title); ?></h2><?php endif; ?>
-            <div class="agui-cards">
-                <?php foreach ($posts as $p) : ?>
-                    <a class="agui-card" href="<?php echo esc_url(get_permalink($p)); ?>">
-                        <?php if (has_post_thumbnail($p)) {
-                            echo get_the_post_thumbnail($p, 'agui-card', ['loading' => 'lazy', 'decoding' => 'async', 'alt' => $p->post_title]);
-                        } ?>
-                        <span class="agui-card-name"><?php echo esc_html($p->post_title); ?></span>
-                        <?php echo agui_badge($p->ID); ?>
-                    </a>
-                <?php endforeach; ?>
+    <section class="agui-cardsband agui-reveal">
+        <?php if ($title) : ?><div class="agui-container"><h2 class="agui-h2"><?php echo esc_html($title); ?></h2></div><?php endif; ?>
+        <div class="agui-cardsdark">
+            <div class="agui-container">
+                <div class="agui-cards">
+                    <?php foreach ($posts as $p) : ?>
+                        <a class="agui-card" href="<?php echo esc_url(get_permalink($p)); ?>">
+                            <?php if (has_post_thumbnail($p)) {
+                                echo get_the_post_thumbnail($p, 'agui-card', ['loading' => 'lazy', 'decoding' => 'async', 'alt' => $p->post_title]);
+                            } ?>
+                            <span class="agui-card-name"><?php echo esc_html($p->post_title); ?></span>
+                            <?php echo agui_badge($p->ID); ?>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
     </section>
@@ -273,7 +268,12 @@ function agui_facts(string $title, string $status, string $facts_text, string $a
     $facts = [];
     foreach (array_filter(array_map('trim', preg_split('/\R/', $facts_text))) as $line) {
         $parts = array_map('trim', explode(':', $line, 2));
-        $facts[] = [$parts[0], $parts[1] ?? ''];
+        $val = $parts[1] ?? '';
+        // Los datos de relleno ("A confirmar") o vacíos no se muestran.
+        if ($val === '' || preg_match('/^a\s+confirmar\.?$/iu', $val)) {
+            continue;
+        }
+        $facts[] = [$parts[0], $val];
     }
     if (!$facts && !$status && !$address) {
         return '';

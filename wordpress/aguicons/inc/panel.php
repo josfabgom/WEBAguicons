@@ -68,7 +68,6 @@ function agui_line_check(WP_Post $p): array
         'Estado del proyecto' => $m('status') !== '',
         'Ficha técnica completa' => $m('facts') !== '' && stripos($m('facts'), 'a confirmar') === false,
         'Ubicación (mapa)' => $m('address') !== '' || $m('coords') !== '',
-        'Brochure en PDF' => (int) $m('brochure_id') > 0,
     ];
     $missing = array_keys(array_filter($checks, fn($ok) => !$ok));
     $score = (int) round((count($checks) - count($missing)) / count($checks) * 100);

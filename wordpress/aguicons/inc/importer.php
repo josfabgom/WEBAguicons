@@ -138,7 +138,8 @@ function agui_b_team(array $members): string
     $o = '<!-- wp:columns {"className":"agui-team"} --><div class="wp-block-columns agui-team">';
     foreach ($members as [$name, $text]) {
         $o .= '<!-- wp:column --><div class="wp-block-column">';
-        $o .= '<!-- wp:group {"backgroundColor":"white","layout":{"type":"constrained"}} --><div class="wp-block-group has-white-background-color has-background"><!-- wp:heading {"textAlign":"center","level":3} --><h3 class="wp-block-heading has-text-align-center">' . esc_html($name) . '</h3><!-- /wp:heading --></div><!-- /wp:group -->';
+        $o .= '<!-- wp:heading {"textAlign":"center","level":2} --><h2 class="wp-block-heading has-text-align-center">' . esc_html($name) . '</h2><!-- /wp:heading -->';
+        $o .= '<!-- wp:group {"backgroundColor":"white","layout":{"type":"constrained"}} --><div class="wp-block-group has-white-background-color has-background"></div><!-- /wp:group -->';
         $o .= '<!-- wp:paragraph {"align":"center","fontSize":"small"} --><p class="has-text-align-center has-small-font-size">' . esc_html($text) . '</p><!-- /wp:paragraph -->';
         $o .= '</div><!-- /wp:column -->';
     }
@@ -202,7 +203,7 @@ function agui_upsert_line(array $d): int
         'amenities' => implode("\n", $d['amenities'] ?? []),
         'cards_title' => $d['cards_title'] ?? '',
         'gallery' => implode(',', $gallery),
-        'facts' => "Ubicación: A confirmar\nSuperficies: A confirmar\nUnidades: A confirmar\nEntrega: A confirmar",
+        'facts' => '',
         'status' => '',
         'address' => '',
         'badge_title' => $d['badge_title'] ?? '',
@@ -239,7 +240,8 @@ function agui_import_content(): void
     $opts = get_option('aguicons_opts', []);
     $opts = is_array($opts) ? $opts : [];
     if (empty($opts['hero_image'])) {
-        $opts['hero_image'] = agui_seed_id('PORTADA/Portada Baradise.png');
+        $opts['hero_image'] = agui_seed_id('PORTADA/Portada final.png');
+        $opts['hero_baked'] = '1';
     }
     update_option('aguicons_opts', $opts);
 
@@ -267,36 +269,43 @@ function agui_import_content(): void
 
     $home = agui_upsert_page('inicio', 'Inicio', '', [], 'Aguicons, desarrolladora de Posadas, Misiones. Líneas edilicias de inversión y para vivir.');
 
-    $c = agui_b_heading('NOSOTROS') . agui_b_para($nosotros) . agui_b_para('AGUICONS® construimos tu futuro.')
-        . agui_b_heading('EQUIPO', 2, true)
+    $c = agui_b_heading('NOSOTROS') . agui_b_para($nosotros) . '<!-- wp:paragraph --><p><strong>AGUICONS®</strong> <em>construimos tu futuro.</em></p><!-- /wp:paragraph -->' . "\n\n"
         . agui_b_team([
-            ['COMERCIAL', 'Equipo que conecta nuestra oferta con las personas, construyendo una experiencia de venta exclusiva con nuestros clientes.'],
-            ['TÉCNICA', 'Profesionales que aportan su conocimiento y experiencia para planificar, coordinar y hacer realidad cada proyecto.'],
-            ['ADMINISTRATIVA', 'Un grupo humano que aporta organización y control, gestionando los recursos económicos y financieros que sostienen el crecimiento de nuestra empresa.'],
-        ])
-        . agui_b_heading('MÁS SERVICIOS', 3, true)
-        . agui_b_buttons([['Servicios de construcciones', home_url('/servicios-de-construccion/')], ['Movimiento de suelo', home_url('/movimientos-de-suelo/')]]);
+            ['ÁREA COMERCIAL', 'Equipo que conecta nuestra oferta con las personas, construyendo una experiencia de venta exclusiva con nuestros clientes.'],
+            ['ÁREA TÉCNICA', 'Profesionales que aportan su conocimiento y experiencia para planificar, coordinar y hacer realidad cada proyecto.'],
+            ['ÁREA ADMINISTRATIVA', 'Un grupo humano que aporta organización y control, gestionando los recursos económicos y financieros que sostienen el crecimiento de nuestra empresa.'],
+        ]);
     agui_upsert_page('nosotros', 'Nosotros', $c, ['_agui_bg' => 'gold'], 'Más de 15 años cambiando el skyline de las ciudades. Conocé al equipo de Aguicons.');
 
-    $c = agui_b_heading('SERVICIOS DE CONSTRUCCIÓN');
+    $c = agui_b_heading('CONSTRUCCIÓN');
     foreach ($servicios as $p) {
         $c .= agui_b_para($p);
     }
-    $c .= agui_b_shortcode('[aguicons_consulta proyecto="Servicios de construcción"]');
-    $p_serv = agui_upsert_page('servicios-de-construccion', 'Servicios de construcción', $c, [], 'Soluciones integrales de construcción para el sector público y privado.');
+    $c .= '';
+    $p_serv = agui_upsert_page('servicios-de-construccion', 'Construcción', $c, [], 'Soluciones integrales de construcción para el sector público y privado.');
 
     $c = agui_b_heading('MOVIMIENTO DE SUELO');
     foreach ($suelo as $p) {
         $c .= agui_b_para($p);
     }
-    $c .= agui_b_shortcode('[aguicons_consulta proyecto="Movimiento de suelo"]');
+    $c .= '';
     $p_suelo = agui_upsert_page('movimientos-de-suelo', 'Movimiento de suelo', $c, [], 'Excavación, apertura de calles, demoliciones y adecuación de terrenos.');
 
+    $c = agui_b_heading('OTROS SERVICIOS', 2, true) . agui_b_heading('CONSTRUCCIÓN', 3);
+    foreach ($servicios as $p) {
+        $c .= agui_b_para($p);
+    }
+    $c .= agui_b_heading('MOVIMIENTO DE SUELO', 3);
+    foreach ($suelo as $p) {
+        $c .= agui_b_para($p);
+    }
+    $p_otros = agui_upsert_page('otros-servicios', 'Otros servicios', $c, [], 'Construcción y movimiento de suelo: soluciones integrales para el sector público y privado.');
+
     $c = agui_b_heading('ALQUILER · Unidades y Oficinas') . agui_b_para(AGUI_LOREM)
-        . agui_b_shortcode('[aguicons_alquiler]') . agui_b_shortcode('[aguicons_consulta proyecto="Alquiler"]');
+        . agui_b_shortcode('[aguicons_alquiler]');
     $p_alq = agui_upsert_page('alquiler', 'Alquiler', $c, [], 'Unidades, oficinas y locales comerciales en alquiler en las líneas de Aguicons.');
 
-    $c = agui_b_heading('CONVERSÁ CON NOSOTROS', 2, true) . agui_b_para('Dejanos tu consulta y te responderemos a la brevedad.', true)
+    $c = agui_b_heading('CONTACTO', 2, true) . agui_b_para('Dejanos tu consulta y te responderemos a la brevedad.', true)
         . agui_b_shortcode('[aguicons_contacto_form]') . agui_b_shortcode('[aguicons_mapa]');
     $p_cont = agui_upsert_page('contacto', 'Contacto', $c, [], 'Contactá a Aguicons: info@aguicons.com, Av. Antártida Argentina 876, Posadas.');
 
@@ -310,7 +319,7 @@ function agui_import_content(): void
     $p_nov = agui_upsert_page('novedades', 'Novedades', '', [], 'Lanzamientos, avances de obra y noticias de Aguicons.');
     update_option('page_for_posts', $p_nov);
     if (!get_page_by_path('invertir')) {
-        $inv = agui_upsert_page('invertir', 'Invertir', agui_b_heading('INVERTÍ CON AGUICONS') . agui_b_para('Completar con la modalidad de compra, la financiación y los beneficios de invertir en cada línea.') . agui_b_shortcode('[aguicons_faq]') . agui_b_shortcode('[aguicons_consulta proyecto="Inversiones"]'), [], 'Cómo invertir con Aguicons.');
+        $inv = agui_upsert_page('invertir', 'Invertir', agui_b_heading('INVERTÍ CON AGUICONS') . agui_b_para('Completar con la modalidad de compra, la financiación y los beneficios de invertir en cada línea.') . agui_b_shortcode('[aguicons_faq]'), [], 'Cómo invertir con Aguicons.');
         wp_update_post(['ID' => $inv, 'post_status' => 'draft']);
     }
 
@@ -355,9 +364,25 @@ function agui_import_content(): void
     foreach ((array) wp_get_nav_menu_items($menu_id) as $it) {
         wp_delete_post($it->ID, true);
     }
-    $items = [['Inicio', $home], ['Nosotros', get_page_by_path('nosotros')->ID], ['Servicios', $p_serv], ['Movimiento de suelo', $p_suelo], ['Alquiler', $p_alq], ['Novedades', $p_nov], ['Contacto', $p_cont]];
-    foreach ($items as $i => [$label, $pid]) {
-        wp_update_nav_menu_item($menu_id, 0, ['menu-item-title' => $label, 'menu-item-object' => 'page', 'menu-item-object-id' => $pid, 'menu-item-type' => 'post_type', 'menu-item-status' => 'publish', 'menu-item-position' => $i + 1]);
+    // [texto, página, nivel] (nivel 1 = dentro del ítem anterior de nivel 0)
+    $items = [
+        ['Inicio', $home, 0],
+        ['Nosotros', get_page_by_path('nosotros')->ID, 0],
+        ['Otros servicios', $p_otros, 0],
+        ['Construcción', $p_serv, 1],
+        ['Movimiento de suelo', $p_suelo, 1],
+        ['Alquiler', $p_alq, 0],
+        ['Contacto', $p_cont, 0],
+    ];
+    $parent_item = 0;
+    foreach ($items as $i => [$label, $pid, $level]) {
+        $item_id = wp_update_nav_menu_item($menu_id, 0, [
+            'menu-item-title' => $label, 'menu-item-object' => 'page', 'menu-item-object-id' => $pid, 'menu-item-type' => 'post_type',
+            'menu-item-status' => 'publish', 'menu-item-position' => $i + 1, 'menu-item-parent-id' => $level ? $parent_item : 0,
+        ]);
+        if (!$level) {
+            $parent_item = (int) $item_id;
+        }
     }
     $footer = wp_get_nav_menu_object('Pie') ?: null;
     $fid = $footer ? $footer->term_id : wp_create_nav_menu('Pie');

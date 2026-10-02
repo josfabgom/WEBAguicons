@@ -12,9 +12,9 @@ $wa_text = $topic ? 'Hola, quiero más información sobre ' . $topic . '.' : 'Ho
 ?>
 </main>
 <footer class="agui-footer">
+    <p class="agui-footer-copy"><?php echo esc_html(agui_opt('copyright')); ?><?php echo agui_opt('powered') !== '' ? ' · ' . esc_html(agui_opt('powered')) : ''; ?></p>
     <a href="<?php echo esc_url(home_url('/')); ?>" aria-label="Aguicons - Inicio"><?php echo agui_logo('full', 'oro', 'agui-footer-logo'); ?></a>
     <?php wp_nav_menu(['theme_location' => 'footer', 'container' => 'nav', 'container_class' => 'agui-footer-nav', 'container_aria_label' => 'Pie de página', 'menu_class' => 'agui-footer-menu', 'fallback_cb' => false, 'depth' => 1]); ?>
-    <p class="agui-footer-copy"><?php echo esc_html(agui_opt('copyright')); ?><?php echo agui_opt('powered') !== '' ? ' · ' . esc_html(agui_opt('powered')) : ''; ?></p>
 </footer>
 
 <?php if ($wa) : ?>

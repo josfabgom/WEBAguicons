@@ -1,5 +1,5 @@
 <?php
-/** Una línea o proyecto: cabecera negra, sub-proyectos, carrusel, ficha, brochure, consulta y otras líneas. */
+/** Una línea o proyecto: cabecera negra, sub-proyectos, carrusel de vistas, otras líneas y contacto. */
 get_header();
 
 while (have_posts()) {
@@ -12,17 +12,16 @@ while (have_posts()) {
     $children = agui_lines(['post_parent' => $post->ID]);
     echo agui_cards((string) $m('cards_title'), $children);
 
-    echo agui_line_tabs($post);
+    // Solo el carrusel de vistas (sin pestañas de video, ficha, unidades ni avance).
+    $gallery = array_filter(array_map('intval', explode(',', (string) $m('gallery'))));
+    echo agui_carousel('CARRUSEL DE VISTAS', $gallery);
 
-    echo '<div class="agui-leads">';
-    echo agui_lead_form('brochure', $post->post_title, '', $post->ID);
-    echo agui_lead_form('inquiry', $post->post_title, '', $post->ID);
-    echo '</div>';
-
+    echo '<div class="agui-dark">';
     // Las líneas hijas muestran las otras líneas respecto de su línea principal.
     $root = $post->post_parent ? (int) get_post_ancestors($post)[count(get_post_ancestors($post)) - 1] : $post->ID;
     echo agui_other_lines($root);
-    echo agui_contact_bar(true);
+    echo agui_contact_bar(true, true);
+    echo '</div>';
 }
 
 get_footer();
