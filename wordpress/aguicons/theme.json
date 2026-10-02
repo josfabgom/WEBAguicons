@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 2,
+  "settings": {
+    "appearanceTools": true,
+    "layout": { "contentSize": "860px", "wideSize": "1200px" },
+    "color": {
+      "palette": [
+        { "slug": "gold", "color": "#a68b44", "name": "Dorado" },
+        { "slug": "black", "color": "#000000", "name": "Negro" },
+        { "slug": "white", "color": "#ffffff", "name": "Blanco" }
+      ]
+    },
+    "typography": {
+      "fontFamilies": [
+        { "slug": "poppins", "name": "Poppins", "fontFamily": "'Poppins', system-ui, sans-serif" }
+      ]
+    }
+  },
+  "styles": {
+    "typography": { "fontFamily": "var(--wp--preset--font-family--poppins)" },
+    "elements": { "link": { "color": { "text": "#a68b44" } } }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "gestion_web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "gestion_web", "run", "dev"],
+      "port": 3000
+    }
+  ]
+}

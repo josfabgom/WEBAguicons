@@ -1,0 +1,405 @@
+<?php
+/**
+ * Piezas visuales del sitio. Se usan desde las plantillas y como shortcodes dentro de cualquier página.
+ */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+function agui_logo(string $variant = 'full', string $tone = 'oro', string $class = ''): string
+{
+    $file = 'aguicons' . ($variant === 'iso' ? '-isotipo' : '') . '-' . $tone . '.png';
+    $h = $variant === 'iso' ? 606 : 644;
+    return sprintf('<img src="%s" alt="Aguicons" width="700" height="%d" class="%s">', esc_url(get_theme_file_uri('assets/img/' . $file)), $h, esc_attr($class));
+}
+
+function agui_img(int $id, string $size = 'large', array $attr = []): string
+{
+    if (!$id) {
+        return '';
+    }
+    return wp_get_attachment_image($id, $size, false, array_merge(['loading' => 'lazy', 'decoding' => 'async'], $attr));
+}
+
+function agui_href(string $url): string
+{
+    return preg_match('#^(https?:|mailto:|tel:|\#)#', $url) ? $url : home_url('/' . ltrim($url, '/'));
+}
+
+function agui_lines(array $args = []): array
+{
+    return get_posts(array_merge([
+        'post_type' => 'linea',
+        'post_status' => 'publish',
+        'numberposts' => -1,
+        'orderby' => ['menu_order' => 'ASC', 'title' => 'ASC'],
+    ], $args));
+}
+
+function agui_badge(int $post_id): string
+{
+    $t = (string) get_post_meta($post_id, '_agui_badge_title', true);
+    $x = (string) get_post_meta($post_id, '_agui_badge_text', true);
+    if ($t === '' && $x === '') {
+        return '';
+    }
+    return '<span class="agui-badge"><strong>' . esc_html($t) . '</strong>' . ($x !== '' ? '<em>' . esc_html($x) . '</em>' : '') . '</span>';
+}
+
+/* --- Portada ------------------------------------------------------------------------------- */
+
+function agui_banner(): string
+{
+    $img = (int) agui_opt('hero_image');
+    if (!$img) {
+        return '';
+    }
+    ob_start();
+    ?>
+    <section class="agui-banner">
+        <?php echo wp_get_attachment_image($img, 'full', false, ['class' => 'agui-banner-img', 'fetchpriority' => 'high', 'alt' => 'Aguicons']); ?>
+        <div class="agui-banner-fade"></div>
+        <div class="agui-banner-logo"><?php echo agui_logo('full', 'oro'); ?></div>
+        <h1 class="agui-banner-title"><?php echo esc_html(agui_opt('hero_before')); ?> <em><?php echo esc_html(agui_opt('hero_accent')); ?></em> <?php echo esc_html(agui_opt('hero_after')); ?></h1>
+        <?php if (agui_opt('hero_button')) : ?>
+            <div class="agui-banner-btn"><a href="<?php echo esc_url(agui_href(agui_opt('hero_url'))); ?>"><?php echo esc_html(agui_opt('hero_button')); ?></a></div>
+        <?php endif; ?>
+    </section>
+    <?php
+    return ob_get_clean();
+}
+
+/* --- Carrusel de líneas (inicio) ----------------------------------------------------------- */
+
+function agui_lines_carousel(string $title = ''): string
+{
+    $title = $title !== '' ? $title : agui_opt('lines_title');
+    $lines = array_filter(agui_lines(['post_parent' => 0]), fn($p) => get_post_meta($p->ID, '_agui_show_home', true) !== '0');
+    if (!$lines) {
+        return '';
+    }
+    ob_start();
+    ?>
+    <section class="agui-section agui-reveal">
+        <div class="agui-container">
+            <?php if ($title) : ?><h2 class="agui-h2"><?php echo esc_html($title); ?></h2><?php endif; ?>
+            <div class="agui-carousel-wrap">
+                <button type="button" class="agui-arrow agui-arrow-prev" aria-label="Anterior">‹</button>
+                <button type="button" class="agui-arrow agui-arrow-next" aria-label="Siguiente">›</button>
+                <div class="agui-carousel agui-lines-track" data-speed="70">
+                    <?php foreach ($lines as $p) : ?>
+                        <a class="agui-line-card" href="<?php echo esc_url(get_permalink($p)); ?>">
+                            <?php if (has_post_thumbnail($p)) {
+                                echo get_the_post_thumbnail($p, 'agui-card', ['loading' => 'lazy', 'decoding' => 'async', 'alt' => $p->post_title, 'draggable' => 'false']);
+                            } ?>
+                            <span class="agui-line-name"><?php echo esc_html($p->post_title); ?></span>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
+}
+
+/* --- Estadísticas -------------------------------------------------------------------------- */
+
+function agui_stats(): string
+{
+    $rows = [];
+    for ($i = 1; $i <= 3; $i++) {
+        $v = agui_opt("stat{$i}_value");
+        $l = agui_opt("stat{$i}_label");
+        if ($v !== '') {
+            $rows[] = [$v, $l];
+        }
+    }
+    if (!$rows) {
+        return '';
+    }
+    ob_start();
+    ?>
+    <section class="agui-section agui-reveal">
+        <div class="agui-container">
+            <h2 class="agui-h2">Estadísticas</h2>
+            <div class="agui-stats">
+                <?php foreach ($rows as [$v, $l]) : ?>
+                    <div class="agui-stat"><strong data-count="<?php echo esc_attr($v); ?>"><?php echo esc_html($v); ?></strong><span><?php echo esc_html($l); ?></span></div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
+}
+
+/* --- Barra de contacto --------------------------------------------------------------------- */
+
+function agui_contact_bar(bool $back = true): string
+{
+    ob_start();
+    ?>
+    <section class="agui-contactbar agui-reveal">
+        <?php if (agui_opt('address')) : ?><p class="agui-address">📍 <?php echo esc_html(agui_opt('address')); ?></p><?php endif; ?>
+        <a class="agui-btn" href="<?php echo esc_url(home_url('/contacto/')); ?>">CONVERSÁ CON NOSOTROS</a>
+        <p class="agui-small"><a href="mailto:<?php echo esc_attr(agui_opt('email_contact')); ?>"><?php echo esc_html(agui_opt('email_contact')); ?></a> - <?php echo esc_html(agui_opt('phone')); ?></p>
+        <?php if ($back) : ?><a class="agui-btn agui-btn-outline" href="<?php echo esc_url(home_url('/')); ?>">VOLVER</a><?php endif; ?>
+    </section>
+    <?php
+    return ob_get_clean();
+}
+
+/* --- Cabecera negra de una línea ----------------------------------------------------------- */
+
+function agui_line_intro(WP_Post $post): string
+{
+    $m = fn($k) => get_post_meta($post->ID, '_agui_' . $k, true);
+    $logo = (int) $m('logo_id');
+    $amen = array_filter(array_map('trim', preg_split('/\R/', (string) $m('amenities'))));
+    preg_match_all('#<p[^>]*>(.*?)</p>#s', (string) apply_filters('the_content', $post->post_content), $mm);
+    $paras = array_filter(array_map(fn($t) => trim(wp_strip_all_tags($t)), $mm[1] ?? []));
+    ob_start();
+    ?>
+    <section class="agui-intro">
+        <div class="agui-intro-inner">
+            <?php echo agui_logo('full', 'oro', 'agui-intro-logo'); ?>
+            <?php if ($logo) : ?>
+                <?php echo agui_img($logo, 'medium', ['class' => 'agui-intro-wordmark', 'alt' => $post->post_title, 'loading' => 'eager']); ?>
+            <?php else : ?>
+                <h1 class="agui-intro-title<?php echo $m('script_title') === '1' ? ' is-script' : ''; ?>"><?php echo esc_html($post->post_title); ?></h1>
+            <?php endif; ?>
+            <div class="agui-intro-text"><?php foreach ($paras as $p) : ?><p><?php echo esc_html($p); ?></p><?php endforeach; ?></div>
+            <?php if ($amen) : ?>
+                <ul class="agui-amenities"><?php foreach ($amen as $a) : ?><li><?php echo esc_html($a); ?></li><?php endforeach; ?></ul>
+            <?php endif; ?>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
+}
+
+/* --- Tarjetas protagónicas (sub-proyectos) ------------------------------------------------- */
+
+function agui_cards(string $title, array $posts): string
+{
+    if (!$posts) {
+        return '';
+    }
+    ob_start();
+    ?>
+    <section class="agui-section agui-reveal">
+        <div class="agui-container">
+            <?php if ($title) : ?><h2 class="agui-h2"><?php echo esc_html($title); ?></h2><?php endif; ?>
+            <div class="agui-cards">
+                <?php foreach ($posts as $p) : ?>
+                    <a class="agui-card" href="<?php echo esc_url(get_permalink($p)); ?>">
+                        <?php if (has_post_thumbnail($p)) {
+                            echo get_the_post_thumbnail($p, 'agui-card', ['loading' => 'lazy', 'decoding' => 'async', 'alt' => $p->post_title]);
+                        } ?>
+                        <span class="agui-card-name"><?php echo esc_html($p->post_title); ?></span>
+                        <?php echo agui_badge($p->ID); ?>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
+}
+
+/* --- Carrusel de vistas (con ampliación) --------------------------------------------------- */
+
+function agui_carousel(string $title, array $ids): string
+{
+    $ids = array_values(array_filter(array_map('intval', $ids)));
+    if (!$ids) {
+        return '';
+    }
+    ob_start();
+    ?>
+    <section class="agui-section agui-reveal">
+        <div class="agui-container">
+            <?php if ($title) : ?><h2 class="agui-h2"><?php echo esc_html($title); ?></h2><?php endif; ?>
+            <div class="agui-carousel agui-gallery-track" data-speed="120">
+                <?php foreach ($ids as $i => $id) :
+                    $full = wp_get_attachment_image_url($id, 'full');
+                    ?>
+                    <button type="button" class="agui-slide" data-full="<?php echo esc_url($full); ?>" aria-label="Ampliar imagen <?php echo $i + 1; ?>">
+                        <?php echo agui_img($id, 'agui-slide', ['draggable' => 'false', 'loading' => $i < 2 ? 'eager' : 'lazy']); ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
+}
+
+/* --- Ficha técnica + mapa ------------------------------------------------------------------ */
+
+function agui_facts(string $title, string $status, string $facts_text, string $address): string
+{
+    $facts = [];
+    foreach (array_filter(array_map('trim', preg_split('/\R/', $facts_text))) as $line) {
+        $parts = array_map('trim', explode(':', $line, 2));
+        $facts[] = [$parts[0], $parts[1] ?? ''];
+    }
+    if (!$facts && !$status && !$address) {
+        return '';
+    }
+    $q = rawurlencode($address);
+    ob_start();
+    ?>
+    <section class="agui-section agui-reveal">
+        <div class="agui-container agui-narrow">
+            <?php if ($title) : ?><h2 class="agui-h2"><?php echo esc_html($title); ?></h2><?php endif; ?>
+            <div class="agui-facts-grid">
+                <div>
+                    <?php if ($status) : ?><p><span class="agui-status"><?php echo esc_html($status); ?></span></p><?php endif; ?>
+                    <?php if ($facts) : ?>
+                        <dl class="agui-facts">
+                            <?php foreach ($facts as [$k, $v]) : ?><div><dt><?php echo esc_html($k); ?></dt><dd><?php echo esc_html($v); ?></dd></div><?php endforeach; ?>
+                        </dl>
+                    <?php endif; ?>
+                </div>
+                <?php if ($address) : ?>
+                    <div>
+                        <iframe title="Mapa: <?php echo esc_attr($address); ?>" src="https://www.google.com/maps?q=<?php echo $q; ?>&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=<?php echo $q; ?>" target="_blank" rel="noopener noreferrer">Ver en Google Maps</a>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
+}
+
+/* --- Formularios (consulta / brochure / contacto) ------------------------------------------ */
+
+function agui_lead_form(string $mode, string $project, string $title = '', int $line_id = 0): string
+{
+    $brochure = $mode === 'brochure';
+    $contact = $mode === 'contact';
+    if ($title === '') {
+        $title = $brochure ? 'Descargá el brochure de ' . $project : ($contact ? 'Conversá con nosotros' : 'Quiero información de ' . $project);
+    }
+    ob_start();
+    ?>
+    <section class="agui-section agui-reveal">
+        <div class="agui-container agui-form-wrap">
+            <h2 class="agui-h2"><?php echo esc_html($title); ?></h2>
+            <form class="agui-form" method="post" novalidate data-mode="<?php echo esc_attr($mode); ?>">
+                <input type="hidden" name="mode" value="<?php echo esc_attr($mode); ?>">
+                <input type="hidden" name="proyecto" value="<?php echo esc_attr($project); ?>">
+                <input type="hidden" name="line_id" value="<?php echo (int) $line_id; ?>">
+                <input type="hidden" name="pagina" value="<?php echo esc_attr(get_permalink() ?: home_url('/')); ?>">
+                <input type="hidden" name="t" value="<?php echo esc_attr((string) time()); ?>">
+                <label>Nombre y apellido*<input name="nombre" required autocomplete="name"></label>
+                <label>Email*<input name="email" type="email" required autocomplete="email"></label>
+                <?php if (!$brochure) : ?>
+                    <label>Teléfono<input name="telefono" type="tel" autocomplete="tel"></label>
+                    <label>Mensaje<?php echo $contact ? '*' : ''; ?><textarea name="mensaje" rows="4" <?php echo $contact ? 'required' : ''; ?>></textarea></label>
+                <?php endif; ?>
+                <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="agui-hp">
+                <p class="agui-small">Al enviar aceptás nuestra <a href="<?php echo esc_url(agui_privacy_url()); ?>">política de privacidad</a>.</p>
+                <p class="agui-form-error" role="alert" hidden>No pudimos enviar el formulario. Probá de nuevo o escribinos por WhatsApp.</p>
+                <button type="submit" class="agui-btn"><?php echo $brochure ? 'RECIBIR BROCHURE' : ($contact ? 'ENVIAR' : 'ENVIAR CONSULTA'); ?></button>
+            </form>
+            <div class="agui-form-done" role="status" hidden>
+                <p><strong>¡Gracias! Recibimos tus datos.</strong></p>
+                <p class="agui-form-done-text"></p>
+                <a class="agui-btn agui-form-download" href="#" download hidden>DESCARGAR BROCHURE</a>
+            </div>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
+}
+
+/* --- Testimonios --------------------------------------------------------------------------- */
+
+function agui_testimonials(string $title = 'LO QUE DICEN NUESTROS CLIENTES'): string
+{
+    $items = get_posts(['post_type' => 'testimonio', 'numberposts' => -1, 'orderby' => ['menu_order' => 'ASC', 'date' => 'DESC']]);
+    if (!$items) {
+        return '';
+    }
+    ob_start();
+    ?>
+    <section class="agui-section agui-reveal">
+        <div class="agui-container">
+            <h2 class="agui-h2"><?php echo esc_html($title); ?></h2>
+            <div class="agui-testimonials">
+                <?php foreach ($items as $t) : ?>
+                    <figure class="agui-testimonial">
+                        <blockquote>“<?php echo esc_html(wp_strip_all_tags($t->post_content)); ?>”</blockquote>
+                        <figcaption>
+                            <?php echo has_post_thumbnail($t) ? get_the_post_thumbnail($t, [80, 80], ['class' => 'agui-avatar', 'alt' => $t->post_title]) : ''; ?>
+                            <span><strong><?php echo esc_html($t->post_title); ?></strong>
+                                <?php $role = get_post_meta($t->ID, '_agui_role', true); echo $role ? '<br>' . esc_html($role) : ''; ?></span>
+                        </figcaption>
+                    </figure>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
+}
+
+/* --- Accesos a otras líneas ---------------------------------------------------------------- */
+
+function agui_other_lines(int $root_id): string
+{
+    $lines = agui_lines(['post_parent' => 0, 'exclude' => [$root_id]]);
+    if (!$lines) {
+        return '';
+    }
+    ob_start();
+    ?>
+    <nav class="agui-section agui-otherlines agui-reveal" aria-label="Otras líneas">
+        <h2 class="agui-h3">OTRAS LÍNEAS</h2>
+        <ul><?php foreach ($lines as $p) : ?><li><a href="<?php echo esc_url(get_permalink($p)); ?>"><?php echo esc_html($p->post_title); ?></a></li><?php endforeach; ?></ul>
+    </nav>
+    <?php
+    return ob_get_clean();
+}
+
+/* --- Alquiler: todas las líneas con cartel ------------------------------------------------- */
+
+function agui_rentals(): string
+{
+    $posts = array_filter(agui_lines(), fn($p) => get_post_meta($p->ID, '_agui_badge_title', true) !== '' || get_post_meta($p->ID, '_agui_badge_text', true) !== '');
+    $ids = [];
+    foreach ($posts as $p) {
+        if (has_post_thumbnail($p)) {
+            $ids[] = get_post_thumbnail_id($p);
+        }
+    }
+    return agui_cards('DISPONIBLES PARA ALQUILER', array_values($posts)) . agui_carousel('CARRUSEL DE VISTAS', $ids);
+}
+
+/* --- Mapa suelto --------------------------------------------------------------------------- */
+
+function agui_map(string $title, string $address): string
+{
+    return agui_facts($title, '', "Dirección: " . agui_opt('address') . "\nEmail: " . agui_opt('email_contact') . "\nTeléfono / WhatsApp: " . agui_opt('phone'), $address);
+}
+
+/* --- Shortcodes (para usar en cualquier página del editor) --------------------------------- */
+
+add_shortcode('aguicons_contacto_form', fn() => agui_lead_form('contact', 'Contacto'));
+add_shortcode('aguicons_consulta', fn($a) => agui_lead_form('inquiry', (string) (shortcode_atts(['proyecto' => get_the_title()], $a)['proyecto'])));
+add_shortcode('aguicons_brochure', fn($a) => agui_lead_form('brochure', (string) (shortcode_atts(['proyecto' => get_the_title()], $a)['proyecto'])));
+add_shortcode('aguicons_mapa', function ($a) {
+    $a = shortcode_atts(['titulo' => 'DÓNDE ESTAMOS', 'direccion' => ''], $a);
+    return agui_map($a['titulo'], $a['direccion'] ?: agui_opt('map_query'));
+});
+add_shortcode('aguicons_testimonios', fn() => agui_testimonials());
+add_shortcode('aguicons_alquiler', fn() => agui_rentals());
+add_shortcode('aguicons_contacto', fn($a) => agui_contact_bar(($a['volver'] ?? '1') !== '0'));
+add_shortcode('aguicons_lineas', fn() => agui_lines_carousel());
+add_shortcode('aguicons_estadisticas', fn() => agui_stats());

@@ -1,0 +1,63 @@
+name: aguicons-wp
+
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  wordpress:
+    image: wordpress:6-php8.1-apache
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    volumes:
+      - wp_data:/var/www/html
+      - ./aguicons:/var/www/html/wp-content/themes/aguicons
+
+  # Instala WordPress y activa el tema una sola vez: docker compose run --rm setup
+  setup:
+    image: wordpress:cli-php8.1
+    profiles: ["setup"]
+    depends_on:
+      - wordpress
+    user: "33:33"
+    volumes:
+      - wp_data:/var/www/html
+      - ./aguicons:/var/www/html/wp-content/themes/aguicons
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        wp core is-installed 2>/dev/null || wp core install --url=http://localhost:8080 --title=AGUICONS --admin_user=admin --admin_password=admin1234 --admin_email=admin@example.com --skip-email
+        wp language core install es_ES --activate 2>/dev/null || true
+        wp rewrite structure '/%postname%/' --hard
+        wp theme activate aguicons
+        echo "Listo: http://localhost:8080"
+
+volumes:
+  db_data:
+  wp_data:

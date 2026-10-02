@@ -1,0 +1,248 @@
+/*
+Theme Name: Aguicons
+Description: Tema de Aguicons (desarrolladora y constructora): portada, líneas edilicias con carruseles, fichas técnicas con mapa, formularios con aviso por email, WhatsApp, brochure, testimonios y analytics. Se administra desde Líneas edilicias, Páginas y Ajustes → Aguicons.
+Version: 2.0.0
+Requires at least: 6.0
+Requires PHP: 7.4
+Author: Aguicons
+Text Domain: aguicons
+*/
+
+:root {
+  --gold: #a68b44;
+  --black: #000;
+  --muted: #666;
+  --border: #e6e6e6;
+  --font: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #111;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+.agui-skip { position: absolute; left: -999px; top: 0; background: var(--gold); color: #fff; padding: 0.6rem 1rem; z-index: 200; }
+.agui-skip:focus { left: 0.5rem; top: 0.5rem; }
+
+/* ---------- Contenedores y títulos ---------- */
+.agui-container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+.agui-narrow { max-width: 1000px; }
+.agui-section { padding: 2.5rem 0; }
+.agui-h1 { text-align: center; text-transform: uppercase; letter-spacing: 0.08em; font-size: 1.8rem; }
+.agui-h2 { text-align: center; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1.5rem; margin: 0 0 2rem; }
+.agui-h3 { text-align: center; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1.1rem; margin: 0 0 1rem; }
+
+/* ---------- Botones ---------- */
+.agui-btn,
+.wp-block-button__link {
+  display: inline-block;
+  background: var(--gold);
+  color: #fff;
+  font: 700 0.9rem/1.2 var(--font);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 0.8rem 2rem;
+  cursor: pointer;
+}
+.agui-btn:hover { opacity: 0.9; }
+.agui-btn-outline,
+.is-style-outline .wp-block-button__link { background: transparent; color: #111; }
+.agui-btn-outline:hover,
+.is-style-outline .wp-block-button__link:hover { background: var(--gold); color: #fff; opacity: 1; }
+
+/* ---------- Cabecera ---------- */
+.agui-header { position: relative; z-index: 30; border-bottom: 1px solid var(--border); background: #fff; }
+.agui-header.is-home { position: absolute; inset: 0 0 auto 0; border: 0; background: transparent; }
+.agui-header-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; }
+.agui-header-logo img { width: 48px; height: auto; }
+.agui-menu, .agui-footer-menu, .agui-mobile-menu, .agui-mobile-lines { list-style: none; margin: 0; padding: 0; }
+.agui-menu { display: flex; gap: 1.25rem; align-items: center; }
+.agui-menu a { text-decoration: none; font-size: 0.9rem; }
+.agui-menu a:hover, .agui-menu .current-menu-item > a { color: var(--gold); }
+.agui-burger { display: none; background: none; border: 0; padding: 0.5rem; cursor: pointer; }
+.agui-burger span { display: block; width: 24px; height: 2px; background: #111; margin: 5px 0; }
+.agui-mobile { position: absolute; left: 0; right: 0; top: 100%; background: #fff; border-bottom: 1px solid var(--border); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); padding: 1rem; }
+.agui-mobile[hidden] { display: none; }
+.agui-mobile-menu li { margin: 0.5rem 0; }
+.agui-mobile-menu a { text-decoration: none; }
+.agui-mobile-title { color: var(--gold); font-weight: 700; font-size: 0.75rem; letter-spacing: 0.15em; margin: 1rem 0 0.5rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+.agui-mobile-lines { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.agui-mobile-lines a { display: inline-block; border: 1px solid var(--gold); border-radius: 8px; padding: 0.15rem 0.75rem; text-decoration: none; font-size: 0.9rem; }
+@media (max-width: 781px) {
+  .agui-nav { display: none; }
+  .agui-burger { display: block; }
+}
+@media (min-width: 782px) { .agui-mobile { display: none !important; } }
+
+/* ---------- Portada ---------- */
+.agui-banner { position: relative; overflow: hidden; background: #fff; }
+.agui-banner-img { width: 100%; height: 75vh; min-height: 460px; object-fit: cover; object-position: bottom; }
+.agui-banner-fade { position: absolute; inset: 0 0 auto 0; height: 10rem; background: linear-gradient(to bottom, #fff 0%, rgba(255, 255, 255, 0.8) 40%, transparent); }
+.agui-banner-logo { position: absolute; top: 1rem; left: 0; right: 0; display: flex; justify-content: center; }
+.agui-banner-logo img { width: 96px; height: auto; }
+.agui-banner-title { position: absolute; left: 0; right: 0; top: 28%; margin: 0; padding: 0 0.5rem; text-align: center; color: #fff; text-transform: uppercase; font-size: clamp(1.5rem, 5.6vw, 3.75rem); letter-spacing: 0.02em; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35); }
+.agui-banner-title em { font-weight: 400; font-style: italic; text-transform: none; margin: 0 0.15em; }
+.agui-banner-btn { position: absolute; right: 1.5rem; bottom: 1.5rem; border: 2px solid rgba(255, 255, 255, 0.9); }
+.agui-banner-btn a { display: block; background: var(--gold); color: #fff; text-decoration: none; font-size: 1.1rem; line-height: 1.25; padding: 0.75rem 1.25rem; max-width: 11rem; }
+
+/* ---------- Carruseles ---------- */
+.agui-carousel { display: flex; gap: 1rem; overflow-x: auto; scrollbar-width: none; user-select: none; cursor: grab; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding-bottom: 0.5rem; }
+.agui-carousel::-webkit-scrollbar { display: none; }
+.agui-carousel.is-active { scroll-snap-type: none; scroll-behavior: auto; }
+.agui-carousel.is-dragging { cursor: grabbing; }
+.agui-carousel-wrap { position: relative; }
+.agui-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 5; width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--gold); color: #fff; font-size: 1.4rem; line-height: 1; cursor: pointer; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); }
+.agui-arrow-prev { left: 0.5rem; }
+.agui-arrow-next { right: 0.5rem; }
+
+.agui-line-card { position: relative; flex: 0 0 75%; scroll-snap-align: start; aspect-ratio: 1 / 2; background: #000; overflow: hidden; display: block; }
+.agui-line-card img { width: 100%; height: 100%; object-fit: cover; }
+.agui-line-name { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.55); color: #fff; font-weight: 700; font-size: 1.25rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0; transition: opacity 0.3s; }
+.agui-line-card:hover .agui-line-name, .agui-line-card:focus-visible .agui-line-name { opacity: 1; }
+@media (min-width: 640px) { .agui-line-card { flex-basis: 45%; } }
+@media (min-width: 900px) { .agui-line-card { flex-basis: 30%; } }
+@media (min-width: 1100px) { .agui-line-card { flex-basis: 23%; } }
+
+.agui-slide { flex: 0 0 100%; scroll-snap-align: center; border: 0; padding: 0; background: none; cursor: zoom-in; }
+.agui-slide img { width: 100%; height: auto; border-radius: 6px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25); }
+@media (min-width: 640px) { .agui-slide { flex-basis: 80%; } }
+@media (min-width: 900px) { .agui-slide { flex-basis: 60%; } }
+
+/* ---------- Lightbox ---------- */
+.agui-lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(0, 0, 0, 0.9); display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.agui-lightbox img { max-width: 92vw; max-height: 90vh; object-fit: contain; }
+.agui-lightbox button { position: absolute; width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--gold); color: #fff; font-size: 1.6rem; line-height: 1; cursor: pointer; }
+.agui-lb-close { top: 1rem; right: 1rem; }
+.agui-lb-prev { left: 1rem; top: 50%; transform: translateY(-50%); }
+.agui-lb-next { right: 1rem; top: 50%; transform: translateY(-50%); }
+.agui-lb-count { position: absolute; bottom: 1rem; color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; }
+
+/* ---------- Estadísticas ---------- */
+.agui-stats { display: flex; flex-direction: column; align-items: center; gap: 2rem; }
+.agui-stat { text-align: center; }
+.agui-stat strong { display: block; font-size: 2rem; }
+.agui-stat span { display: block; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #555; }
+@media (min-width: 782px) { .agui-stats { flex-direction: row; justify-content: center; gap: 4rem; } }
+
+/* ---------- Barra de contacto ---------- */
+.agui-contactbar { display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; padding: 2.5rem 1rem; }
+.agui-contactbar p { margin: 0; }
+.agui-small { font-size: 0.8rem; }
+
+/* ---------- Cabecera negra de línea ---------- */
+.agui-intro { background: #000; color: #fff; padding: 2.5rem 1rem 3rem; }
+.agui-intro-inner { max-width: 860px; margin: 0 auto; text-align: center; }
+.agui-intro-logo { width: 100px; margin: 0 auto 2.5rem; }
+.agui-intro-wordmark { height: 64px; width: auto; margin: 0 auto 2.5rem; }
+.agui-intro-title { font-size: 2.4rem; letter-spacing: 0.35em; text-transform: uppercase; font-weight: 400; margin: 0 0 2.5rem; }
+.agui-intro-title.is-script { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 500; letter-spacing: 0; text-transform: none; font-size: 4.2rem; line-height: 1; }
+.agui-intro-text { max-width: 760px; margin: 0 auto; text-align: left; font-size: 0.95rem; }
+.agui-intro-text p { margin: 0; text-indent: 2rem; }
+.agui-amenities { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 2rem; padding: 0; margin: 2rem 0 0; }
+.agui-amenities li { display: flex; align-items: center; gap: 0.5rem; }
+.agui-amenities li::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); }
+
+/* ---------- Tarjetas protagónicas ---------- */
+.agui-cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; }
+.agui-card { position: relative; display: flex; align-items: center; justify-content: center; width: 16rem; aspect-ratio: 3 / 4; border: 1px solid var(--gold); overflow: hidden; background: #fff; transition: transform 0.2s; }
+.agui-card:hover { transform: scale(1.02); }
+.agui-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.agui-card-name { position: relative; z-index: 1; background: rgba(0, 0, 0, 0.6); color: #fff; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.25rem 0.75rem; text-align: center; }
+@media (min-width: 640px) { .agui-card { width: 18rem; } }
+.agui-badge { position: absolute; right: 0; bottom: 0; z-index: 2; background: var(--gold); color: #fff; text-align: center; font-size: 0.65rem; line-height: 1.2; padding: 0.25rem 0.75rem; text-transform: uppercase; }
+.agui-badge strong, .agui-badge em { display: block; font-style: normal; }
+.agui-badge em { text-transform: none; }
+
+/* ---------- Ficha técnica ---------- */
+.agui-facts-grid { display: grid; gap: 2rem; align-items: start; }
+@media (min-width: 782px) { .agui-facts-grid { grid-template-columns: 1fr 1fr; } }
+.agui-status { display: inline-block; background: var(--gold); color: #fff; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.75rem; border-radius: 4px; }
+.agui-facts { margin: 0; border: 1px solid var(--border); border-radius: 12px; }
+.agui-facts > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.7rem 1rem; font-size: 0.9rem; }
+.agui-facts > div + div { border-top: 1px solid var(--border); }
+.agui-facts dt { font-weight: 700; }
+.agui-facts dd { margin: 0; text-align: right; color: var(--muted); }
+.agui-facts-grid iframe { width: 100%; height: 18rem; border: 1px solid var(--border); border-radius: 12px; }
+.agui-facts-grid a { font-size: 0.9rem; }
+
+/* ---------- Formularios ---------- */
+.agui-form-wrap { max-width: 36rem; }
+.agui-form { display: flex; flex-direction: column; gap: 0.85rem; border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+.agui-form label { font-size: 0.85rem; font-weight: 700; display: block; }
+.agui-form input:not([type='hidden']), .agui-form textarea { display: block; width: 100%; margin-top: 0.25rem; padding: 0.6rem 0.75rem; font: 400 1rem var(--font); border: 1px solid #ccc; border-radius: 8px; background: #fff; color: #111; }
+.agui-hp { position: absolute !important; left: -9999px !important; }
+.agui-form-error { color: #c00; font-size: 0.85rem; margin: 0; }
+.agui-form-done { border: 1px solid var(--gold); border-radius: 12px; padding: 1.5rem; text-align: center; }
+.agui-form button[disabled] { opacity: 0.6; }
+
+/* ---------- Testimonios ---------- */
+.agui-testimonials { display: grid; gap: 1.5rem; }
+@media (min-width: 782px) { .agui-testimonials { grid-template-columns: repeat(3, 1fr); } }
+.agui-testimonial { margin: 0; border: 1px solid var(--gold); border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+.agui-testimonial blockquote { margin: 0; font-size: 0.9rem; }
+.agui-testimonial figcaption { display: flex; align-items: center; gap: 0.75rem; margin-top: auto; font-size: 0.85rem; }
+.agui-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+
+/* ---------- Otras líneas ---------- */
+.agui-otherlines { text-align: center; }
+.agui-otherlines ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
+.agui-otherlines a { display: inline-block; border: 2px solid var(--gold); border-radius: 12px; padding: 0.4rem 1.5rem; text-decoration: none; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.agui-otherlines a:hover { background: var(--gold); color: #fff; }
+
+/* ---------- Páginas de texto ---------- */
+.agui-prose { max-width: 860px; }
+.agui-prose h1, .agui-prose h2 { text-transform: uppercase; letter-spacing: 0.06em; }
+.agui-prose h3 { text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.05rem; margin-top: 1.8rem; }
+.agui-page.is-gold { background: var(--gold); color: #fff; }
+.agui-page.is-gold h1, .agui-page.is-gold h2, .agui-page.is-gold h3, .agui-page.is-gold p { color: #fff; }
+.agui-page.is-gold .wp-block-columns .has-white-background-color, .agui-page.is-gold .wp-block-columns .has-white-background-color * { color: #000; }
+.agui-page.is-gold .wp-block-button__link { background: #fff; color: #000; border-color: #fff; }
+.agui-page.is-gold .agui-contactbar a:not(.agui-btn) { color: #fff; }
+.agui-page.is-gold .agui-btn { background: #fff; color: #000; border-color: #fff; }
+.agui-page.is-gold .agui-btn-outline { background: transparent; color: #fff; border-color: #fff; }
+.agui-team .wp-block-column > .wp-block-group { background: #fff; color: #000; border: 1px solid var(--border); min-height: 300px; display: flex; align-items: center; justify-content: center; }
+.agui-team h3 { color: #000 !important; margin: 0; text-align: center; }
+
+/* ---------- Pie ---------- */
+.agui-footer { background: #000; color: #fff; text-align: center; padding: 2rem 1rem; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; margin-top: 2rem; }
+.agui-footer-logo { width: 96px; height: auto; }
+.agui-footer-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+.agui-footer-menu a { color: #fff; text-decoration: none; font-size: 0.85rem; }
+.agui-footer-copy { margin: 0; font-size: 0.75rem; color: rgba(255, 255, 255, 0.7); }
+
+/* ---------- WhatsApp y cookies ---------- */
+.agui-whatsapp { position: fixed; right: 1.5rem; bottom: 1.5rem; z-index: 90; width: 56px; height: 56px; border-radius: 50%; background: #25d366; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); transition: transform 0.2s; }
+.agui-whatsapp:hover { transform: scale(1.08); }
+.agui-whatsapp svg { width: 32px; height: 32px; fill: currentColor; }
+.agui-cookies { position: fixed; inset: auto 0 0 0; z-index: 95; background: #000; color: #fff; font-size: 0.85rem; padding: 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+.agui-cookies p { margin: 0; max-width: 48rem; }
+.agui-cookies a { color: #fff; }
+.agui-cookies button { font: 700 0.85rem var(--font); border-radius: 8px; padding: 0.5rem 1rem; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.6); background: transparent; color: #fff; }
+.agui-cookies button.ok { background: var(--gold); border-color: var(--gold); }
+
+/* ---------- Animación de aparición ---------- */
+.js .agui-reveal { opacity: 0; transform: translateY(1.5rem); transition: opacity 0.7s ease, transform 0.7s ease; }
+.js .agui-reveal.is-shown { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .js .agui-reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
