@@ -198,6 +198,7 @@ function agui_upsert_line(array $d): int
     $gallery = array_filter(array_map('agui_seed_id', $d['gallery'] ?? []));
     $meta = [
         'script_title' => !empty($d['script']) ? '1' : '0',
+        'logo_id' => !empty($d['logo']) ? agui_seed_id($d['logo']) : '',
         'amenities' => implode("\n", $d['amenities'] ?? []),
         'cards_title' => $d['cards_title'] ?? '',
         'gallery' => implode(',', $gallery),
@@ -238,7 +239,7 @@ function agui_import_content(): void
     $opts = get_option('aguicons_opts', []);
     $opts = is_array($opts) ? $opts : [];
     if (empty($opts['hero_image'])) {
-        $opts['hero_image'] = agui_seed_id('HOME/BARADISE/Copia de 03.png');
+        $opts['hero_image'] = agui_seed_id('PORTADA/Portada Baradise.png');
     }
     update_option('aguicons_opts', $opts);
 
@@ -305,6 +306,14 @@ function agui_import_content(): void
     }
     $p_priv = agui_upsert_page('politica-de-privacidad', 'Política de privacidad', $c, [], 'Cómo tratamos los datos personales recabados en este sitio.');
 
+    // Novedades (blog) y borrador de la página "Invertir"
+    $p_nov = agui_upsert_page('novedades', 'Novedades', '', [], 'Lanzamientos, avances de obra y noticias de Aguicons.');
+    update_option('page_for_posts', $p_nov);
+    if (!get_page_by_path('invertir')) {
+        $inv = agui_upsert_page('invertir', 'Invertir', agui_b_heading('INVERTÍ CON AGUICONS') . agui_b_para('Completar con la modalidad de compra, la financiación y los beneficios de invertir en cada línea.') . agui_b_shortcode('[aguicons_faq]') . agui_b_shortcode('[aguicons_consulta proyecto="Inversiones"]'), [], 'Cómo invertir con Aguicons.');
+        wp_update_post(['ID' => $inv, 'post_status' => 'draft']);
+    }
+
     // Líneas edilicias
     $baradiseText = "Fiel a la tradición de Aguicons® de bautizar con un nombre propio y exclusivo al proyecto insignia de cada nueva línea. Baradise® nace para inaugurar nuestra propuesta residencial más elevada hasta el momento. La expresión máxima de lujo, arquitectura orgánica y diseño contemporáneo frente al río.\n\nBARADISE® propone una forma sutil y renovada de habitar la ciudad a través de una arquitectura que combina líneas contemporáneas y materiales nobles. Concebido para integrarse de manera fluida con su entorno, el edificio aprovecha grandes ventanales y distribuciones abiertas que invitan a la luz natural y abren vistas panorámicas hacia el río, creando espacios que transmiten libertad, calma y confort.\n\nCon exclusivas residencias de 2 y 3 dormitorios en suite proyectadas al detalle.";
 
@@ -313,23 +322,23 @@ function agui_import_content(): void
     $loftier = ["$L/TIER/LOFTIER/Copia de 01.png", "$L/TIER/LOFTIER/Copia de 02.png", "$L/TIER/LOFTIER/Copia de Copia de @mathycorrea - 26.JPG"];
     $alarif = ['HOME/ALARIF/Copia de 1.png', 'HOME/ALARIF/Copia de 2.png'];
 
-    agui_upsert_line(['slug' => 'baradise', 'title' => 'Baradise', 'order' => 1, 'script' => true, 'text' => $baradiseText,
+    agui_upsert_line(['slug' => 'baradise', 'logo' => 'LOGOS LINEAS/baradise.png', 'title' => 'Baradise', 'order' => 1, 'script' => true, 'text' => $baradiseText,
         'amenities' => ['Piscina', 'Solarium', 'Gimnasio', 'Sum', 'Co-working', 'Terraza Verde'], 'thumb' => 'HOME/BARADISE/Copia de 03.png',
         'gallery' => array_merge($nums('BARADISE/EXTERIOR', ['08', '10', '15', '18', '20']), $nums('BARADISE/HALL DE INGRESO', ['05', '08']), $nums('BARADISE/INTERIOR', ['01', '07', '08', '10']))]);
 
-    agui_upsert_line(['slug' => 'velerian', 'title' => 'Velerian', 'order' => 2, 'thumb' => 'HOME/VELERIAN/Copia de 06.png',
+    agui_upsert_line(['slug' => 'velerian', 'logo' => 'LOGOS LINEAS/velerian.png', 'title' => 'Velerian', 'order' => 2, 'thumb' => 'HOME/VELERIAN/Copia de 06.png',
         'gallery' => ["$L/VELERIAN/EXTERIOR/Copia de 06.png", "$L/VELERIAN/EXTERIOR/Copia de 08.png", "$L/VELERIAN/EXTERIOR/Copia de Copia de IMG_2360.JPG", 'HOME/VELERIAN/Copia de 05.png', 'HOME/VELERIAN/Copia de 07.png']]);
 
-    $benrow = agui_upsert_line(['slug' => 'benrow', 'title' => 'Benrow', 'order' => 3, 'thumb' => 'HOME/BENROW/Copia de 19.png', 'cards_title' => 'PROTAGÓNICO (ACROS)']);
+    $benrow = agui_upsert_line(['slug' => 'benrow', 'logo' => 'LOGOS LINEAS/benrow.png', 'title' => 'Benrow', 'order' => 3, 'thumb' => 'HOME/BENROW/Copia de 19.png', 'cards_title' => 'PROTAGÓNICO (ACROS)']);
     agui_upsert_line(['slug' => 'benrow-acros', 'title' => 'Benrow Acros', 'order' => 1, 'parent' => $benrow, 'thumb' => $acros[2], 'gallery' => $acros]);
     agui_upsert_line(['slug' => 'benrow-local-comercial', 'title' => 'Benrow', 'order' => 2, 'parent' => $benrow, 'thumb' => 'HOME/BENROW/Copia de 18.png',
         'badge_title' => 'ALQUILER', 'badge_text' => 'Local Comercial', 'gallery' => ['HOME/BENROW/Copia de 18.png', 'HOME/BENROW/Copia de 19.png']]);
 
-    $tier = agui_upsert_line(['slug' => 'tier', 'title' => 'Tier', 'order' => 4, 'thumb' => 'HOME/TIER/Copia de 17.png', 'cards_title' => 'PROTAGÓNICO (VANTIER)']);
+    $tier = agui_upsert_line(['slug' => 'tier', 'logo' => 'LOGOS LINEAS/tier.png', 'title' => 'Tier', 'order' => 4, 'thumb' => 'HOME/TIER/Copia de 17.png', 'cards_title' => 'PROTAGÓNICO (VANTIER)']);
     agui_upsert_line(['slug' => 'vantier', 'title' => 'Vantier', 'order' => 1, 'parent' => $tier, 'thumb' => $vantier[3], 'gallery' => $vantier]);
     agui_upsert_line(['slug' => 'loftier', 'title' => 'Loftier', 'order' => 2, 'parent' => $tier, 'thumb' => $loftier[0], 'gallery' => $loftier]);
 
-    $alar = agui_upsert_line(['slug' => 'alarif', 'title' => 'Alarif', 'order' => 5, 'thumb' => 'HOME/ALARIF/Copia de 1.png', 'cards_title' => 'PROTAGÓNICO (RIVÁ)', 'gallery' => $alarif]);
+    $alar = agui_upsert_line(['slug' => 'alarif', 'logo' => 'LOGOS LINEAS/alarif.png', 'title' => 'Alarif', 'order' => 5, 'thumb' => 'HOME/ALARIF/Copia de 1.png', 'cards_title' => 'PROTAGÓNICO (RIVÁ)', 'gallery' => $alarif]);
     agui_upsert_line(['slug' => 'alarif-fazara', 'title' => 'Alarif Fazara', 'order' => 1, 'parent' => $alar, 'thumb' => 'HOME/ALARIF/Copia de 1.png',
         'badge_title' => 'ALQUILER', 'badge_text' => 'Unidades', 'gallery' => $alarif]);
     agui_upsert_line(['slug' => 'alarif-trench', 'title' => 'Alarif Trench', 'order' => 2, 'parent' => $alar, 'thumb' => 'HOME/ALARIF/Copia de 2.png',
@@ -346,7 +355,7 @@ function agui_import_content(): void
     foreach ((array) wp_get_nav_menu_items($menu_id) as $it) {
         wp_delete_post($it->ID, true);
     }
-    $items = [['Inicio', $home], ['Nosotros', get_page_by_path('nosotros')->ID], ['Servicios', $p_serv], ['Movimiento de suelo', $p_suelo], ['Alquiler', $p_alq], ['Contacto', $p_cont]];
+    $items = [['Inicio', $home], ['Nosotros', get_page_by_path('nosotros')->ID], ['Servicios', $p_serv], ['Movimiento de suelo', $p_suelo], ['Alquiler', $p_alq], ['Novedades', $p_nov], ['Contacto', $p_cont]];
     foreach ($items as $i => [$label, $pid]) {
         wp_update_nav_menu_item($menu_id, 0, ['menu-item-title' => $label, 'menu-item-object' => 'page', 'menu-item-object-id' => $pid, 'menu-item-type' => 'post_type', 'menu-item-status' => 'publish', 'menu-item-position' => $i + 1]);
     }

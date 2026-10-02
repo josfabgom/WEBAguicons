@@ -13,7 +13,9 @@ require_once get_theme_file_path('inc/options.php');
 require_once get_theme_file_path('inc/cpt.php');
 require_once get_theme_file_path('inc/render.php');
 require_once get_theme_file_path('inc/forms.php');
+require_once get_theme_file_path('inc/extras.php');
 require_once get_theme_file_path('inc/importer.php');
+require_once get_theme_file_path('inc/panel.php');
 
 add_action('after_setup_theme', function () {
     load_theme_textdomain('aguicons', get_theme_file_path('languages'));
@@ -39,8 +41,8 @@ add_action('wp_enqueue_scripts', function () {
         [],
         null
     );
-    wp_enqueue_style('aguicons-style', get_stylesheet_uri(), ['aguicons-fonts'], AGUI_VERSION);
-    wp_enqueue_script('aguicons-app', get_theme_file_uri('assets/js/app.js'), [], AGUI_VERSION, ['in_footer' => true, 'strategy' => 'defer']);
+    wp_enqueue_style('aguicons-style', get_stylesheet_uri(), ['aguicons-fonts'], AGUI_VERSION . '.' . filemtime(get_theme_file_path('style.css')));
+    wp_enqueue_script('aguicons-app', get_theme_file_uri('assets/js/app.js'), [], AGUI_VERSION . '.' . filemtime(get_theme_file_path('assets/js/app.js')), ['in_footer' => true, 'strategy' => 'defer']);
     wp_localize_script('aguicons-app', 'AGUI', [
         'ajax' => admin_url('admin-ajax.php'),
         'ga' => agui_opt('ga_id'),

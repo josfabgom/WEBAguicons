@@ -56,25 +56,69 @@
     obs.observe(el);
   });
 
-  /* ---------- Carruseles: avanzan con el mouse encima y se arrastran ---------- */
+  /* ---------- Carruseles infinitos: avanzan con el mouse encima y se arrastran ---------- */
   $$('.agui-carousel').forEach(function (car) {
     var speed = parseFloat(car.getAttribute('data-speed')) || 80;
-    var hovering = false, dragging = false, moved = false, raf = 0, pos = 0, last = 0;
+    var hovering = false, dragging = false, moved = false, raf = 0, last = 0, S = 0, looped = false;
+
+    var originals = Array.prototype.slice.call(car.children);
+    originals.forEach(function (el, i) { el.setAttribute('data-i', i); });
+
+    function setLeft(x) { car.scrollTo({ left: x, behavior: 'instant' }); }
+    function totalW() { return originals.reduce(function (w, el) { return w + el.offsetWidth + 16; }, 0); }
+
+    // Se duplican los elementos (antes y después) para que el recorrido no tenga fin.
+    function build() {
+      if (originals.length < 2 || totalW() <= car.clientWidth + 8) return;
+      function clones() {
+        return originals.map(function (el) {
+          var c = el.cloneNode(true);
+          c.classList.add('agui-clone');
+          c.setAttribute('aria-hidden', 'true');
+          c.setAttribute('tabindex', '-1');
+          return c;
+        });
+      }
+      clones().forEach(function (c) { car.insertBefore(c, originals[0]); });
+      clones().forEach(function (c) { car.appendChild(c); });
+      looped = true;
+      measure();
+      setLeft(S);
+    }
+    function measure() { S = originals[0].offsetLeft - car.firstElementChild.offsetLeft; }
+    function norm() {
+      if (!looped || !S) return false;
+      var x = car.scrollLeft;
+      if (x < 0.5 * S) { setLeft(x + S); return true; }
+      if (x > 1.5 * S) { setLeft(x - S); return true; }
+      return false;
+    }
+    build();
+
+    var settle = 0;
+    car.addEventListener('scroll', function () {
+      if (dragging || raf) return;
+      clearTimeout(settle);
+      settle = setTimeout(norm, 120);
+    });
+    window.addEventListener('resize', function () {
+      if (!looped) return;
+      var rel = car.scrollLeft - S; measure(); setLeft(S + rel); norm();
+    });
 
     function loop(now) {
       if (!hovering || dragging) { raf = 0; car.classList.remove('is-active'); return; }
-      if (Math.abs(car.scrollLeft - pos) > 2) pos = car.scrollLeft;
-      pos -= ((now - last) / 1000) * speed; // de izquierda a derecha
-      if (pos <= 0) pos = car.scrollWidth - car.clientWidth;
-      car.scrollLeft = pos;
+      var x = car.scrollLeft - ((now - last) / 1000) * speed; // de izquierda a derecha
       last = now;
+      if (looped) { if (x < 0.5 * S) x += S; }
+      else if (x <= 0) x = Math.max(0, car.scrollWidth - car.clientWidth);
+      setLeft(x);
       raf = requestAnimationFrame(loop);
     }
     function start() {
       if (reduce || raf) return;
       car.classList.add('is-active');
-      if (car.scrollLeft <= 1) car.scrollLeft = car.scrollWidth - car.clientWidth;
-      pos = car.scrollLeft; last = performance.now();
+      last = performance.now();
       raf = requestAnimationFrame(loop);
     }
     car.addEventListener('mouseenter', function () { hovering = true; start(); });
@@ -87,13 +131,15 @@
 
     car.addEventListener('pointerdown', function (e) {
       if (e.pointerType !== 'mouse' || e.button !== 0) return;
-      var startX = e.clientX, startLeft = car.scrollLeft;
+      var lastX = e.clientX;
       dragging = true; moved = false;
       car.classList.add('is-active', 'is-dragging');
       function move(ev) {
-        var dx = ev.clientX - startX;
-        if (Math.abs(dx) > 4) moved = true;
-        car.scrollLeft = startLeft - dx;
+        var dx = ev.clientX - lastX;
+        lastX = ev.clientX;
+        if (Math.abs(ev.clientX - e.clientX) > 4) moved = true;
+        setLeft(car.scrollLeft - dx);
+        norm();
       }
       function up() {
         window.removeEventListener('pointermove', move);
@@ -114,16 +160,14 @@
     }, true);
     car.addEventListener('dragstart', function (e) { e.preventDefault(); });
 
-    // Flechas (carrusel de líneas)
+    // Flechas (carrusel de líneas): también dan la vuelta sin fin.
     if (wrap) {
       var prev = $('.agui-arrow-prev', wrap), next = $('.agui-arrow-next', wrap);
       var go = function (d) {
-        var first = car.firstElementChild;
-        var step = (first ? first.offsetWidth : car.clientWidth) + 16;
-        var atEnd = car.scrollLeft + car.clientWidth >= car.scrollWidth - 4;
-        if (d === 1 && atEnd) car.scrollTo({ left: 0, behavior: 'smooth' });
-        else if (d === -1 && car.scrollLeft <= 4) car.scrollTo({ left: car.scrollWidth, behavior: 'smooth' });
-        else car.scrollBy({ left: d * step, behavior: 'smooth' });
+        norm();
+        var first = originals[0];
+        var step = first.offsetWidth + 16;
+        car.scrollBy({ left: d * step, behavior: 'smooth' });
       };
       if (prev) prev.addEventListener('click', function () { go(-1); });
       if (next) next.addEventListener('click', function () { go(1); });
@@ -132,7 +176,7 @@
 
   /* ---------- Lightbox de la galería ---------- */
   $$('.agui-gallery-track').forEach(function (track_) {
-    var slides = $$('.agui-slide', track_);
+    var slides = $$('.agui-slide', track_).filter(function (el) { return !el.classList.contains('agui-clone'); });
     var current = -1, box = null;
     function render() {
       if (!box) return;
@@ -169,7 +213,7 @@
       document.addEventListener('keydown', onKey);
       render();
     }
-    slides.forEach(function (s, i) { s.addEventListener('click', function () { open(i); }); });
+    $$('.agui-slide', track_).forEach(function (el) { el.addEventListener('click', function () { open(parseInt(el.getAttribute('data-i'), 10) || 0); }); });
   });
 
   /* ---------- Formularios ---------- */
@@ -205,6 +249,71 @@
           track('generate_lead', { project: data.get('proyecto'), lead_type: mode });
         })
         .catch(function () { err.hidden = false; btn.disabled = false; });
+    });
+  });
+
+
+  /* ---------- Unidades: filtros y orden ---------- */
+  $$('[data-units]').forEach(function (box) {
+    var rows = $$('tbody tr', box), selects = $$('select[data-filter]', box);
+    function apply() {
+      rows.forEach(function (tr) {
+        var ok = selects.every(function (sel) {
+          var v = sel.value; if (!v) return true;
+          return tr.children[parseInt(sel.getAttribute('data-filter'), 10)].textContent.trim() === v;
+        });
+        tr.hidden = !ok;
+      });
+    }
+    selects.forEach(function (sel) { sel.addEventListener('change', apply); });
+    var asc = true, sortBtn = $('[data-sort]', box);
+    if (sortBtn) sortBtn.addEventListener('click', function () {
+      var tb = $('tbody', box), col = parseInt(sortBtn.getAttribute('data-sort'), 10);
+      rows.sort(function (a, b) {
+        var x = parseFloat(a.children[col].getAttribute('data-num')) || 0, y = parseFloat(b.children[col].getAttribute('data-num')) || 0;
+        return asc ? x - y : y - x;
+      }).forEach(function (tr) { tb.appendChild(tr); });
+      asc = !asc;
+    });
+  });
+
+  /* ---------- Mapa de proyectos (Leaflet + OpenStreetMap) ---------- */
+  window.addEventListener('load', function () {
+    var el = document.getElementById('agui-map');
+    if (!el || !window.L) return;
+    var pts = JSON.parse(el.getAttribute('data-points') || '[]');
+    if (!pts.length) return;
+    var map = window.L.map(el, { scrollWheelZoom: false });
+    window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(map);
+    var icon = window.L.divIcon({ className: '', html: '<div style="width:18px;height:18px;border-radius:50%;background:#a68b44;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.5)"></div>', iconSize: [18, 18], iconAnchor: [9, 9] });
+    var bounds = [];
+    pts.forEach(function (p) {
+      var a = document.createElement('a'); a.href = p.url; a.textContent = p.name;
+      window.L.marker([p.lat, p.lng], { icon: icon, title: p.name }).addTo(map).bindPopup(a);
+      bounds.push([p.lat, p.lng]);
+    });
+    if (bounds.length === 1) map.setView(bounds[0], 15); else map.fitBounds(bounds, { padding: [40, 40] });
+  });
+
+  /* ---------- Pestañas de la línea ---------- */
+  $$('[data-tabs]').forEach(function (box) {
+    var tabs = $$('[role=tab]', box), panels = $$('[role=tabpanel]', box);
+    function select(i, focus) {
+      tabs.forEach(function (t, k) {
+        var on = k === i;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.setAttribute('tabindex', on ? '0' : '-1');
+        if (on && focus) t.focus();
+      });
+      panels.forEach(function (p, k) { if (k === i) p.removeAttribute('hidden'); else p.setAttribute('hidden', ''); });
+      window.dispatchEvent(new Event('resize'));
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { select(i); });
+      t.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); select((i + 1) % tabs.length, true); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); select((i - 1 + tabs.length) % tabs.length, true); }
+      });
     });
   });
 

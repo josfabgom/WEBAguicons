@@ -18,6 +18,7 @@ function agui_defaults(): array
         'address' => 'Av. Antartida Argentina 876',
         'map_query' => 'Av. Antártida Argentina 876, Posadas, Misiones, Argentina',
         'hero_image' => 0,
+        'hero_baked' => '',
         'hero_before' => 'CONSTRUIMOS',
         'hero_accent' => 'tu',
         'hero_after' => 'FUTURO',
@@ -28,7 +29,7 @@ function agui_defaults(): array
         'stat2_value' => '+5.000', 'stat2_label' => 'Inversores',
         'stat3_value' => '+500', 'stat3_label' => 'Unidades entregadas',
         'copyright' => 'Copyright © 2026 Aguicons',
-        'powered' => 'Powered by BuenaIdea & PriZa',
+        'powered' => '',
         'ga_id' => '',
     ];
 }
@@ -54,6 +55,7 @@ function agui_option_fields(): array
         ],
         'Portada (Inicio)' => [
             'hero_image' => ['Imagen de portada', 'image', 'Foto grande de la cabecera del inicio.'],
+            'hero_baked' => ['La imagen ya incluye logo, título y botón', 'check', 'Tildar si la foto de portada ya trae el título y el botón dibujados (como un diseño terminado). El botón se vuelve clicable con el enlace de abajo.'],
             'hero_before' => ['Título: parte 1', 'text', ''],
             'hero_accent' => ['Título: palabra en cursiva', 'text', ''],
             'hero_after' => ['Título: parte 2', 'text', ''],
@@ -62,16 +64,19 @@ function agui_option_fields(): array
             'lines_title' => ['Título del carrusel de líneas', 'text', ''],
         ],
         'Estadísticas (Inicio)' => [
+            'stat1_icon' => ['Dato 1: ícono (opcional)', 'image', 'Si no se carga, se usa el ícono de la llave.'],
             'stat1_value' => ['Dato 1: valor', 'text', 'Ej: +5.000 (se anima al aparecer en pantalla)'],
             'stat1_label' => ['Dato 1: etiqueta', 'text', ''],
+            'stat2_icon' => ['Dato 2: ícono (opcional)', 'image', 'Si no se carga, se usa el ícono del inversor.'],
             'stat2_value' => ['Dato 2: valor', 'text', ''],
             'stat2_label' => ['Dato 2: etiqueta', 'text', ''],
+            'stat3_icon' => ['Dato 3: ícono (opcional)', 'image', 'Si no se carga, se usa el ícono del edificio.'],
             'stat3_value' => ['Dato 3: valor', 'text', ''],
             'stat3_label' => ['Dato 3: etiqueta', 'text', ''],
         ],
         'Pie de página' => [
             'copyright' => ['Copyright', 'text', ''],
-            'powered' => ['Crédito', 'text', ''],
+            'powered' => ['Crédito (opcional)', 'text', 'Texto extra junto al copyright. Vacío = no se muestra.'],
         ],
         'Analytics' => [
             'ga_id' => ['ID de Google Analytics 4', 'text', 'Ej: G-XXXXXXXXXX. Solo se carga si el visitante acepta las cookies. Vacío = sin analytics ni aviso de cookies.'],
@@ -87,14 +92,23 @@ add_action('admin_init', function () {
     register_setting('aguicons', 'aguicons_opts', [
         'type' => 'array',
         'sanitize_callback' => function ($in) {
-            $out = [];
+            // Se parte de lo ya guardado y solo se actualizan las claves recibidas: así guardar una pantalla
+            // (por ejemplo "Estructura del sitio") no borra los ajustes que esa pantalla no muestra.
+            $old = get_option('aguicons_opts', []);
+            $out = is_array($old) ? $old : [];
+            $in = is_array($in) ? $in : [];
             foreach (agui_option_fields() as $fields) {
                 foreach ($fields as $key => [$label, $type]) {
-                    $v = $in[$key] ?? '';
+                    if (!array_key_exists($key, $in)) {
+                        continue;
+                    }
+                    $v = $in[$key];
                     if ($key === 'whatsapp') {
                         $v = preg_replace('/\D+/', '', (string) $v);
                     } elseif ($type === 'image') {
                         $v = (int) $v;
+                    } elseif ($type === 'check') {
+                        $v = !empty($v) ? '1' : '';
                     } else {
                         $v = sanitize_text_field((string) $v);
                     }
@@ -130,6 +144,9 @@ function agui_render_options_page(): void
                                         <button type="button" class="button agui-media-pick">Elegir imagen</button>
                                         <button type="button" class="button-link agui-media-clear">Quitar</button>
                                     </div>
+                                <?php elseif ($type === 'check') : ?>
+                                    <input type="hidden" name="aguicons_opts[<?php echo esc_attr($key); ?>]" value="">
+                                    <label><input type="checkbox" id="agui_<?php echo esc_attr($key); ?>" name="aguicons_opts[<?php echo esc_attr($key); ?>]" value="1" <?php checked((string) $val, '1'); ?>> Sí</label>
                                 <?php else : ?>
                                     <input type="text" id="agui_<?php echo esc_attr($key); ?>" name="aguicons_opts[<?php echo esc_attr($key); ?>]" class="regular-text" value="<?php echo esc_attr((string) $val); ?>">
                                 <?php endif; ?>

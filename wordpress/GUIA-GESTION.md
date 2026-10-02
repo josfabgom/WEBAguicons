@@ -45,3 +45,26 @@ Cargar el ID `G-XXXX` en **Ajustes → Aguicons**. Solo se activa si el visitant
 
 ## Pendientes de contenido
 Textos de Velerian, Benrow, Tier y Alarif (hoy lorem ipsum), datos de la ficha técnica (hoy “A confirmar”), logos de cada línea, fotos del equipo, PDF de brochure y testimonios reales. La política de privacidad es un texto base: conviene revisión legal.
+
+## Funciones nuevas (cuadro “Unidades, avance de obra, video y ubicación” en cada línea)
+- **Unidades disponibles:** una por línea con el formato `Tipología | Superficie | Precio | Estado` (se puede pegar desde Excel). Se muestra una tabla con filtros por tipología y estado y orden por superficie. Sin datos, la sección no aparece.
+- **Avance de obra:** botón “Agregar entrada” (fecha, texto, fotos). Se ve como línea de tiempo con fotos ampliables.
+- **Video o recorrido 360°:** pegar el enlace de YouTube, Vimeo, Matterport o un `.mp4`.
+- **Mapa de proyectos:** cargar *Latitud, longitud* en cada línea (en Google Maps: clic derecho sobre el lugar y copiar los números). Cuando alguna línea tiene coordenadas, aparece el mapa con un pin por proyecto en el inicio. También se puede insertar con `[aguicons_mapa_proyectos]`.
+- **Preguntas frecuentes:** menú **Preguntas frecuentes → Agregar** (título = pregunta, texto = respuesta). Se muestran con el código `[aguicons_faq]` y generan datos estructurados para Google.
+- **Invertir:** se creó la página **Invertir** como *borrador*. Completarla (modalidad de compra, financiación) y publicarla; ya incluye las preguntas frecuentes y el formulario de consulta.
+- **Novedades (blog):** menú **Entradas → Añadir nueva**. Aparecen en la página Novedades (ya está en el menú).
+
+## Velocidad y seguridad (ya incluidas en el tema)
+Sin emojis ni enlaces innecesarios, precarga de fuentes, imágenes con carga diferida, XML-RPC desactivado, lista de usuarios oculta a visitantes y mensaje de acceso genérico.
+**Recomendado instalar en Ferozo (gratuitos):** un plugin de caché (LiteSpeed Cache, WP Super Cache o similar), uno de copias automáticas (UpdraftPlus) y uno de protección de acceso (Limit Login Attempts Reloaded o Wordfence). Activar HTTPS y mantener WordPress al día.
+
+## Panel de gestión “Aguicons” (menú propio, recomendado para el uso diario)
+En el menú lateral de WordPress aparece **Aguicons** con:
+- **Panel:** resumen (líneas, consultas nuevas) y una tabla con el **% completo de cada línea** y qué le falta, con el botón *Completar*.
+- **➕ Nueva línea (asistente):** 5 pasos (datos, textos, imágenes, ficha y extras, publicar). Guarda como borrador o publica; al final muestra lo que falta y el enlace para ver la página. También sirve para **completar o editar** una línea existente (*Completar* en el Panel o *Asistente* en la lista de líneas).
+- **Líneas edilicias:** la lista con acciones **Asistente, Duplicar y Pausar/Publicar** (pausar oculta la línea sin borrarla).
+- **Estructura del sitio:** portada, orden y visibilidad del carrusel de líneas, estadísticas, menú principal y datos del pie, en una sola pantalla.
+- **Consultas:** filtros por estado, proyecto y tipo; marcar **Atendida/Nueva**; **exportar a Excel (CSV)**.
+- **Contenido:** accesos a testimonios, preguntas frecuentes, novedades, páginas y medios.
+- **Ajustes** y **Ayuda** (con formatos y ejemplos de cada campo).

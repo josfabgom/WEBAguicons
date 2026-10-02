@@ -6,3 +6,7 @@
 .agui-gallery-remove { position: absolute; top: 2px; right: 2px; width: 20px; height: 20px; line-height: 16px; border: 0; border-radius: 50%; background: #b32d2e; color: #fff; cursor: pointer; padding: 0; }
 .agui-file-field { margin: 0.5rem 0 1rem; }
 #agui-import-progress { width: 100%; max-width: 480px; height: 18px; }
+
+.agui-av-row input.av-date { width: 180px; margin: 0 8px 8px 0; }
+.agui-av-row input.av-text { width: calc(100% - 200px); margin-bottom: 8px; }
+#agui-avance .agui-gallery-list { margin: 4px 0 8px; }

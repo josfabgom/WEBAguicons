@@ -55,6 +55,20 @@ function agui_banner(): string
     if (!$img) {
         return '';
     }
+    if (agui_opt('hero_baked') === '1') {
+        // La imagen ya trae logo, título y botón: se muestra completa y el botón queda clicable.
+        ob_start();
+        ?>
+        <section class="agui-banner is-baked">
+            <h1 class="screen-reader-text"><?php echo esc_html(trim(agui_opt('hero_before') . ' ' . agui_opt('hero_accent') . ' ' . agui_opt('hero_after'))); ?></h1>
+            <?php echo wp_get_attachment_image($img, 'full', false, ['class' => 'agui-banner-img', 'fetchpriority' => 'high', 'alt' => 'Aguicons - Construimos tu futuro']); ?>
+            <?php if (agui_opt('hero_url')) : ?>
+                <a class="agui-banner-hit" href="<?php echo esc_url(agui_href(agui_opt('hero_url'))); ?>"><span class="screen-reader-text"><?php echo esc_html(agui_opt('hero_button') ?: 'Conocé a la empresa'); ?></span></a>
+            <?php endif; ?>
+        </section>
+        <?php
+        return ob_get_clean();
+    }
     ob_start();
     ?>
     <section class="agui-banner">
@@ -93,7 +107,10 @@ function agui_lines_carousel(string $title = ''): string
                             <?php if (has_post_thumbnail($p)) {
                                 echo get_the_post_thumbnail($p, 'agui-card', ['loading' => 'lazy', 'decoding' => 'async', 'alt' => $p->post_title, 'draggable' => 'false']);
                             } ?>
-                            <span class="agui-line-name"><?php echo esc_html($p->post_title); ?></span>
+                            <span class="agui-line-name"><?php
+                                $lg = (int) get_post_meta($p->ID, '_agui_logo_id', true);
+                                echo $lg ? agui_img($lg, 'medium', ['alt' => $p->post_title, 'draggable' => 'false']) : esc_html($p->post_title);
+                            ?></span>
                         </a>
                     <?php endforeach; ?>
                 </div>
@@ -108,12 +125,13 @@ function agui_lines_carousel(string $title = ''): string
 
 function agui_stats(): string
 {
+    $defaults = ['stat-llave', 'stat-inversor', 'stat-edificio'];
     $rows = [];
     for ($i = 1; $i <= 3; $i++) {
         $v = agui_opt("stat{$i}_value");
         $l = agui_opt("stat{$i}_label");
         if ($v !== '') {
-            $rows[] = [$v, $l];
+            $rows[] = [$v, $l, (int) agui_opt("stat{$i}_icon"), $defaults[$i - 1]];
         }
     }
     if (!$rows) {
@@ -125,8 +143,15 @@ function agui_stats(): string
         <div class="agui-container">
             <h2 class="agui-h2">Estadísticas</h2>
             <div class="agui-stats">
-                <?php foreach ($rows as [$v, $l]) : ?>
-                    <div class="agui-stat"><strong data-count="<?php echo esc_attr($v); ?>"><?php echo esc_html($v); ?></strong><span><?php echo esc_html($l); ?></span></div>
+                <?php foreach ($rows as [$v, $l, $icon, $default]) : ?>
+                    <div class="agui-stat">
+                        <?php if ($icon) : ?>
+                            <?php echo agui_img($icon, 'thumbnail', ['class' => 'agui-stat-icon', 'alt' => '', 'loading' => 'lazy']); ?>
+                        <?php else : ?>
+                            <img class="agui-stat-icon" src="<?php echo esc_url(get_theme_file_uri('assets/img/' . $default . '.png')); ?>" alt="" width="60" height="60" loading="lazy">
+                        <?php endif; ?>
+                        <div class="agui-stat-text"><strong data-count="<?php echo esc_attr($v); ?>"><?php echo esc_html($v); ?></strong><span><?php echo esc_html($l); ?></span></div>
+                    </div>
                 <?php endforeach; ?>
             </div>
         </div>
@@ -222,6 +247,9 @@ function agui_carousel(string $title, array $ids): string
     <section class="agui-section agui-reveal">
         <div class="agui-container">
             <?php if ($title) : ?><h2 class="agui-h2"><?php echo esc_html($title); ?></h2><?php endif; ?>
+            <div class="agui-carousel-wrap">
+                <button type="button" class="agui-arrow agui-arrow-prev" aria-label="Anterior">‹</button>
+                <button type="button" class="agui-arrow agui-arrow-next" aria-label="Siguiente">›</button>
             <div class="agui-carousel agui-gallery-track" data-speed="120">
                 <?php foreach ($ids as $i => $id) :
                     $full = wp_get_attachment_image_url($id, 'full');
@@ -230,6 +258,7 @@ function agui_carousel(string $title, array $ids): string
                         <?php echo agui_img($id, 'agui-slide', ['draggable' => 'false', 'loading' => $i < 2 ? 'eager' : 'lazy']); ?>
                     </button>
                 <?php endforeach; ?>
+            </div>
             </div>
         </div>
     </section>
@@ -403,3 +432,41 @@ add_shortcode('aguicons_alquiler', fn() => agui_rentals());
 add_shortcode('aguicons_contacto', fn($a) => agui_contact_bar(($a['volver'] ?? '1') !== '0'));
 add_shortcode('aguicons_lineas', fn() => agui_lines_carousel());
 add_shortcode('aguicons_estadisticas', fn() => agui_stats());
+
+/* --- Pestañas de una línea: vistas, video, ficha, unidades y avance en un solo bloque -------- */
+
+function agui_line_tabs(WP_Post $post): string
+{
+    $m = fn($k) => (string) get_post_meta($post->ID, '_agui_' . $k, true);
+    $gallery = array_filter(array_map('intval', explode(',', $m('gallery'))));
+    $panels = array_filter([
+        'Vistas' => agui_carousel('', $gallery),
+        'Video / 360°' => agui_video($m('video'), ''),
+        'Ficha técnica y mapa' => agui_facts('', $m('status'), $m('facts'), $m('address')),
+        'Unidades' => agui_units($post),
+        'Avance de obra' => agui_progress($post),
+    ]);
+    if (!$panels) {
+        return '';
+    }
+    if (count($panels) === 1) {
+        return reset($panels);
+    }
+    $uid = 'agui-tabs-' . $post->ID;
+    ob_start();
+    ?>
+    <section class="agui-section agui-tabs agui-reveal" data-tabs>
+        <div class="agui-container">
+            <div class="agui-tablist" role="tablist" aria-label="Información del proyecto">
+                <?php $i = 0; foreach ($panels as $label => $html) : ?>
+                    <button type="button" role="tab" id="<?php echo esc_attr($uid . '-t' . $i); ?>" aria-controls="<?php echo esc_attr($uid . '-p' . $i); ?>" aria-selected="<?php echo $i === 0 ? 'true' : 'false'; ?>" tabindex="<?php echo $i === 0 ? '0' : '-1'; ?>"><?php echo esc_html($label); ?></button>
+                <?php $i++; endforeach; ?>
+            </div>
+            <?php $i = 0; foreach ($panels as $label => $html) : ?>
+                <div class="agui-tabpanel" role="tabpanel" id="<?php echo esc_attr($uid . '-p' . $i); ?>" aria-labelledby="<?php echo esc_attr($uid . '-t' . $i); ?>" <?php echo $i === 0 ? '' : 'hidden'; ?>><?php echo $html; // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+            <?php $i++; endforeach; ?>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
+}

@@ -4,6 +4,7 @@ get_header();
 
 echo agui_banner();
 echo agui_lines_carousel();
+echo agui_projects_map();
 echo agui_stats();
 
 while (have_posts()) {

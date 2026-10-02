@@ -66,6 +66,48 @@ jQuery(function ($) {
     $f.find('.agui-file-name').text('Ningún archivo');
   });
 
+
+  /* Avance de obra: filas con fecha, texto y fotos (se guardan como JSON) */
+  var $av = $('#agui-avance');
+  if ($av.length) {
+    var rowsData = [];
+    try { rowsData = JSON.parse($av.attr('data-rows') || '[]'); } catch (e) { rowsData = []; }
+    function thumbUrl(id, cb) {
+      var att = wp.media.attachment(id);
+      att.fetch().then(function () { var sz = att.get('sizes'); cb(sz && sz.thumbnail ? sz.thumbnail.url : att.get('url')); });
+    }
+    function addRow(r) {
+      r = r || { date: '', text: '', ids: [] };
+      var $row = $('<div class="agui-av-row"><input type="text" class="av-date" placeholder="Fecha (ej: Marzo 2026)"><input type="text" class="av-text large-text" placeholder="Qué se hizo"><ul class="agui-gallery-list av-imgs"></ul><button type="button" class="button av-pick">Agregar fotos</button> <button type="button" class="button-link av-del">Quitar entrada</button><hr></div>');
+      $row.find('.av-date').val(r.date); $row.find('.av-text').val(r.text);
+      (r.ids || []).forEach(function (id) { addImg($row, id); });
+      $av.append($row);
+      $row.find('.av-imgs').sortable({ update: save });
+    }
+    function addImg($row, id) {
+      var $li = $('<li data-id="' + id + '"><img alt=""><button type="button" class="agui-gallery-remove" aria-label="Quitar">×</button></li>');
+      $row.find('.av-imgs').append($li);
+      thumbUrl(id, function (u) { $li.find('img').attr('src', u); });
+    }
+    function save() {
+      var out = $av.find('.agui-av-row').map(function () {
+        var $r = $(this);
+        return { date: $r.find('.av-date').val(), text: $r.find('.av-text').val(), ids: $r.find('.av-imgs li').map(function () { return $(this).data('id'); }).get() };
+      }).get();
+      $('#agui-avance-json').val(JSON.stringify(out));
+    }
+    rowsData.forEach(addRow);
+    $('#agui-avance-add').on('click', function () { addRow(); });
+    $av.on('input change', 'input', save);
+    $av.on('click', '.av-del', function () { $(this).closest('.agui-av-row').remove(); save(); });
+    $av.on('click', '.agui-gallery-remove', function () { $(this).closest('li').remove(); save(); });
+    $av.on('click', '.av-pick', function () {
+      var $row = $(this).closest('.agui-av-row');
+      frame({ multiple: true }, function (sel) { sel.each(function (a) { addImg($row, a.get('id')); }); save(); });
+    });
+    $('#post').on('submit', save);
+  }
+
   /* Importador de contenido inicial */
   $('#agui-import-start').on('click', function () {
     var $btn = $(this).prop('disabled', true);

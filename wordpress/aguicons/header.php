@@ -4,6 +4,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 $is_home = is_front_page();
+$is_gold = is_page() && get_post_meta(get_queried_object_id(), '_agui_bg', true) === 'gold';
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -15,12 +16,12 @@ $is_home = is_front_page();
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <a class="agui-skip" href="#contenido">Saltar al contenido</a>
-<header class="agui-header<?php echo $is_home ? ' is-home' : ''; ?>">
+<header class="agui-header<?php echo $is_home ? ' is-home' : ''; ?><?php echo $is_gold ? ' is-gold' : ''; ?>">
     <div class="agui-header-inner">
         <?php if ($is_home) : ?>
             <span></span>
         <?php else : ?>
-            <a class="agui-header-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="Aguicons - Inicio"><?php echo agui_logo('iso', 'oro'); ?></a>
+            <a class="agui-header-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="Aguicons - Inicio"><?php echo $is_gold ? agui_logo('full', 'blanco') : agui_logo('iso', 'oro'); ?></a>
         <?php endif; ?>
 
         <nav class="agui-nav" aria-label="Principal">

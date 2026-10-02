@@ -43,7 +43,7 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 /* ---------- Contenedores y títulos ---------- */
 .agui-container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
 .agui-narrow { max-width: 1000px; }
-.agui-section { padding: 2.5rem 0; }
+.agui-section { padding-block: 2.5rem; }
 .agui-h1 { text-align: center; text-transform: uppercase; letter-spacing: 0.08em; font-size: 1.8rem; }
 .agui-h2 { text-align: center; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1.5rem; margin: 0 0 2rem; }
 .agui-h3 { text-align: center; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1.1rem; margin: 0 0 1rem; }
@@ -95,8 +95,8 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 
 /* ---------- Portada ---------- */
 .agui-banner { position: relative; overflow: hidden; background: #fff; }
-.agui-banner-img { width: 100%; height: 75vh; min-height: 460px; object-fit: cover; object-position: bottom; }
-.agui-banner-fade { position: absolute; inset: 0 0 auto 0; height: 10rem; background: linear-gradient(to bottom, #fff 0%, rgba(255, 255, 255, 0.8) 40%, transparent); }
+.agui-banner-img { width: 100%; height: min(62vw, 84vh); min-height: 460px; max-height: 820px; object-fit: cover; object-position: 50% 72%; }
+.agui-banner-fade { position: absolute; inset: 0 0 auto 0; height: 15rem; background: linear-gradient(to bottom, #fff 0%, #fff 42%, rgba(255, 255, 255, 0.78) 58%, rgba(255, 255, 255, 0.4) 78%, rgba(255, 255, 255, 0) 100%); }
 .agui-banner-logo { position: absolute; top: 1rem; left: 0; right: 0; display: flex; justify-content: center; }
 .agui-banner-logo img { width: 96px; height: auto; }
 .agui-banner-title { position: absolute; left: 0; right: 0; top: 28%; margin: 0; padding: 0 0.5rem; text-align: center; color: #fff; text-transform: uppercase; font-size: clamp(1.5rem, 5.6vw, 3.75rem); letter-spacing: 0.02em; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35); }
@@ -115,17 +115,17 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 .agui-arrow-next { right: 0.5rem; }
 
 .agui-line-card { position: relative; flex: 0 0 75%; scroll-snap-align: start; aspect-ratio: 1 / 2; background: #000; overflow: hidden; display: block; }
-.agui-line-card img { width: 100%; height: 100%; object-fit: cover; }
+.agui-line-card > img { width: 100%; height: 100%; object-fit: cover; }
 .agui-line-name { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.55); color: #fff; font-weight: 700; font-size: 1.25rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0; transition: opacity 0.3s; }
+.agui-line-name img { width: auto !important; height: auto !important; max-width: 70%; max-height: 3.5rem; object-fit: contain; position: static; }
 .agui-line-card:hover .agui-line-name, .agui-line-card:focus-visible .agui-line-name { opacity: 1; }
 @media (min-width: 640px) { .agui-line-card { flex-basis: 45%; } }
 @media (min-width: 900px) { .agui-line-card { flex-basis: 30%; } }
 @media (min-width: 1100px) { .agui-line-card { flex-basis: 23%; } }
 
-.agui-slide { flex: 0 0 100%; scroll-snap-align: center; border: 0; padding: 0; background: none; cursor: zoom-in; }
-.agui-slide img { width: 100%; height: auto; border-radius: 6px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25); }
-@media (min-width: 640px) { .agui-slide { flex-basis: 80%; } }
-@media (min-width: 900px) { .agui-slide { flex-basis: 60%; } }
+/* Carrusel de vistas compacto: tira de fotos de altura fija, varias a la vez */
+.agui-slide { flex: 0 0 auto; height: clamp(200px, 28vw, 320px); scroll-snap-align: start; border: 0; padding: 0; background: none; cursor: zoom-in; }
+.agui-slide img { height: 100%; width: auto; max-width: none; border-radius: 6px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
 
 /* ---------- Lightbox ---------- */
 .agui-lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(0, 0, 0, 0.9); display: flex; align-items: center; justify-content: center; padding: 1rem; }
@@ -137,11 +137,13 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 .agui-lb-count { position: absolute; bottom: 1rem; color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; }
 
 /* ---------- Estadísticas ---------- */
-.agui-stats { display: flex; flex-direction: column; align-items: center; gap: 2rem; }
-.agui-stat { text-align: center; }
-.agui-stat strong { display: block; font-size: 2rem; }
-.agui-stat span { display: block; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #555; }
-@media (min-width: 782px) { .agui-stats { flex-direction: row; justify-content: center; gap: 4rem; } }
+.agui-stats { display: flex; flex-direction: column; align-items: center; gap: 1.75rem; }
+.agui-stat { display: flex; align-items: center; gap: 0.9rem; }
+.agui-stat-icon { width: 56px; height: 56px; object-fit: contain; flex: none; }
+.agui-stat-text { text-align: left; line-height: 1.15; color: #2b2b2b; }
+.agui-stat-text strong { display: block; font-size: 1.6rem; font-weight: 700; }
+.agui-stat-text span { display: block; font-size: 1.15rem; font-weight: 700; }
+@media (min-width: 782px) { .agui-stats { flex-direction: row; justify-content: center; gap: 4.5rem; } .agui-stat-icon { width: 64px; height: 64px; } }
 
 /* ---------- Barra de contacto ---------- */
 .agui-contactbar { display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; padding: 2.5rem 1rem; }
@@ -152,7 +154,7 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 .agui-intro { background: #000; color: #fff; padding: 2.5rem 1rem 3rem; }
 .agui-intro-inner { max-width: 860px; margin: 0 auto; text-align: center; }
 .agui-intro-logo { width: 100px; margin: 0 auto 2.5rem; }
-.agui-intro-wordmark { height: 64px; width: auto; margin: 0 auto 2.5rem; }
+.agui-intro-wordmark { width: auto; height: auto; max-width: min(340px, 80%); max-height: 72px; margin: 0 auto 2.5rem; }
 .agui-intro-title { font-size: 2.4rem; letter-spacing: 0.35em; text-transform: uppercase; font-weight: 400; margin: 0 0 2.5rem; }
 .agui-intro-title.is-script { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 500; letter-spacing: 0; text-transform: none; font-size: 4.2rem; line-height: 1; }
 .agui-intro-text { max-width: 760px; margin: 0 auto; text-align: left; font-size: 0.95rem; }
@@ -246,3 +248,93 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
   .js .agui-reveal { opacity: 1; transform: none; transition: none; }
   html { scroll-behavior: auto; }
 }
+
+/* ---------- Unidades disponibles ---------- */
+.agui-units-filters { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+.agui-units-filters label { font-size: 0.85rem; font-weight: 700; }
+.agui-units-filters select { display: block; margin-top: 0.25rem; padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; font: 400 1rem var(--font); background: #fff; }
+.agui-units-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+.agui-units table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.agui-units th, .agui-units td { padding: 0.7rem 1rem; text-align: left; white-space: nowrap; }
+.agui-units thead { background: #faf7ef; }
+.agui-units tbody tr + tr td { border-top: 1px solid var(--border); }
+.agui-units th button { all: unset; cursor: pointer; font-weight: 700; }
+.agui-units tr[hidden] { display: none; }
+
+/* ---------- Avance de obra ---------- */
+.agui-timeline { list-style: none; margin: 0; padding: 0 0 0 1.5rem; border-left: 2px solid var(--gold); }
+.agui-timeline li { position: relative; padding: 0 0 2rem 1rem; }
+.agui-timeline li::before { content: ''; position: absolute; left: -2.1rem; top: 0.4rem; width: 14px; height: 14px; border-radius: 50%; background: var(--gold); }
+.agui-timeline p { margin: 0.25rem 0 0.75rem; }
+.agui-thumbs { display: flex; flex-wrap: wrap; gap: 0.5rem; overflow: visible; }
+.agui-thumbs .agui-slide { flex: none; width: 96px; height: 72px; }
+.agui-thumbs .agui-slide img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; box-shadow: none; }
+
+/* ---------- Video y mapa de proyectos ---------- */
+.agui-video { position: relative; aspect-ratio: 16 / 9; background: #000; border-radius: 12px; overflow: hidden; }
+.agui-video iframe, .agui-video video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.agui-map { height: 26rem; border: 1px solid var(--border); border-radius: 12px; z-index: 1; }
+
+/* ---------- Preguntas frecuentes ---------- */
+.agui-faq details { border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1.1rem; margin-bottom: 0.75rem; }
+.agui-faq summary { cursor: pointer; font-weight: 700; }
+.agui-faq details[open] { border-color: var(--gold); }
+.agui-faq details div { margin-top: 0.6rem; font-size: 0.95rem; }
+
+/* ---------- Novedades (blog) ---------- */
+.agui-posts { display: grid; gap: 1.5rem; }
+@media (min-width: 782px) { .agui-posts { grid-template-columns: repeat(3, 1fr); } }
+.agui-post { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+.agui-post img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+.agui-post-body { padding: 1rem 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.agui-post time { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.agui-post h2 { font-size: 1.1rem; margin: 0; }
+.agui-post h2 a { text-decoration: none; }
+.agui-post p { margin: 0; font-size: 0.9rem; color: #444; }
+.agui-pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: 2rem; }
+.agui-pagination .page-numbers { border: 1px solid var(--border); border-radius: 8px; padding: 0.35rem 0.8rem; text-decoration: none; }
+.agui-pagination .current { background: var(--gold); border-color: var(--gold); color: #fff; }
+.agui-article { max-width: 760px; }
+.agui-article .agui-meta { text-align: center; color: var(--muted); font-size: 0.85rem; }
+.agui-article > img { width: 100%; border-radius: 12px; margin: 1.5rem 0; }
+
+/* ---------- Páginas de línea más compactas ---------- */
+.single-linea .agui-section { padding-block: 1.5rem; }
+.single-linea .agui-h2 { margin-bottom: 1.25rem; font-size: 1.25rem; }
+.single-linea .agui-intro { padding-bottom: 2rem; }
+.single-linea .agui-contactbar { padding: 1.5rem 1rem; }
+.agui-leads { max-width: 1100px; margin: 0 auto; display: grid; gap: 0; padding: 0 1rem; }
+.agui-leads .agui-section { padding-block: 1.5rem; }
+.agui-leads .agui-container { padding: 0; }
+.agui-leads .agui-form-wrap { max-width: none; }
+.agui-leads .agui-form textarea { rows: 3; }
+@media (min-width: 900px) { .agui-leads { grid-template-columns: 1fr 1fr; gap: 2rem; } }
+
+/* ---------- Pestañas de la línea ---------- */
+.agui-tablist { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-bottom: 1.25rem; }
+.agui-tablist button { font: 700 0.8rem var(--font); letter-spacing: 0.08em; text-transform: uppercase; background: #fff; color: #111; border: 2px solid var(--gold); border-radius: 999px; padding: 0.45rem 1.1rem; cursor: pointer; }
+.agui-tablist button[aria-selected='true'] { background: var(--gold); color: #fff; }
+.agui-tabpanel[hidden] { display: none; }
+.agui-tabs .agui-section { padding-block: 0; }
+.agui-tabs .agui-reveal { opacity: 1 !important; transform: none !important; }
+.agui-tabs .agui-container { padding: 0; }
+.agui-tabs .agui-h2 { display: none; }
+.agui-video { max-width: 760px; margin: 0 auto; }
+
+/* ---------- Portada con la imagen completa (ya incluye logo, título y botón) ---------- */
+.agui-banner.is-baked { max-width: 1100px; margin: 0 auto; background: #fff; }
+.agui-banner.is-baked .agui-banner-img { height: auto; min-height: 0; object-fit: contain; object-position: center; display: block; width: 100%; }
+.agui-banner-hit { position: absolute; left: 79.5%; top: 83%; width: 20%; height: 9.5%; display: block; }
+.agui-banner-hit:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.screen-reader-text { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Páginas con fondo dorado (Nosotros): logo blanco centrado ---------- */
+.agui-header.is-gold { background: var(--gold); border: 0; }
+.agui-header.is-gold .agui-header-inner { flex-direction: column; gap: 0.5rem; padding-top: 1.75rem; padding-bottom: 0.5rem; }
+.agui-header.is-gold .agui-header-logo img { width: 104px; }
+.agui-header.is-gold .agui-menu a { color: #fff; }
+.agui-header.is-gold .agui-menu a:hover, .agui-header.is-gold .agui-menu .current-menu-item > a { color: #fff; text-decoration: underline; }
+.agui-header.is-gold .agui-burger { position: absolute; right: 0.75rem; top: 0.75rem; }
+.agui-header.is-gold .agui-burger span { background: #fff; }
+.agui-page.is-gold .agui-prose > h1:first-child, .agui-page.is-gold .agui-prose > h2:first-child { text-align: center; font-size: 1.75rem; margin-top: 0; }
+.agui-page.is-gold .agui-section:first-child { padding-top: 1rem; }
