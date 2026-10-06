@@ -269,7 +269,7 @@ function agui_import_content(): void
 
     $home = agui_upsert_page('inicio', 'Inicio', '', [], 'Aguicons, desarrolladora de Posadas, Misiones. Líneas edilicias de inversión y para vivir.');
 
-    $c = agui_b_heading('NOSOTROS') . agui_b_para($nosotros) . '<!-- wp:paragraph --><p><strong>AGUICONS®</strong> <em>construimos tu futuro.</em></p><!-- /wp:paragraph -->' . "\n\n"
+    $c = agui_b_para($nosotros) . '<!-- wp:paragraph --><p><strong>AGUICONS®</strong> <em>construimos tu futuro.</em></p><!-- /wp:paragraph -->' . "\n\n"
         . agui_b_team([
             ['ÁREA COMERCIAL', 'Equipo que conecta nuestra oferta con las personas, construyendo una experiencia de venta exclusiva con nuestros clientes.'],
             ['ÁREA TÉCNICA', 'Profesionales que aportan su conocimiento y experiencia para planificar, coordinar y hacer realidad cada proyecto.'],
@@ -301,11 +301,11 @@ function agui_import_content(): void
     }
     $p_otros = agui_upsert_page('otros-servicios', 'Otros servicios', $c, [], 'Construcción y movimiento de suelo: soluciones integrales para el sector público y privado.');
 
-    $c = agui_b_heading('ALQUILER · Unidades y Oficinas') . agui_b_para(AGUI_LOREM)
+    $c = agui_b_heading('UNIDADES Y OFICINAS') . agui_b_para(AGUI_LOREM)
         . agui_b_shortcode('[aguicons_alquiler]');
     $p_alq = agui_upsert_page('alquiler', 'Alquiler', $c, [], 'Unidades, oficinas y locales comerciales en alquiler en las líneas de Aguicons.');
 
-    $c = agui_b_heading('CONTACTO', 2, true) . agui_b_para('Dejanos tu consulta y te responderemos a la brevedad.', true)
+    $c = agui_b_para('Dejanos tu consulta y te responderemos a la brevedad.', true)
         . agui_b_shortcode('[aguicons_contacto_form]') . agui_b_shortcode('[aguicons_mapa]');
     $p_cont = agui_upsert_page('contacto', 'Contacto', $c, [], 'Contactá a Aguicons: info@aguicons.com, Av. Antártida Argentina 876, Posadas.');
 

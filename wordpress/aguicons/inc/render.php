@@ -9,9 +9,10 @@ if (!defined('ABSPATH')) {
 
 function agui_logo(string $variant = 'full', string $tone = 'oro', string $class = ''): string
 {
-    $file = 'aguicons' . ($variant === 'iso' ? '-isotipo' : '') . '-' . $tone . '.png';
-    $h = $variant === 'iso' ? 606 : 644;
-    return sprintf('<img src="%s" alt="Aguicons" width="700" height="%d" class="%s">', esc_url(get_theme_file_uri('assets/img/' . $file)), $h, esc_attr($class));
+    // 'full' = isotipo + nombre, 'iso' = solo el triángulo, 'name' = solo el nombre AGUICONS
+    $file = $variant === 'name' ? "aguicons-nombre-{$tone}.png" : 'aguicons' . ($variant === 'iso' ? '-isotipo' : '') . '-' . $tone . '.png';
+    [$w, $h] = $variant === 'name' ? [712, 104] : [700, $variant === 'iso' ? 606 : 644];
+    return sprintf('<img src="%s" alt="Aguicons" width="%d" height="%d" class="%s">', esc_url(get_theme_file_uri('assets/img/' . $file)), $w, $h, esc_attr($class));
 }
 
 function agui_img(int $id, string $size = 'large', array $attr = []): string
@@ -63,7 +64,7 @@ function agui_banner(): string
     <section class="agui-banner<?php echo $has_title ? ' has-title' : ''; ?>">
         <?php echo wp_get_attachment_image($img, 'full', false, ['class' => 'agui-banner-img', 'fetchpriority' => 'high', 'alt' => $has_title ? 'Aguicons - ' . $title : 'Aguicons']); ?>
         <div class="agui-banner-fade"></div>
-        <div class="agui-banner-logo"><?php echo agui_logo('full', 'oro'); ?></div>
+        <div class="agui-banner-logo"><?php echo agui_logo('name', 'oro'); ?></div>
         <?php if ($has_title) : ?>
             <h1 class="screen-reader-text"><?php echo esc_html($title); ?></h1>
         <?php else : ?>
@@ -162,7 +163,7 @@ function agui_contact_bar(bool $back = true, bool $dark = false): string
     <section class="agui-contactbar agui-reveal<?php echo $dark ? ' is-dark' : ''; ?>">
         <?php if (agui_opt('address')) : ?><p class="agui-address">📍 <?php echo esc_html(agui_opt('address')); ?></p><?php endif; ?>
         <a class="agui-btn" href="<?php echo esc_url(home_url('/contacto/')); ?>">CONVERSÁ CON NOSOTROS</a>
-        <p class="agui-small"><a href="mailto:<?php echo esc_attr(agui_opt('email_contact')); ?>"><?php echo esc_html(agui_opt('email_contact')); ?></a> - <?php echo esc_html(agui_opt('phone')); ?></p>
+        <p class="agui-small"><a href="mailto:<?php echo esc_attr(agui_opt('email_contact')); ?>"><?php echo esc_html(agui_opt('email_contact')); ?></a> - <a href="tel:+<?php echo esc_attr(preg_replace('/\D+/', '', (string) agui_opt('phone'))); ?>"><?php echo esc_html(agui_opt('phone')); ?></a></p>
         <?php if ($back) : ?><a class="agui-btn agui-btn-outline" href="<?php echo esc_url(home_url('/')); ?>">VOLVER</a><?php endif; ?>
     </section>
     <?php

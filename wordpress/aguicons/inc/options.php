@@ -11,10 +11,10 @@ if (!defined('ABSPATH')) {
 function agui_defaults(): array
 {
     return [
-        'whatsapp' => '5493764630673',
+        'whatsapp' => '5493765009075',
         'email_notify' => 'info@aguicons.com',
         'email_contact' => 'info@aguicons.com',
-        'phone' => '+54 9 3764 630673',
+        'phone' => '+54 9 3765 009075',
         'address' => 'Av. Antartida Argentina 876',
         'map_query' => 'Av. Antártida Argentina 876, Posadas, Misiones, Argentina',
         'hero_image' => 0,
@@ -24,7 +24,7 @@ function agui_defaults(): array
         'hero_after' => 'FUTURO',
         'hero_button' => '',
         'hero_url' => '/nosotros/',
-        'lines_title' => 'NUESTRAS LINEAS EDILICIAS',
+        'lines_title' => 'NUESTRAS LÍNEAS EDILICIAS',
         'stat1_value' => '+5.000', 'stat1_label' => 'Propietarios',
         'stat2_value' => '+5.000', 'stat2_label' => 'Inversores',
         'stat3_value' => '+500', 'stat3_label' => 'Unidades entregadas',
@@ -46,7 +46,7 @@ function agui_option_fields(): array
 {
     return [
         'Contacto' => [
-            'whatsapp' => ['Número de WhatsApp', 'text', 'Solo números con código de país. Ej: 5493764630673. Vacío = se oculta el botón flotante.'],
+            'whatsapp' => ['Número de WhatsApp', 'text', 'Solo números con código de país. Ej: 5493765009075. Vacío = se oculta el botón flotante.'],
             'email_notify' => ['Email que recibe las consultas', 'text', 'A esta dirección llegan los avisos de formularios y descargas de brochure.'],
             'email_contact' => ['Email público', 'text', 'Se muestra en la barra de contacto.'],
             'phone' => ['Teléfono público', 'text', ''],

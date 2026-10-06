@@ -398,3 +398,58 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 .agui-menu .sub-menu a:hover { color: var(--gold) !important; }
 .agui-mobile-menu .sub-menu { list-style: none; margin: 0.25rem 0 0.25rem 1rem; padding: 0; }
 .agui-mobile-menu .sub-menu a { font-size: 0.9rem; }
+
+/* ---------- Portada: solo el nombre AGUICONS (sin el triángulo), más grande ---------- */
+.agui-banner-logo img { width: 230px; height: auto; }
+.agui-banner-logo { top: 3.9rem; }
+.agui-banner-fade { height: 13rem; }
+.agui-banner.has-title .agui-banner-fade { height: 9.5rem; }
+@media (max-width: 781px) {
+  .agui-banner-logo img { width: 170px; }
+  .agui-banner-logo { top: 1rem; }
+  .agui-banner.has-title { padding-top: 3.6rem; }
+  .agui-banner.has-title .agui-banner-logo { top: 0.9rem; }
+  .agui-banner.has-title .agui-banner-logo img { width: 170px; }
+}
+
+/* Portada (escritorio): el nombre queda centrado entre el menú y el título dibujado en la foto.
+   El título está a ~33% del alto de la imagen 16:9; se descuenta el recorte vertical cuando la portada se limita al 86% del alto de pantalla. */
+@media (min-width: 782px) {
+  .agui-banner.has-title {
+    --agui-title-top: calc(18.55vw - max(0px, 56.25vw - 86vh) * 0.42);
+  }
+  .agui-banner.has-title .agui-banner-logo {
+    top: calc((2.6rem + var(--agui-title-top)) / 2 - 17px);
+  }
+}
+@media (min-width: 782px) {
+  /* El degradé blanco llega hasta el título: el nombre queda sobre blanco y la foto aparece de a poco */
+  .agui-banner.has-title .agui-banner-fade {
+    height: calc(var(--agui-title-top) + 0.5rem);
+    background: linear-gradient(to bottom, #fff 0%, #fff 66%, rgba(255, 255, 255, 0.62) 82%, rgba(255, 255, 255, 0.2) 94%, rgba(255, 255, 255, 0) 100%);
+  }
+}
+
+/* ---------- Menú: página seleccionada bien marcada ---------- */
+.agui-menu > li > a { padding: 0.3rem 0.1rem; }
+.agui-menu .current-menu-item > a,
+.agui-menu .current-menu-ancestor > a,
+.agui-menu .current-menu-parent > a,
+.agui-menu .current_page_item > a {
+  color: var(--gold);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.45rem;
+}
+.agui-header.is-gold .agui-menu .current-menu-item > a,
+.agui-header.is-gold .agui-menu .current-menu-ancestor > a,
+.agui-header.is-gold .agui-menu .current-menu-parent > a {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  text-decoration: none;
+}
+.agui-menu .sub-menu .current-menu-item > a { text-decoration: none; background: #faf7ef; }
+.agui-mobile-menu .current-menu-item > a { color: var(--gold); font-weight: 700; }
