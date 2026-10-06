@@ -330,6 +330,7 @@ function agui_content_page(): void
         ['Preguntas frecuentes', 'Preguntas y respuestas para inversores y compradores.', admin_url('edit.php?post_type=faq'), admin_url('post-new.php?post_type=faq')],
         ['Novedades (blog)', 'Lanzamientos, avances de obra y noticias.', admin_url('edit.php'), admin_url('post-new.php')],
         ['Páginas', 'Nosotros, Servicios, Movimiento de suelo, Alquiler, Contacto, Privacidad.', admin_url('edit.php?post_type=page'), admin_url('post-new.php?post_type=page')],
+        ['Carruseles de servicios', 'Fotos de Construcción y Movimiento de suelo.', admin_url('admin.php?page=aguicons-structure#carruseles-servicios'), admin_url('admin.php?page=aguicons-structure#carruseles-servicios')],
         ['Biblioteca de medios', 'Todas las fotos, logos y PDF.', admin_url('upload.php'), admin_url('media-new.php')],
     ];
     echo '<div class="wrap agui-panel"><h1>Contenido</h1><div class="agui-cards agui-cards-wide">';

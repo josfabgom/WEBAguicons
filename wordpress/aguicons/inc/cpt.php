@@ -74,6 +74,7 @@ add_action('add_meta_boxes', function () {
     add_meta_box('agui_linea_side', 'Carrusel de inicio y cartel', 'agui_box_linea_side', 'linea', 'side', 'default');
     add_meta_box('agui_testimonio', 'Datos del testimonio', 'agui_box_testimonio', 'testimonio', 'side', 'default');
     add_meta_box('agui_page_bg', 'Fondo de la página', 'agui_box_page_bg', 'page', 'side', 'default');
+    add_meta_box('agui_page_gallery', 'Carrusel de imágenes de la página (opcional)', 'agui_box_linea_gallery', 'page', 'normal', 'default');
     add_meta_box('agui_consulta', 'Datos de la consulta', 'agui_box_consulta', 'consulta', 'normal', 'high');
 });
 

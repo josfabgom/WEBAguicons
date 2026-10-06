@@ -453,3 +453,10 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 }
 .agui-menu .sub-menu .current-menu-item > a { text-decoration: none; background: #faf7ef; }
 .agui-mobile-menu .current-menu-item > a { color: var(--gold); font-weight: 700; }
+
+/* ---------- Carrusel dentro de páginas de texto: mismo ancho que el texto, fotos grandes (el carrusel se mueve) ---------- */
+.agui-carousel-page .agui-slide { height: clamp(300px, 46vw, 440px); }
+.agui-carousel-page.agui-prose { padding-top: 0; }
+
+/* Líneas: el carrusel tiene el mismo ancho que el texto de la cabecera negra */
+.single-linea .agui-carousel-page.agui-prose { max-width: 792px; }

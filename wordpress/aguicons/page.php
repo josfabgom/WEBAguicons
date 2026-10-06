@@ -10,6 +10,10 @@ while (have_posts()) {
         <div class="agui-container agui-prose agui-section">
             <?php the_content(); ?>
         </div>
+        <?php
+        $gallery = array_filter(array_map('intval', explode(',', (string) get_post_meta(get_the_ID(), '_agui_gallery', true))));
+        echo agui_carousel('', $gallery, true);
+        ?>
         <?php echo agui_contact_bar(true); ?>
     </article>
     <?php

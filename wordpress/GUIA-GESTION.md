@@ -68,3 +68,6 @@ En el menú lateral de WordPress aparece **Aguicons** con:
 - **Consultas:** filtros por estado, proyecto y tipo; marcar **Atendida/Nueva**; **exportar a Excel (CSV)**.
 - **Contenido:** accesos a testimonios, preguntas frecuentes, novedades, páginas y medios.
 - **Ajustes** y **Ayuda** (con formatos y ejemplos de cada campo).
+
+## Carruseles de Construcción y Movimiento de suelo
+En **Aguicons → Estructura del sitio → Carruseles de servicios** se cargan, ordenan y quitan las fotos de cada página de servicio (también se pueden editar desde **Páginas → [página] → Carrusel de imágenes**). Las fotos de Movimiento de suelo vienen cargadas; para Construcción (obras) hay que subir las fotos. Si una página no tiene fotos, el carrusel no se muestra. En **Otros servicios** se muestran ambos carruseles junto a cada descripción.

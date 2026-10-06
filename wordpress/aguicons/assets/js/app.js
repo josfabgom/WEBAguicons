@@ -68,19 +68,24 @@
     function totalW() { return originals.reduce(function (w, el) { return w + el.offsetWidth + 16; }, 0); }
 
     // Se duplican los elementos (antes y después) para que el recorrido no tenga fin.
+    // Con pocas fotos, el "período" se repite hasta llenar la ventana (así siempre hay algo que recorrer).
     function build() {
-      if (originals.length < 2 || totalW() <= car.clientWidth + 8) return;
-      function clones() {
-        return originals.map(function (el) {
-          var c = el.cloneNode(true);
-          c.classList.add('agui-clone');
-          c.setAttribute('aria-hidden', 'true');
-          c.setAttribute('tabindex', '-1');
-          return c;
-        });
+      if (originals.length < 2) return;
+      var period = originals.slice();
+      var tw = totalW();
+      var reps = tw > 0 && tw < car.clientWidth * 1.25 ? Math.ceil((car.clientWidth * 1.25) / tw) : 1;
+      function copy(el) {
+        var c = el.cloneNode(true);
+        c.classList.add('agui-clone');
+        c.setAttribute('aria-hidden', 'true');
+        c.setAttribute('tabindex', '-1');
+        return c;
       }
-      clones().forEach(function (c) { car.insertBefore(c, originals[0]); });
-      clones().forEach(function (c) { car.appendChild(c); });
+      for (var r = 1; r < reps; r++) {
+        originals.forEach(function (el) { var c = copy(el); car.appendChild(c); period.push(c); });
+      }
+      period.slice().reverse().forEach(function (el) { car.insertBefore(copy(el), car.firstElementChild); });
+      period.forEach(function (el) { car.appendChild(copy(el)); });
       looped = true;
       measure();
       setLeft(S);
@@ -124,6 +129,8 @@
     car.addEventListener('mouseenter', function () { hovering = true; start(); });
     car.addEventListener('mouseleave', function () { hovering = false; });
     var wrap = car.closest('.agui-carousel-wrap');
+    // Si todas las fotos entran en pantalla no hace falta mover nada: se ocultan las flechas.
+    if (wrap && !looped && car.scrollWidth <= car.clientWidth + 4) { $$('.agui-arrow', wrap).forEach(function (b) { b.hidden = true; }); }
     if (wrap) {
       wrap.addEventListener('mouseenter', function () { hovering = true; start(); });
       wrap.addEventListener('mouseleave', function () { hovering = false; });

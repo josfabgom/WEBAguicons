@@ -87,6 +87,23 @@ function agui_structure_page(): void
                 </template>
             </div>
 
+            <div class="agui-box" id="carruseles-servicios">
+                <h2>Carruseles de servicios (Construcción y Movimiento de suelo)</h2>
+                <p class="description">Fotos que se muestran en el carrusel de cada página de servicio. Arrastrá las miniaturas para ordenarlas. Si no hay fotos, el carrusel no se muestra.</p>
+                <?php foreach (agui_service_pages() as $sp) :
+                    $gids = array_filter(array_map('intval', explode(',', (string) get_post_meta($sp->ID, '_agui_gallery', true))));
+                    ?>
+                    <div class="agui-media-field agui-gallery" data-multiple="1">
+                        <strong><?php echo esc_html($sp->post_title); ?></strong>
+                        <input type="hidden" name="gal[<?php echo (int) $sp->ID; ?>]" value="<?php echo esc_attr(implode(',', $gids)); ?>">
+                        <ul class="agui-gallery-list">
+                            <?php foreach ($gids as $gid) : ?><li data-id="<?php echo (int) $gid; ?>"><?php echo wp_get_attachment_image($gid, 'thumbnail'); ?><button type="button" class="agui-gallery-remove" aria-label="Quitar">×</button></li><?php endforeach; ?>
+                        </ul>
+                        <button type="button" class="button agui-media-pick">Agregar fotos</button>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
             <div class="agui-box">
                 <h2>Contacto y pie de página</h2>
                 <div class="agui-grid">
@@ -98,6 +115,19 @@ function agui_structure_page(): void
         </form>
     </div>
     <?php
+}
+
+/** Las páginas de servicio que tienen carrusel de fotos. */
+function agui_service_pages(): array
+{
+    $pages = [];
+    foreach (['servicios-de-construccion', 'movimientos-de-suelo'] as $slug) {
+        $p = get_page_by_path($slug, OBJECT, 'page');
+        if ($p) {
+            $pages[] = $p;
+        }
+    }
+    return $pages;
 }
 
 add_action('admin_post_agui_structure_save', function () {
@@ -113,6 +143,15 @@ add_action('admin_post_agui_structure_save', function () {
         $opts[sanitize_key($k)] = ($k === 'hero_image' || substr($k, -5) === '_icon') ? (int) $v : sanitize_text_field($v);
     }
     update_option('aguicons_opts', $opts);
+
+    // Carruseles de las páginas de servicio
+    $allowed = array_map(fn($p) => $p->ID, agui_service_pages());
+    foreach ((array) ($_POST['gal'] ?? []) as $pid => $ids) {
+        if (in_array((int) $pid, $allowed, true)) {
+            $clean = array_filter(array_map('intval', explode(',', (string) wp_unslash($ids))));
+            update_post_meta((int) $pid, '_agui_gallery', implode(',', $clean));
+        }
+    }
 
     // Orden y visibilidad del carrusel
     $order = array_map('intval', (array) ($_POST['lines_order'] ?? []));

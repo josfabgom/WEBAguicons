@@ -232,7 +232,7 @@ function agui_cards(string $title, array $posts): string
 
 /* --- Carrusel de vistas (con ampliación) --------------------------------------------------- */
 
-function agui_carousel(string $title, array $ids): string
+function agui_carousel(string $title, array $ids, bool $narrow = false): string
 {
     $ids = array_values(array_filter(array_map('intval', $ids)));
     if (!$ids) {
@@ -241,7 +241,7 @@ function agui_carousel(string $title, array $ids): string
     ob_start();
     ?>
     <section class="agui-section agui-reveal">
-        <div class="agui-container">
+        <div class="agui-container<?php echo $narrow ? ' agui-prose agui-carousel-page' : ''; ?>">
             <?php if ($title) : ?><h2 class="agui-h2"><?php echo esc_html($title); ?></h2><?php endif; ?>
             <div class="agui-carousel-wrap">
                 <button type="button" class="agui-arrow agui-arrow-prev" aria-label="Anterior">‹</button>
@@ -471,3 +471,13 @@ function agui_line_tabs(WP_Post $post): string
     <?php
     return ob_get_clean();
 }
+
+add_shortcode('aguicons_galeria', function ($a) {
+    $a = shortcode_atts(['pagina' => '', 'titulo' => ''], $a);
+    $p = $a['pagina'] ? get_page_by_path($a['pagina'], OBJECT, 'page') : get_post();
+    if (!$p) {
+        return '';
+    }
+    $ids = array_filter(array_map('intval', explode(',', (string) get_post_meta($p->ID, '_agui_gallery', true))));
+    return agui_carousel((string) $a['titulo'], $ids, true);
+});

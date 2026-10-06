@@ -14,7 +14,7 @@ while (have_posts()) {
 
     // Solo el carrusel de vistas (sin pestañas de video, ficha, unidades ni avance).
     $gallery = array_filter(array_map('intval', explode(',', (string) $m('gallery'))));
-    echo agui_carousel('CARRUSEL DE VISTAS', $gallery);
+    echo agui_carousel('CARRUSEL DE VISTAS', $gallery, true);
 
     echo '<div class="agui-dark">';
     // Las líneas hijas muestran las otras líneas respecto de su línea principal.

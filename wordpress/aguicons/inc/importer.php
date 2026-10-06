@@ -289,16 +289,18 @@ function agui_import_content(): void
         $c .= agui_b_para($p);
     }
     $c .= '';
-    $p_suelo = agui_upsert_page('movimientos-de-suelo', 'Movimiento de suelo', $c, [], 'Excavación, apertura de calles, demoliciones y adecuación de terrenos.');
+    $p_suelo = agui_upsert_page('movimientos-de-suelo', 'Movimiento de suelo', $c, ['_agui_gallery' => implode(',', array_filter([agui_seed_id('OBRAS/Movimiento de suelo 1.png'), agui_seed_id('OBRAS/Movimiento de suelo 2.png')]))], 'Excavación, apertura de calles, demoliciones y adecuación de terrenos.');
 
     $c = agui_b_heading('OTROS SERVICIOS', 2, true) . agui_b_heading('CONSTRUCCIÓN', 3);
     foreach ($servicios as $p) {
         $c .= agui_b_para($p);
     }
+    $c .= agui_b_shortcode('[aguicons_galeria pagina="servicios-de-construccion"]');
     $c .= agui_b_heading('MOVIMIENTO DE SUELO', 3);
     foreach ($suelo as $p) {
         $c .= agui_b_para($p);
     }
+    $c .= agui_b_shortcode('[aguicons_galeria pagina="movimientos-de-suelo"]');
     $p_otros = agui_upsert_page('otros-servicios', 'Otros servicios', $c, [], 'Construcción y movimiento de suelo: soluciones integrales para el sector público y privado.');
 
     $c = agui_b_heading('UNIDADES Y OFICINAS') . agui_b_para(AGUI_LOREM)
