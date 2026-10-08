@@ -202,11 +202,12 @@ function agui_line_intro(WP_Post $post): string
 
 /* --- Tarjetas protagónicas (sub-proyectos) ------------------------------------------------- */
 
-function agui_cards(string $title, array $posts): string
+function agui_cards(string $title, array $posts, bool $whatsapp = false): string
 {
     if (!$posts) {
         return '';
     }
+    $wa = preg_replace('/D+/', '', (string) agui_opt('whatsapp'));
     ob_start();
     ?>
     <section class="agui-cardsband agui-reveal<?php echo $title ? '' : ' is-flush'; ?>">
@@ -215,7 +216,15 @@ function agui_cards(string $title, array $posts): string
             <div class="agui-container">
                 <div class="agui-cards">
                     <?php foreach ($posts as $p) : ?>
-                        <a class="agui-card" href="<?php echo esc_url(get_permalink($p)); ?>">
+                        <?php
+                        $href = get_permalink($p);
+                        $extra = '';
+                        if ($whatsapp && $wa) {
+                            $href = 'https://wa.me/' . $wa . '?text=' . rawurlencode('Hola, quiero consultar por el alquiler de ' . $p->post_title . '.');
+                            $extra = ' target="_blank" rel="noopener noreferrer"';
+                        }
+                        ?>
+                        <a class="agui-card" href="<?php echo esc_url($href); ?>"<?php echo $extra; ?>>
                             <?php if (has_post_thumbnail($p)) {
                                 echo get_the_post_thumbnail($p, 'agui-card', ['loading' => 'lazy', 'decoding' => 'async', 'alt' => $p->post_title]);
                             } ?>
@@ -410,7 +419,7 @@ function agui_rentals(): string
             $ids[] = get_post_thumbnail_id($p);
         }
     }
-    return agui_cards('DISPONIBLES PARA ALQUILER', array_values($posts));
+    return agui_cards('DISPONIBLES', array_values($posts), true);
 }
 
 /* --- Mapa suelto --------------------------------------------------------------------------- */

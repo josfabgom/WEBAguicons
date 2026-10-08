@@ -303,7 +303,7 @@ function agui_import_content(): void
     $c .= agui_b_shortcode('[aguicons_galeria pagina="movimientos-de-suelo"]');
     $p_otros = agui_upsert_page('otros-servicios', 'Otros servicios', $c, [], 'Construcción y movimiento de suelo: soluciones integrales para el sector público y privado.');
 
-    $c = agui_b_heading('ALQUILERES — Espacios para vivir y trabajar.') . agui_b_para('En AGUICONS SRL ofrecemos unidades y oficinas en alquiler para acompañar distintas formas de vivir y desarrollar tu actividad. Encontrá el espacio que se adapte a tus necesidades, ya sea para establecer tu hogar, impulsar tu emprendimiento o darle un nuevo lugar a tu empresa.')
+    $c = agui_b_heading('Espacios para vivir y trabajar.') . agui_b_para('En AGUICONS SRL ofrecemos unidades y oficinas en alquiler para acompañar distintas formas de vivir y desarrollar tu actividad. Encontrá el espacio que se adapte a tus necesidades, ya sea para establecer tu hogar, impulsar tu emprendimiento o darle un nuevo lugar a tu empresa.')
         . agui_b_shortcode('[aguicons_alquiler]');
     $p_alq = agui_upsert_page('alquiler', 'Alquiler', $c, [], 'Unidades, oficinas y locales comerciales en alquiler en las líneas de Aguicons.');
 

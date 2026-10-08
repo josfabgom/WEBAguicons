@@ -507,3 +507,6 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 
 /* Sin cortar palabras con guion: la palabra pasa completa a la línea siguiente */
 .agui-intro-text, .agui-intro-text p, .agui-prose > p { hyphens: none; -webkit-hyphens: none; }
+
+/* Nombres de las líneas en blanco (solo el logo AGUICONS es dorado) */
+.agui-intro-wordmark, .agui-line-name img { filter: brightness(0) invert(1); }
