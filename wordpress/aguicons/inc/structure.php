@@ -29,6 +29,8 @@ function agui_structure_page(): void
             <div class="agui-box">
                 <h2>Portada del inicio</h2>
                 <?php agui_field_image('o[hero_image]', $hero, 'Foto de portada', 'Foto grande de la cabecera del inicio.'); ?>
+                <input type="hidden" name="o[hero_logo]" value="">
+                <p><label><input type="checkbox" name="o[hero_logo]" value="1" <?php checked(agui_opt('hero_logo'), '1'); ?>> Mostrar el nombre AGUICONS sobre la portada</label></p>
                 <input type="hidden" name="o[hero_baked]" value="">
                 <p><label><input type="checkbox" name="o[hero_baked]" value="1" <?php checked(agui_opt('hero_baked'), '1'); ?>> La imagen ya incluye el título</label><br><span class="description">Si está tildado, no se escribe el título encima de la foto (ya viene dibujado); el logo y el botón se mantienen.</span></p>
                 <div class="agui-grid">

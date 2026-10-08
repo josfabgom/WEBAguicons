@@ -460,3 +460,42 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 
 /* Líneas: el carrusel tiene el mismo ancho que el texto de la cabecera negra */
 .single-linea .agui-carousel-page.agui-prose { max-width: 792px; }
+
+/* Portada sin el nombre: en celular solo queda el espacio justo para el botón de menú */
+@media (max-width: 781px) {
+  .agui-banner.has-title { padding-top: 3rem; }
+  .agui-banner.has-title.has-logo { padding-top: 3.6rem; }
+}
+
+/* Portada (escritorio): el menú baja hasta quedar centrado en la franja blanca de arriba, sin pegarse al borde */
+@media (min-width: 782px) {
+  :root { --agui-title-top: calc(18.55vw - max(0px, 56.25vw - 86vh) * 0.42); }
+  .agui-header.is-home .agui-header-inner { padding-top: calc(var(--agui-title-top) * 0.33 - 13px); padding-bottom: 0; }
+}
+
+.agui-cardsband.is-flush { padding-top: 0; }
+
+/* Cabecera negra de línea sin el logo de Aguicons: queda el nombre/logo de la línea */
+.agui-intro { padding-top: 3rem; }
+
+/* Textos de las líneas justificados */
+.agui-intro-text { text-align: justify; text-justify: inter-word; hyphens: auto; -webkit-hyphens: auto; }
+.agui-intro-text p { text-align: justify; }
+
+/* Equipo: más aire entre la frase de arriba, los títulos de área y los rectángulos */
+.agui-team { margin-top: 2.75rem; }
+.agui-team .wp-block-column > .wp-block-heading { margin: 0 0 1.1rem; }
+.agui-team .wp-block-column > .wp-block-group { margin: 0 0 1rem; }
+
+/* Menú de escritorio más grande y con más aire (el de la portada, un poco más) */
+@media (min-width: 782px) {
+  .agui-menu { gap: 1.7rem; }
+  .agui-menu > li > a { font-size: 1.05rem; }
+  .agui-header.is-home .agui-menu { gap: 2rem; }
+  .agui-header.is-home .agui-menu > li > a { font-size: 1.2rem; }
+  .agui-menu .sub-menu a { font-size: 1rem; }
+}
+
+/* Páginas de contenido (Nosotros, etc.): texto justificado */
+.agui-prose > p { text-align: justify; text-justify: inter-word; hyphens: auto; -webkit-hyphens: auto; }
+.agui-prose .wp-block-columns p { text-align: center; hyphens: manual; }

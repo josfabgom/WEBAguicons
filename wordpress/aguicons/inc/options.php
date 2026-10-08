@@ -19,6 +19,7 @@ function agui_defaults(): array
         'map_query' => 'Av. Antártida Argentina 876, Posadas, Misiones, Argentina',
         'hero_image' => 0,
         'hero_baked' => '',
+        'hero_logo' => '',
         'hero_before' => 'CONSTRUIMOS',
         'hero_accent' => 'tu',
         'hero_after' => 'FUTURO',
@@ -56,6 +57,7 @@ function agui_option_fields(): array
         'Portada (Inicio)' => [
             'hero_image' => ['Imagen de portada', 'image', 'Foto grande de la cabecera del inicio.'],
             'hero_baked' => ['La imagen ya incluye el título', 'check', 'Tildar si la foto de portada ya trae dibujado el título ("Construimos tu futuro"). Se muestra la foto completa sin repetir el título; el logo y el botón se mantienen.'],
+            'hero_logo' => ['Mostrar el nombre AGUICONS sobre la portada', 'check', 'Tildar para mostrar el logo (solo el nombre) arriba de la foto. Por defecto no se muestra.'],
             'hero_before' => ['Título: parte 1', 'text', ''],
             'hero_accent' => ['Título: palabra en cursiva', 'text', ''],
             'hero_after' => ['Título: parte 2', 'text', ''],

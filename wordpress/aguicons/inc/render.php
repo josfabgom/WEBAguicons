@@ -61,10 +61,12 @@ function agui_banner(): string
     $title = trim(agui_opt('hero_before') . ' ' . agui_opt('hero_accent') . ' ' . agui_opt('hero_after'));
     ob_start();
     ?>
-    <section class="agui-banner<?php echo $has_title ? ' has-title' : ''; ?>">
+    <section class="agui-banner<?php echo $has_title ? ' has-title' : ''; ?><?php echo agui_opt('hero_logo') === '1' ? ' has-logo' : ''; ?>">
         <?php echo wp_get_attachment_image($img, 'full', false, ['class' => 'agui-banner-img', 'fetchpriority' => 'high', 'alt' => $has_title ? 'Aguicons - ' . $title : 'Aguicons']); ?>
         <div class="agui-banner-fade"></div>
-        <div class="agui-banner-logo"><?php echo agui_logo('name', 'oro'); ?></div>
+        <?php if (agui_opt('hero_logo') === '1') : ?>
+            <div class="agui-banner-logo"><?php echo agui_logo('name', 'oro'); ?></div>
+        <?php endif; ?>
         <?php if ($has_title) : ?>
             <h1 class="screen-reader-text"><?php echo esc_html($title); ?></h1>
         <?php else : ?>
@@ -156,7 +158,7 @@ function agui_stats(): string
 
 /* --- Barra de contacto --------------------------------------------------------------------- */
 
-function agui_contact_bar(bool $back = true, bool $dark = false): string
+function agui_contact_bar(bool $back = true, bool $dark = false, string $back_url = ''): string
 {
     ob_start();
     ?>
@@ -164,7 +166,7 @@ function agui_contact_bar(bool $back = true, bool $dark = false): string
         <?php if (agui_opt('address')) : ?><p class="agui-address">📍 <?php echo esc_html(agui_opt('address')); ?></p><?php endif; ?>
         <a class="agui-btn" href="<?php echo esc_url(home_url('/contacto/')); ?>">CONVERSÁ CON NOSOTROS</a>
         <p class="agui-small"><a href="mailto:<?php echo esc_attr(agui_opt('email_contact')); ?>"><?php echo esc_html(agui_opt('email_contact')); ?></a> - <a href="tel:+<?php echo esc_attr(preg_replace('/\D+/', '', (string) agui_opt('phone'))); ?>"><?php echo esc_html(agui_opt('phone')); ?></a></p>
-        <?php if ($back) : ?><a class="agui-btn agui-btn-outline" href="<?php echo esc_url(home_url('/')); ?>">VOLVER</a><?php endif; ?>
+        <?php if ($back) : ?><a class="agui-btn agui-btn-outline agui-back" href="<?php echo esc_url($back_url !== '' ? $back_url : home_url('/')); ?>">VOLVER</a><?php endif; ?>
     </section>
     <?php
     return ob_get_clean();
@@ -183,7 +185,6 @@ function agui_line_intro(WP_Post $post): string
     ?>
     <section class="agui-intro">
         <div class="agui-intro-inner">
-            <?php echo agui_logo('full', 'oro', 'agui-intro-logo'); ?>
             <?php if ($logo) : ?>
                 <?php echo agui_img($logo, 'medium', ['class' => 'agui-intro-wordmark', 'alt' => $post->post_title, 'loading' => 'eager']); ?>
             <?php else : ?>
@@ -208,7 +209,7 @@ function agui_cards(string $title, array $posts): string
     }
     ob_start();
     ?>
-    <section class="agui-cardsband agui-reveal">
+    <section class="agui-cardsband agui-reveal<?php echo $title ? '' : ' is-flush'; ?>">
         <?php if ($title) : ?><div class="agui-container"><h2 class="agui-h2"><?php echo esc_html($title); ?></h2></div><?php endif; ?>
         <div class="agui-cardsdark">
             <div class="agui-container">
@@ -409,7 +410,7 @@ function agui_rentals(): string
             $ids[] = get_post_thumbnail_id($p);
         }
     }
-    return agui_cards('DISPONIBLES PARA ALQUILER', array_values($posts)) . agui_carousel('CARRUSEL DE VISTAS', $ids);
+    return agui_cards('DISPONIBLES PARA ALQUILER', array_values($posts));
 }
 
 /* --- Mapa suelto --------------------------------------------------------------------------- */

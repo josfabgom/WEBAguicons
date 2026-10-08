@@ -324,6 +324,17 @@
     });
   });
 
+  /* ---------- VOLVER: regresa a la página desde la que se llegó (si es del sitio) ---------- */
+  $$('.agui-back').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var ref = document.referrer;
+      if (ref && ref.indexOf(location.origin) === 0 && ref !== location.href && window.history.length > 1) {
+        e.preventDefault();
+        window.history.back();
+      }
+    });
+  });
+
   /* ---------- WhatsApp: evento de analytics ---------- */
   var wa = $('.agui-whatsapp');
   if (wa) wa.addEventListener('click', function () { track('whatsapp_click', { topic: wa.getAttribute('data-topic') }); });
