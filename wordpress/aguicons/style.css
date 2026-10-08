@@ -499,3 +499,8 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 /* Páginas de contenido (Nosotros, etc.): texto justificado */
 .agui-prose > p { text-align: justify; text-justify: inter-word; hyphens: auto; -webkit-hyphens: auto; }
 .agui-prose .wp-block-columns p { text-align: center; hyphens: manual; }
+
+/* Pie: copyright junto a Política de privacidad */
+.agui-footer-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem 1.5rem; }
+.agui-footer-copy { align-self: auto; }
+.agui-footer-copy, .agui-footer-menu a { font-family: inherit; font-size: 0.9rem; font-weight: 400; line-height: 1.4; color: #fff; }
