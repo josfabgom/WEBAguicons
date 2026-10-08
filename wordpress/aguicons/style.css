@@ -504,3 +504,6 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 .agui-footer-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem 1.5rem; }
 .agui-footer-copy { align-self: auto; }
 .agui-footer-copy, .agui-footer-menu a { font-family: inherit; font-size: 0.9rem; font-weight: 400; line-height: 1.4; color: #fff; }
+
+/* Sin cortar palabras con guion: la palabra pasa completa a la línea siguiente */
+.agui-intro-text, .agui-intro-text p, .agui-prose > p { hyphens: none; -webkit-hyphens: none; }
