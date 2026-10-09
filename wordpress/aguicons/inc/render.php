@@ -38,6 +38,30 @@ function agui_lines(array $args = []): array
     ], $args));
 }
 
+/** Nombre de una línea: el logo con su tipografía (en blanco por CSS) si lo tiene; si no, el texto. */
+function agui_line_name_html(WP_Post $p, string $name = ''): string
+{
+    $name = trim($name !== '' ? $name : $p->post_title);
+    $logo = (int) get_post_meta($p->ID, '_agui_logo_id', true);
+    $suffix = '';
+    if (!$logo && $p->post_parent) {
+        $parent = get_post($p->post_parent);
+        $pt = $parent ? trim($parent->post_title) : '';
+        if ($parent && $pt !== '' && mb_stripos($name, $pt) === 0) {
+            $logo = (int) get_post_meta($parent->ID, '_agui_logo_id', true);
+            $suffix = trim(mb_substr($name, mb_strlen($pt)));
+        }
+    }
+    if ($logo) {
+        $html = agui_img($logo, 'medium', ['class' => 'agui-name-logo', 'alt' => $name, 'draggable' => 'false']);
+        return $suffix !== '' ? '<span class="agui-name-stack">' . $html . '<span class="agui-name-suffix">' . esc_html($suffix) . '</span></span>' : $html;
+    }
+    if (stripos($name, 'aguicons') !== false) {
+        return '<img src="' . esc_url(get_theme_file_uri('assets/img/aguicons-nombre-blanco.png')) . '" alt="' . esc_attr($name) . '" width="712" height="104" class="agui-name-logo">';
+    }
+    return esc_html($name);
+}
+
 function agui_badge(int $post_id): string
 {
     $t = (string) get_post_meta($post_id, '_agui_badge_title', true);
@@ -228,7 +252,7 @@ function agui_cards(string $title, array $posts, bool $whatsapp = false): string
                             <?php if (has_post_thumbnail($p)) {
                                 echo get_the_post_thumbnail($p, 'agui-card', ['loading' => 'lazy', 'decoding' => 'async', 'alt' => $p->post_title]);
                             } ?>
-                            <span class="agui-card-name"><?php echo esc_html($p->post_title); ?></span>
+                            <span class="agui-card-name"><?php echo agui_line_name_html($p, $whatsapp ? (string) get_post_meta($p->ID, '_agui_rental_name', true) : ''); ?></span>
                             <?php echo agui_badge($p->ID); ?>
                         </a>
                     <?php endforeach; ?>
@@ -403,7 +427,7 @@ function agui_other_lines(int $root_id): string
     ?>
     <nav class="agui-section agui-otherlines agui-reveal" aria-label="Otras líneas">
         <h2 class="agui-h3">OTRAS LÍNEAS</h2>
-        <ul><?php foreach ($lines as $p) : ?><li><a href="<?php echo esc_url(get_permalink($p)); ?>"><?php echo esc_html($p->post_title); ?></a></li><?php endforeach; ?></ul>
+        <ul><?php foreach ($lines as $p) : ?><li><a href="<?php echo esc_url(get_permalink($p)); ?>"><?php echo agui_line_name_html($p); ?></a></li><?php endforeach; ?></ul>
     </nav>
     <?php
     return ob_get_clean();

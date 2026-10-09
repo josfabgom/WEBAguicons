@@ -208,6 +208,7 @@ function agui_upsert_line(array $d): int
         'address' => '',
         'badge_title' => $d['badge_title'] ?? '',
         'badge_text' => $d['badge_text'] ?? '',
+        'rental_name' => $d['rental_name'] ?? '',
         'show_home' => isset($d['show_home']) ? $d['show_home'] : ($parent ? '0' : '1'),
     ];
     foreach ($meta as $k => $v) {
@@ -353,10 +354,13 @@ function agui_import_content(): void
         'badge_title' => 'ALQUILER', 'badge_text' => 'Oficinas', 'gallery' => ['LINEAS EDILICIAS/AGUICONS/Edificio 1.jpeg', 'LINEAS EDILICIAS/AGUICONS/Edificio 2.jpeg']]);
 
     $alar = agui_upsert_line(['slug' => 'alarif', 'logo' => 'LOGOS LINEAS/alarif.png', 'title' => 'Alarif', 'order' => 5, 'thumb' => 'HOME/ALARIF/Copia de 1.png', 'cards_title' => '', 'gallery' => $alarif]);
-    agui_upsert_line(['slug' => 'alarif-fazara', 'title' => 'Alarif', 'order' => 3, 'parent' => $alar, 'thumb' => 'HOME/ALARIF/Copia de 1.png',
+    agui_upsert_line(['slug' => 'alarif-fazara', 'title' => 'Alarif Fazara', 'rental_name' => 'Alarif', 'order' => 3, 'parent' => $alar, 'thumb' => 'HOME/ALARIF/Copia de 1.png',
         'badge_title' => 'ALQUILER', 'badge_text' => 'Departamentos', 'gallery' => $alarif]);
     agui_upsert_line(['slug' => 'alarif-trench', 'title' => 'Alarif Trench', 'order' => 4, 'parent' => $alar, 'thumb' => 'HOME/ALARIF/Copia de 2.png',
         'badge_title' => 'ALQUILER', 'badge_text' => 'Departamentos', 'gallery' => $alarif]);
+
+    // Tercer Alarif (foto provisoria hasta contar con la real)
+    agui_upsert_line(['slug' => 'alarif-base', 'title' => 'Alarif', 'order' => 5, 'parent' => $alar, 'thumb' => 'HOME/TIER/Copia de 2.png', 'gallery' => ['HOME/TIER/Copia de 2.png']]);
 
     // Inicio como portada del sitio y enlaces permanentes limpios
     update_option('show_on_front', 'page');

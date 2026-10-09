@@ -184,6 +184,7 @@ function agui_box_linea_side(WP_Post $post): void
     <p><strong>Cartel dorado</strong> (ej: ALQUILER – Unidades)</p>
     <p><input type="text" name="agui[badge_title]" class="widefat" value="<?php echo esc_attr($m('badge_title')); ?>" placeholder="ALQUILER"></p>
     <p><input type="text" name="agui[badge_text]" class="widefat" value="<?php echo esc_attr($m('badge_text')); ?>" placeholder="Unidades"></p>
+    <p><input type="text" name="agui[rental_name]" class="widefat" value="<?php echo esc_attr($m('rental_name')); ?>" placeholder="Nombre en la página Alquiler (si es distinto)"></p>
     <p class="description">Las líneas con cartel aparecen en la página de Alquiler.</p>
     <?php
 }
@@ -236,7 +237,7 @@ add_action('save_post', function ($post_id, $post) {
     }
     $in = isset($_POST['agui']) && is_array($_POST['agui']) ? wp_unslash($_POST['agui']) : [];
 
-    $text = ['status', 'address', 'cards_title', 'badge_title', 'badge_text', 'role', 'bg'];
+    $text = ['status', 'address', 'cards_title', 'badge_title', 'badge_text', 'rental_name', 'role', 'bg'];
     foreach ($text as $k) {
         if (array_key_exists($k, $in)) {
             update_post_meta($post_id, '_agui_' . $k, sanitize_text_field($in[$k]));

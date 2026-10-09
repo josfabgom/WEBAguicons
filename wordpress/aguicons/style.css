@@ -167,7 +167,7 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 .agui-cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; }
 .agui-card { position: relative; display: flex; align-items: center; justify-content: center; width: 16rem; aspect-ratio: 3 / 4; border: 1px solid var(--gold); overflow: hidden; background: #fff; transition: transform 0.2s; }
 .agui-card:hover { transform: scale(1.02); }
-.agui-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.agui-card > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .agui-card-name { position: relative; z-index: 1; background: rgba(0, 0, 0, 0.6); color: #fff; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.25rem 0.75rem; text-align: center; }
 @media (min-width: 640px) { .agui-card { width: 18rem; } }
 .agui-badge { position: absolute; right: 0; bottom: 0; z-index: 2; background: var(--gold); color: #fff; text-align: center; font-size: 0.65rem; line-height: 1.2; padding: 0.25rem 0.75rem; text-transform: uppercase; }
@@ -510,3 +510,10 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 
 /* Nombres de las líneas en blanco (solo el logo AGUICONS es dorado) */
 .agui-intro-wordmark, .agui-line-name img { filter: brightness(0) invert(1); }
+
+.agui-name-logo { display: inline-block; vertical-align: middle; width: auto !important; height: auto !important; max-width: 11rem; max-height: 1.9rem; object-fit: contain; filter: brightness(0) invert(1); }
+.agui-otherlines .agui-name-logo { max-height: 1.4rem; max-width: 8rem; }
+.agui-card-name { text-transform: none; }
+.agui-card-name .agui-name-logo { position: static; inset: auto; max-height: 1.9rem; max-width: 9rem; }
+.agui-name-stack { display: inline-flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+.agui-name-suffix { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.45em; text-indent: 0.45em; text-transform: uppercase; color: #fff; line-height: 1; }
