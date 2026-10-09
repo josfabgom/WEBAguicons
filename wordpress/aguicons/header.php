@@ -36,7 +36,7 @@ $is_gold = is_page() && get_post_meta(get_queried_object_id(), '_agui_bg', true)
         <?php wp_nav_menu(['theme_location' => 'primary', 'container' => false, 'menu_class' => 'agui-mobile-menu', 'fallback_cb' => false, 'depth' => 2]); ?>
         <p class="agui-mobile-title">LÍNEAS EDILICIAS</p>
         <ul class="agui-mobile-lines">
-            <?php foreach (agui_lines(['post_parent' => 0]) as $l) : ?>
+            <?php foreach (array_filter(agui_lines(['post_parent' => 0]), fn($x) => get_post_meta($x->ID, '_agui_show_home', true) !== '0') as $l) : ?>
                 <li><a href="<?php echo esc_url(get_permalink($l)); ?>"><?php echo esc_html($l->post_title); ?></a></li>
             <?php endforeach; ?>
         </ul>

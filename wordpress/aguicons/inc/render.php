@@ -395,6 +395,7 @@ function agui_testimonials(string $title = 'LO QUE DICEN NUESTROS CLIENTES'): st
 function agui_other_lines(int $root_id): string
 {
     $lines = agui_lines(['post_parent' => 0, 'exclude' => [$root_id]]);
+    $lines = array_filter($lines, fn($p) => get_post_meta($p->ID, '_agui_show_home', true) !== '0');
     if (!$lines) {
         return '';
     }

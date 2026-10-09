@@ -208,7 +208,7 @@ function agui_upsert_line(array $d): int
         'address' => '',
         'badge_title' => $d['badge_title'] ?? '',
         'badge_text' => $d['badge_text'] ?? '',
-        'show_home' => $parent ? '0' : '1',
+        'show_home' => isset($d['show_home']) ? $d['show_home'] : ($parent ? '0' : '1'),
     ];
     foreach ($meta as $k => $v) {
         // No pisa lo que ya se haya editado a mano.
@@ -342,18 +342,21 @@ function agui_import_content(): void
 
     $benrow = agui_upsert_line(['slug' => 'benrow', 'logo' => 'LOGOS LINEAS/benrow.png', 'title' => 'Benrow', 'order' => 3, 'thumb' => 'HOME/BENROW/Copia de 19.png', 'cards_title' => '']);
     agui_upsert_line(['slug' => 'benrow-acros', 'title' => 'Benrow Acros', 'order' => 1, 'parent' => $benrow, 'thumb' => $acros[2], 'gallery' => $acros]);
-    agui_upsert_line(['slug' => 'benrow-local-comercial', 'title' => 'Benrow', 'order' => 2, 'parent' => $benrow, 'thumb' => 'HOME/BENROW/Copia de 18.png',
-        'badge_title' => 'ALQUILER', 'badge_text' => 'Local Comercial', 'gallery' => ['HOME/BENROW/Copia de 18.png', 'HOME/BENROW/Copia de 19.png']]);
+    agui_upsert_line(['slug' => 'benrow-local-comercial', 'title' => 'Benrow', 'order' => 1, 'parent' => $benrow, 'thumb' => 'HOME/BENROW/Copia de 18.png',
+        'badge_title' => 'ALQUILER', 'badge_text' => 'Local', 'gallery' => ['HOME/BENROW/Copia de 18.png', 'HOME/BENROW/Copia de 19.png']]);
 
     $tier = agui_upsert_line(['slug' => 'tier', 'logo' => 'LOGOS LINEAS/tier.png', 'title' => 'Tier', 'order' => 4, 'text' => 'La línea TIER® nace como una alternativa de la línea ALARIF®, incorporando la experiencia adquirida por Aguicons® s.r.l. para desarrollar una propuesta contemporánea orientada a las nuevas dinámicas del mercado integrando ubicación estratégica, diseño auténtico y funcionalidad. Es así que el VANTIER® —su última versión—, ha iniciado recientemente. Un lugar pensado para quienes buscan vivir, trabajar o invertir en el centro de Posadas, dentro de un entorno conectado con las principales actividades de la ciudad.', 'thumb' => 'HOME/TIER/Copia de 17.png', 'cards_title' => '']);
     agui_upsert_line(['slug' => 'vantier', 'title' => 'Vantier', 'text' => 'VANTIER® es un edificio multifuncional de diez pisos que reúne espacios comerciales, residenciales y profesionales. La planta baja contará con un local comercial y cocheras, mientras que los niveles superiores estarán destinados a unidades monoambiente aptas para uso residencial o como consultorios.', 'order' => 1, 'parent' => $tier, 'thumb' => $vantier[3], 'gallery' => $vantier]);
     agui_upsert_line(['slug' => 'loftier', 'title' => 'Loftier', 'text' => 'LOFTIER® es el primer desarrollo de la marca TIER®: arquitectura contemporánea, fuerte identidad visual y espacios pensados para quienes eligen vivir o invertir con estilo propio. Ubicado en el tradicional barrio El Brete, a pasos de la Costanera y a solo 5 minutos del centro, LOFTIER® introduce un lenguaje urbano y rústico-industrial en unidades tipo loft, monoambientes y departamentos de 1 dormitorio, pudiendo personalizarlos entre tres estilos únicos de interiores: ladrillo y madera, hormigón y estuco, ladrillo blanco y hierro.', 'order' => 2, 'parent' => $tier, 'thumb' => $loftier[0], 'gallery' => $loftier]);
 
+    agui_upsert_line(['slug' => 'edificio-aguicons', 'title' => 'Edificio AGUICONS', 'order' => 2, 'show_home' => '0', 'thumb' => 'LINEAS EDILICIAS/AGUICONS/Edificio 1.jpeg',
+        'badge_title' => 'ALQUILER', 'badge_text' => 'Oficinas', 'gallery' => ['LINEAS EDILICIAS/AGUICONS/Edificio 1.jpeg', 'LINEAS EDILICIAS/AGUICONS/Edificio 2.jpeg']]);
+
     $alar = agui_upsert_line(['slug' => 'alarif', 'logo' => 'LOGOS LINEAS/alarif.png', 'title' => 'Alarif', 'order' => 5, 'thumb' => 'HOME/ALARIF/Copia de 1.png', 'cards_title' => '', 'gallery' => $alarif]);
-    agui_upsert_line(['slug' => 'alarif-fazara', 'title' => 'Alarif Fazara', 'order' => 1, 'parent' => $alar, 'thumb' => 'HOME/ALARIF/Copia de 1.png',
-        'badge_title' => 'ALQUILER', 'badge_text' => 'Unidades', 'gallery' => $alarif]);
-    agui_upsert_line(['slug' => 'alarif-trench', 'title' => 'Alarif Trench', 'order' => 2, 'parent' => $alar, 'thumb' => 'HOME/ALARIF/Copia de 2.png',
-        'badge_title' => 'ALQUILER', 'badge_text' => 'Unidades', 'gallery' => $alarif]);
+    agui_upsert_line(['slug' => 'alarif-fazara', 'title' => 'Alarif', 'order' => 3, 'parent' => $alar, 'thumb' => 'HOME/ALARIF/Copia de 1.png',
+        'badge_title' => 'ALQUILER', 'badge_text' => 'Departamentos', 'gallery' => $alarif]);
+    agui_upsert_line(['slug' => 'alarif-trench', 'title' => 'Alarif Trench', 'order' => 4, 'parent' => $alar, 'thumb' => 'HOME/ALARIF/Copia de 2.png',
+        'badge_title' => 'ALQUILER', 'badge_text' => 'Departamentos', 'gallery' => $alarif]);
 
     // Inicio como portada del sitio y enlaces permanentes limpios
     update_option('show_on_front', 'page');
