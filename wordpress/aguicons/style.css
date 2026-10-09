@@ -517,3 +517,5 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 .agui-card-name .agui-name-logo { position: static; inset: auto; max-height: 1.9rem; max-width: 9rem; }
 .agui-name-stack { display: inline-flex; flex-direction: column; align-items: center; gap: 0.2rem; }
 .agui-name-suffix { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.45em; text-indent: 0.45em; text-transform: uppercase; color: #fff; line-height: 1; }
+.agui-card-name .agui-name-logo { max-width: 15rem; max-height: 2.6rem; }
+.agui-card-name { padding: 0.45rem 1rem; }
