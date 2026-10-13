@@ -1,5 +1,5 @@
 <?php
-/** Una línea o proyecto: cabecera negra, sub-proyectos, carrusel de vistas, otras líneas y contacto. */
+/** Una línea o proyecto: cabecera negra, carrusel de vistas, sub-proyectos, otras líneas y contacto. */
 get_header();
 
 while (have_posts()) {
@@ -9,12 +9,12 @@ while (have_posts()) {
 
     echo agui_line_intro($post);
 
-    $children = agui_lines(['post_parent' => $post->ID]);
-    echo agui_cards((string) $m('cards_title'), $children);
-
     // Solo el carrusel de vistas (sin pestañas de video, ficha, unidades ni avance).
     $gallery = array_filter(array_map('intval', explode(',', (string) $m('gallery'))));
-    echo agui_carousel('CARRUSEL DE VISTAS', $gallery, true);
+    echo agui_carousel('', $gallery, true);
+
+    $children = agui_lines(['post_parent' => $post->ID]);
+    echo agui_cards((string) $m('cards_title'), $children);
 
     echo '<div class="agui-dark">';
     // Las líneas hijas muestran las otras líneas respecto de su línea principal.

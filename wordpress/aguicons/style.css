@@ -455,7 +455,7 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 .agui-mobile-menu .current-menu-item > a { color: var(--gold); font-weight: 700; }
 
 /* ---------- Carrusel dentro de páginas de texto: mismo ancho que el texto, fotos grandes (el carrusel se mueve) ---------- */
-.agui-carousel-page .agui-slide { height: clamp(340px, 62vw, 580px); }
+.agui-carousel-page .agui-slide { height: clamp(380px, min(74vw, 80vh), 680px); }
 .agui-carousel-page.agui-prose { padding-top: 0; }
 
 /* Líneas: el carrusel tiene el mismo ancho que el texto de la cabecera negra */
@@ -519,3 +519,10 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 .agui-name-suffix { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.45em; text-indent: 0.45em; text-transform: uppercase; color: #fff; line-height: 1; }
 .agui-card-name .agui-name-logo { max-width: 15rem; max-height: 2.6rem; }
 .agui-card-name { padding: 0.45rem 1rem; }
+
+/* Líneas: el carrusel de vistas ocupa toda la franja blanca, de borde negro a borde negro */
+.single-linea section.agui-section:has(.agui-carousel-page) { padding-block: 0; }
+.single-linea .agui-carousel-page.agui-prose { padding-block: 0; }
+.single-linea .agui-carousel-page .agui-carousel { padding-bottom: 0; }
+.single-linea .agui-carousel-page .agui-slide img { border-radius: 0; box-shadow: none; }
+.single-linea .agui-carousel-page .agui-carousel-wrap { line-height: 0; }

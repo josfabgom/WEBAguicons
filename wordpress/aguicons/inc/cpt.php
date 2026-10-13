@@ -127,7 +127,7 @@ function agui_box_linea_gallery(WP_Post $post): void
             <?php endforeach; ?>
         </ul>
         <button type="button" class="button agui-media-pick">Agregar imágenes</button>
-        <p class="description">Arrastre las miniaturas para cambiar el orden. Estas fotos forman el “Carrusel de vistas”.</p>
+        <p class="description">Arrastre las miniaturas para cambiar el orden. Estas fotos forman el carrusel de la página.</p>
     </div>
     <?php
 }
