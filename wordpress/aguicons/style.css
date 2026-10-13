@@ -459,7 +459,7 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 .agui-carousel-page.agui-prose { padding-top: 0; }
 
 /* Líneas: el carrusel tiene el mismo ancho que el texto de la cabecera negra */
-.single-linea .agui-carousel-page.agui-prose { max-width: 792px; }
+.single-linea .agui-carousel-page.agui-prose { max-width: 1200px; }
 
 /* Portada sin el nombre: en celular solo queda el espacio justo para el botón de menú */
 @media (max-width: 781px) {
@@ -526,3 +526,6 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 .single-linea .agui-carousel-page .agui-carousel { padding-bottom: 0; }
 .single-linea .agui-carousel-page .agui-slide img { border-radius: 0; box-shadow: none; }
 .single-linea .agui-carousel-page .agui-carousel-wrap { line-height: 0; }
+
+/* Carruseles de vistas: mismo ancho que el carrusel de líneas edilicias */
+.agui-carousel-page.agui-prose, .single-linea .agui-carousel-page.agui-prose { max-width: 1200px; }

@@ -208,6 +208,7 @@ function agui_upsert_line(array $d): int
         'address' => '',
         'badge_title' => $d['badge_title'] ?? '',
         'badge_text' => $d['badge_text'] ?? '',
+        'hide_contact' => !empty($d['hide_contact']) ? '1' : '0',
         'rental_name' => $d['rental_name'] ?? '',
         'show_home' => isset($d['show_home']) ? $d['show_home'] : ($parent ? '0' : '1'),
     ];
@@ -338,8 +339,8 @@ function agui_import_content(): void
         'amenities' => ['Piscina', 'Solarium', 'Gimnasio', 'Sum', 'Co-working', 'Terraza Verde'], 'thumb' => 'HOME/BARADISE/Copia de 03.png',
         'gallery' => array_merge($nums('BARADISE/EXTERIOR', ['08', '10', '15', '18', '20']), $nums('BARADISE/HALL DE INGRESO', ['05', '08']), $nums('BARADISE/INTERIOR', ['01', '07', '08', '10']))]);
 
-    agui_upsert_line(['slug' => 'velerian', 'logo' => 'LOGOS LINEAS/velerian.png', 'title' => 'Velerian', 'order' => 2, 'thumb' => 'HOME/VELERIAN/Copia de 06.png',
-        'gallery' => ["$L/VELERIAN/EXTERIOR/Copia de 06.png", "$L/VELERIAN/EXTERIOR/Copia de 08.png", "$L/VELERIAN/EXTERIOR/Copia de Copia de IMG_2360.JPG", 'HOME/VELERIAN/Copia de 05.png', 'HOME/VELERIAN/Copia de 07.png']]);
+    agui_upsert_line(['slug' => 'velerian', 'hide_contact' => true, 'logo' => 'LOGOS LINEAS/velerian.png', 'title' => 'Velerian', 'order' => 2, 'thumb' => 'HOME/VELERIAN/Copia de 06.png',
+        'gallery' => ['HOME/VELERIAN/Copia de 07.png', "$L/VELERIAN/EXTERIOR/Copia de 08.png", "$L/VELERIAN/EXTERIOR/Copia de Copia de IMG_2360.JPG"]]);
 
     $benrow = agui_upsert_line(['slug' => 'benrow', 'logo' => 'LOGOS LINEAS/benrow.png', 'title' => 'Benrow', 'order' => 3, 'thumb' => 'LINEAS EDILICIAS/BENROW/BENROW/BENROW.jpeg', 'cards_title' => '', 'gallery' => ['LINEAS EDILICIAS/BENROW/BENROW/BENROW.jpeg', 'HOME/BENROW/Copia de 19.png']]);
     agui_upsert_line(['slug' => 'benrow-acros', 'logo' => 'LOGOS LINEAS/benrow-acros.png', 'title' => 'Benrow Acros', 'order' => 1, 'parent' => $benrow, 'thumb' => $acros[2], 'gallery' => $acros]);

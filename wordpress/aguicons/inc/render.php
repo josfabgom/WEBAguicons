@@ -182,13 +182,13 @@ function agui_stats(): string
 
 /* --- Barra de contacto --------------------------------------------------------------------- */
 
-function agui_contact_bar(bool $back = true, bool $dark = false, string $back_url = ''): string
+function agui_contact_bar(bool $back = true, bool $dark = false, string $back_url = '', bool $contact = true): string
 {
     ob_start();
     ?>
     <section class="agui-contactbar agui-reveal<?php echo $dark ? ' is-dark' : ''; ?>">
         <?php if (agui_opt('address')) : ?><p class="agui-address">📍 <?php echo esc_html(agui_opt('address')); ?></p><?php endif; ?>
-        <a class="agui-btn" href="<?php echo esc_url(home_url('/contacto/')); ?>">CONVERSÁ CON NOSOTROS</a>
+        <?php if ($contact) : ?><a class="agui-btn" href="<?php echo esc_url(home_url('/contacto/')); ?>">CONVERSÁ CON NOSOTROS</a><?php endif; ?>
         <p class="agui-small"><a href="mailto:<?php echo esc_attr(agui_opt('email_contact')); ?>"><?php echo esc_html(agui_opt('email_contact')); ?></a> - <a href="tel:+<?php echo esc_attr(preg_replace('/\D+/', '', (string) agui_opt('phone'))); ?>"><?php echo esc_html(agui_opt('phone')); ?></a></p>
         <?php if ($back) : ?><a class="agui-btn agui-btn-outline agui-back" href="<?php echo esc_url($back_url !== '' ? $back_url : home_url('/')); ?>">VOLVER</a><?php endif; ?>
     </section>

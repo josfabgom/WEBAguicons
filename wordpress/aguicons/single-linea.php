@@ -23,7 +23,7 @@ while (have_posts()) {
     $is_rental = trim((string) $m('badge_title') . (string) $m('badge_text')) !== '';
     $alq = get_page_by_path('alquiler', OBJECT, 'page');
     $fallback = $is_rental && $alq ? get_permalink($alq) : ($post->post_parent ? get_permalink($post->post_parent) : home_url('/'));
-    echo agui_contact_bar(true, true, $fallback);
+    echo agui_contact_bar(true, true, $fallback, $m('hide_contact') !== '1');
     echo '</div>';
 }
 

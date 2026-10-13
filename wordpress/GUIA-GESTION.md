@@ -19,6 +19,7 @@ Panel: `tu-dominio.com/wp-admin`. Todo se edita desde ahí, sin tocar código.
 | Agregar un sub-proyecto (ej: Benrow Acros) | **Líneas edilicias → Agregar**, y en *Atributos* elegir **Superior** = la línea principal |
 | Orden de las líneas en el carrusel de inicio | *Atributos → Orden* (número menor = primero) |
 | Cartel dorado “ALQUILER – Unidades” (y que aparezca en Alquiler) | Línea → cuadro lateral **Carrusel de inicio y cartel** |
+| Ocultar el botón “Conversá con nosotros” de un proyecto (por ejemplo, ya vendido) | Línea → cuadro lateral **Carrusel de inicio y cartel** → tildar “Ocultar el botón Conversá con nosotros” |
 | Portada del inicio (foto, título, botón), estadísticas, WhatsApp, emails, copyright | **Ajustes → Aguicons** |
 | Texto de Nosotros, Servicios, Movimiento de suelo, Alquiler, Contacto, Privacidad | **Páginas** → la página (editor normal) |
 | Fondo dorado en una página | Página → cuadro lateral **Fondo de la página** |

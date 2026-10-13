@@ -179,6 +179,7 @@ function agui_box_linea_side(WP_Post $post): void
     $show = $show === '' ? ($post->post_parent ? '0' : '1') : $show;
     ?>
     <p><label><input type="checkbox" name="agui[show_home]" value="1" <?php checked($show, '1'); ?>> Mostrar en el carrusel del inicio</label></p>
+    <p><label><input type="checkbox" name="agui[hide_contact]" value="1" <?php checked($m('hide_contact'), '1'); ?>> Ocultar el botón “Conversá con nosotros” (proyecto vendido)</label></p>
     <p class="description">La foto es la <em>imagen destacada</em>. El orden se define con “Orden” en Atributos.</p>
     <hr>
     <p><strong>Cartel dorado</strong> (ej: ALQUILER – Unidades)</p>
@@ -260,6 +261,7 @@ add_action('save_post', function ($post_id, $post) {
     if ($post->post_type === 'linea') {
         update_post_meta($post_id, '_agui_script_title', !empty($in['script_title']) ? '1' : '0');
         update_post_meta($post_id, '_agui_show_home', !empty($in['show_home']) ? '1' : '0');
+        update_post_meta($post_id, '_agui_hide_contact', !empty($in['hide_contact']) ? '1' : '0');
     }
 }, 10, 2);
 
