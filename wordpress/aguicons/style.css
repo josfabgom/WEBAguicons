@@ -531,10 +531,10 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 .agui-carousel-page.agui-prose, .single-linea .agui-carousel-page.agui-prose { max-width: 1200px; }
 
 /* Fotos del equipo dentro de los recuadros de cada área */
-.agui-team .wp-block-column > .wp-block-group:has(img) { padding: 0; min-height: 0; aspect-ratio: 3 / 4; overflow: hidden; display: block; }
+.agui-team .wp-block-column > .wp-block-group:has(img) { padding: 0; min-height: 0; aspect-ratio: 13 / 15; overflow: hidden; display: block; }
 .agui-team .wp-block-group figure { margin: 0; width: 100
 /* Fotos del equipo dentro de los recuadros de cada área */
 .agui-team .wp-block-column > .wp-block-group:has(img) { padding: 0; min-height: 0; aspect-ratio: 3 / 4; overflow: hidden; display: block; }
 .agui-team .wp-block-group figure { margin: 0; width: 100%; height: 100%; }
-.agui-team .wp-block-group img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; display: block; }
-.agui-team .wp-block-column > .wp-block-group { aspect-ratio: 3 / 4; min-height: 0; }
+.agui-team .wp-block-group img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+.agui-team .wp-block-column > .wp-block-group { aspect-ratio: 13 / 15; min-height: 0; }
