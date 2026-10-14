@@ -145,7 +145,7 @@ function agui_lines_carousel(string $title = ''): string
 
 function agui_stats(): string
 {
-    $defaults = ['stat-llave', 'stat-inversor', 'stat-edificio'];
+    $defaults = ['stat-edificio', 'stat-llave', 'stat-inversor'];
     $rows = [];
     for ($i = 1; $i <= 3; $i++) {
         $v = agui_opt("stat{$i}_value");
