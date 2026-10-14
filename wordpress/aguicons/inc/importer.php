@@ -275,7 +275,7 @@ function agui_import_content(): void
 
     $c = agui_b_para($nosotros) . '<!-- wp:paragraph --><p><strong>AGUICONS®</strong> <em>construimos tu futuro.</em></p><!-- /wp:paragraph -->' . "\n\n"
         . agui_b_team([
-            ['ÁREA COMERCIAL', 'Equipo que conecta nuestra oferta con las personas, construyendo una experiencia de venta exclusiva con nuestros clientes.'],
+            ['ÁREA COMERCIAL', 'Equipo que conecta nuestra oferta con las personas, construyendo una experiencia de venta exclusiva con nuestros clientes.', 'NOSOTROS/AREAS AGUICONS - Comer.png'],
             ['ÁREA TÉCNICA', 'Profesionales que aportan su conocimiento y experiencia para planificar, coordinar y hacer realidad cada proyecto.', 'NOSOTROS/AREAS AGUICONS - Tecn.png'],
             ['ÁREA ADMINISTRATIVA', 'Un grupo humano que aporta organización y control, gestionando los recursos económicos y financieros que sostienen el crecimiento de nuestra empresa.', 'NOSOTROS/AREAS AGUICONS - Admin.png'],
         ]);
