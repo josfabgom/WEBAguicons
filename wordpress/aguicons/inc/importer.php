@@ -136,10 +136,12 @@ function agui_b_shortcode(string $sc): string
 function agui_b_team(array $members): string
 {
     $o = '<!-- wp:columns {"className":"agui-team"} --><div class="wp-block-columns agui-team">';
-    foreach ($members as [$name, $text]) {
+    foreach ($members as $m) {
+        [$name, $text] = $m;
+        $photo = !empty($m[2]) ? agui_seed_id($m[2]) : 0;
         $o .= '<!-- wp:column --><div class="wp-block-column">';
         $o .= '<!-- wp:heading {"textAlign":"center","level":2} --><h2 class="wp-block-heading has-text-align-center">' . esc_html($name) . '</h2><!-- /wp:heading -->';
-        $o .= '<!-- wp:group {"backgroundColor":"white","layout":{"type":"constrained"}} --><div class="wp-block-group has-white-background-color has-background"></div><!-- /wp:group -->';
+        $o .= '<!-- wp:group {"backgroundColor":"white","layout":{"type":"constrained"}} --><div class="wp-block-group has-white-background-color has-background">' . ($photo ? '<!-- wp:image {"id":' . $photo . ',"sizeSlug":"large","linkDestination":"none"} --><figure class="wp-block-image size-large"><img src="' . esc_url((string) wp_get_attachment_image_url($photo, 'large')) . '" alt="' . esc_attr($name) . '" class="wp-image-' . $photo . '"/></figure><!-- /wp:image -->' : '') . '</div><!-- /wp:group -->';
         $o .= '<!-- wp:paragraph {"align":"center","fontSize":"small"} --><p class="has-text-align-center has-small-font-size">' . esc_html($text) . '</p><!-- /wp:paragraph -->';
         $o .= '</div><!-- /wp:column -->';
     }
@@ -274,8 +276,8 @@ function agui_import_content(): void
     $c = agui_b_para($nosotros) . '<!-- wp:paragraph --><p><strong>AGUICONS®</strong> <em>construimos tu futuro.</em></p><!-- /wp:paragraph -->' . "\n\n"
         . agui_b_team([
             ['ÁREA COMERCIAL', 'Equipo que conecta nuestra oferta con las personas, construyendo una experiencia de venta exclusiva con nuestros clientes.'],
-            ['ÁREA TÉCNICA', 'Profesionales que aportan su conocimiento y experiencia para planificar, coordinar y hacer realidad cada proyecto.'],
-            ['ÁREA ADMINISTRATIVA', 'Un grupo humano que aporta organización y control, gestionando los recursos económicos y financieros que sostienen el crecimiento de nuestra empresa.'],
+            ['ÁREA TÉCNICA', 'Profesionales que aportan su conocimiento y experiencia para planificar, coordinar y hacer realidad cada proyecto.', 'NOSOTROS/Tecnica.jpeg'],
+            ['ÁREA ADMINISTRATIVA', 'Un grupo humano que aporta organización y control, gestionando los recursos económicos y financieros que sostienen el crecimiento de nuestra empresa.', 'NOSOTROS/Administrativo.jpeg'],
         ]);
     agui_upsert_page('nosotros', 'Nosotros', $c, ['_agui_bg' => 'gold'], 'Más de 15 años cambiando el skyline de las ciudades. Conocé al equipo de Aguicons.');
 
