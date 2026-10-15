@@ -532,9 +532,19 @@ h1, h2, h3, h4 { font-family: var(--font); font-weight: 700; line-height: 1.2; }
 
 /* Fotos del equipo dentro de los recuadros de cada área */
 .agui-team .wp-block-column > .wp-block-group:has(img) { padding: 0; min-height: 0; aspect-ratio: 13 / 15; overflow: hidden; display: block; }
-.agui-team .wp-block-group figure { margin: 0; width: 100
-/* Fotos del equipo dentro de los recuadros de cada área */
-.agui-team .wp-block-column > .wp-block-group:has(img) { padding: 0; min-height: 0; aspect-ratio: 3 / 4; overflow: hidden; display: block; }
 .agui-team .wp-block-group figure { margin: 0; width: 100%; height: 100%; }
 .agui-team .wp-block-group img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
 .agui-team .wp-block-column > .wp-block-group { aspect-ratio: 13 / 15; min-height: 0; }
+
+/* Ventana emergente "Conversá con nosotros" */
+.agui-modal { position: fixed; inset: 0; z-index: 200; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; padding: 1rem; overflow-y: auto; }
+.agui-modal[hidden] { display: none; }
+.agui-modal-box { position: relative; width: 100%; max-width: 30rem; background: #fff; color: #000; border-radius: 14px; padding: 2rem 1.5rem 1.5rem; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); max-height: calc(100vh - 2rem); overflow-y: auto; }
+.agui-modal-box .agui-h2 { margin-top: 0; font-size: 1.15rem; text-align: center; }
+.agui-modal-box .agui-form { border: 0; padding: 0; }
+.agui-modal-box .agui-form-done { border-color: var(--gold); }
+.agui-modal-close { position: absolute; top: 0.5rem; right: 0.75rem; width: 2.25rem; height: 2.25rem; border: 0; background: none; font-size: 1.8rem; line-height: 1; cursor: pointer; color: #000; }
+body.agui-modal-open { overflow: hidden; }
+
+/* Los botones ocultos (atributo hidden) no deben mostrarse aunque tengan estilo de botón */
+.agui-form-done [hidden], .agui-btn[hidden] { display: none !important; }

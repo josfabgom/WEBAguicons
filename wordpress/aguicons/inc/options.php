@@ -48,7 +48,7 @@ function agui_option_fields(): array
     return [
         'Contacto' => [
             'whatsapp' => ['Número de WhatsApp', 'text', 'Solo números con código de país. Ej: 5493765009075. Vacío = se oculta el botón flotante.'],
-            'email_notify' => ['Email que recibe las consultas', 'text', 'A esta dirección llegan los avisos de formularios y descargas de brochure.'],
+            'email_notify' => ['Email de contacto interno (ya no recibe avisos)', 'text', 'Los formularios ya no envían email: abren WhatsApp y quedan guardados en Aguicons → Consultas.'],
             'email_contact' => ['Email público', 'text', 'Se muestra en la barra de contacto.'],
             'phone' => ['Teléfono público', 'text', ''],
             'address' => ['Dirección', 'text', ''],

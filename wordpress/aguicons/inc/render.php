@@ -188,7 +188,7 @@ function agui_contact_bar(bool $back = true, bool $dark = false, string $back_ur
     ?>
     <section class="agui-contactbar agui-reveal<?php echo $dark ? ' is-dark' : ''; ?>">
         <?php if (agui_opt('address')) : ?><p class="agui-address">📍 <?php echo esc_html(agui_opt('address')); ?></p><?php endif; ?>
-        <?php if ($contact) : ?><a class="agui-btn" href="<?php echo esc_url(home_url('/contacto/')); ?>">CONVERSÁ CON NOSOTROS</a><?php endif; ?>
+        <?php if ($contact) : ?><a class="agui-btn agui-open-lead" href="<?php echo esc_url(home_url('/contacto/')); ?>">CONVERSÁ CON NOSOTROS</a><?php endif; ?>
         <p class="agui-small"><a href="mailto:<?php echo esc_attr(agui_opt('email_contact')); ?>"><?php echo esc_html(agui_opt('email_contact')); ?></a> - <a href="tel:+<?php echo esc_attr(preg_replace('/\D+/', '', (string) agui_opt('phone'))); ?>"><?php echo esc_html(agui_opt('phone')); ?></a></p>
         <?php if ($back) : ?><a class="agui-btn agui-btn-outline agui-back" href="<?php echo esc_url($back_url !== '' ? $back_url : home_url('/')); ?>">VOLVER</a><?php endif; ?>
     </section>
@@ -376,9 +376,45 @@ function agui_lead_form(string $mode, string $project, string $title = '', int $
                 <p><strong>¡Gracias! Recibimos tus datos.</strong></p>
                 <p class="agui-form-done-text"></p>
                 <a class="agui-btn agui-form-download" href="#" download hidden>DESCARGAR BROCHURE</a>
+                <a class="agui-btn agui-form-wa" href="#" target="_blank" rel="noopener noreferrer" hidden>ABRIR WHATSAPP</a>
             </div>
         </div>
     </section>
+    <?php
+    return ob_get_clean();
+}
+
+/* --- Ventana "Conversá con nosotros" (nombre, email y teléfono; abre WhatsApp) --------------- */
+
+function agui_lead_modal(): string
+{
+    ob_start();
+    ?>
+    <div class="agui-modal" id="agui-lead-modal" role="dialog" aria-modal="true" aria-labelledby="agui-modal-title" hidden>
+        <div class="agui-modal-box agui-form-wrap">
+            <button type="button" class="agui-modal-close" aria-label="Cerrar">×</button>
+            <h2 class="agui-h2" id="agui-modal-title">Conversá con nosotros</h2>
+            <form class="agui-form" method="post" novalidate data-mode="inquiry">
+                <input type="hidden" name="mode" value="inquiry">
+                <input type="hidden" name="proyecto" value="<?php echo esc_attr(get_the_title() ?: 'Sitio web'); ?>">
+                <input type="hidden" name="line_id" value="0">
+                <input type="hidden" name="pagina" value="<?php echo esc_attr(get_permalink() ?: home_url('/')); ?>">
+                <input type="hidden" name="t" value="<?php echo esc_attr((string) time()); ?>">
+                <label>Nombre y apellido*<input name="nombre" required autocomplete="name"></label>
+                <label>Email*<input name="email" type="email" required autocomplete="email"></label>
+                <label>Teléfono<input name="telefono" type="tel" autocomplete="tel"></label>
+                <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="agui-hp">
+                <p class="agui-small">Al enviar aceptás nuestra <a href="<?php echo esc_url(agui_privacy_url()); ?>">política de privacidad</a>.</p>
+                <p class="agui-form-error" role="alert" hidden>No pudimos enviar el formulario. Probá de nuevo o escribinos por WhatsApp.</p>
+                <button type="submit" class="agui-btn">ENVIAR</button>
+            </form>
+            <div class="agui-form-done" role="status" hidden>
+                <p><strong>¡Gracias! Recibimos tus datos.</strong></p>
+                <p class="agui-form-done-text"></p>
+                <a class="agui-btn agui-form-wa" href="#" target="_blank" rel="noopener noreferrer" hidden>ABRIR WHATSAPP</a>
+            </div>
+        </div>
+    </div>
     <?php
     return ob_get_clean();
 }

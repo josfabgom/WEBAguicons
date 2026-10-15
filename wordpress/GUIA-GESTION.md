@@ -7,7 +7,7 @@ Panel: `tu-dominio.com/wp-admin`. Todo se edita desde ahí, sin tocar código.
 2. En WordPress: **Apariencia → Temas → Añadir nuevo → Subir tema** → subir `aguicons.zip` → **Activar**.
    (Si el hosting limita el tamaño de subida, descomprimir `aguicons.zip` y subir la carpeta `aguicons` por FTP a `wp-content/themes/`.)
 3. Ir a **Herramientas → Aguicons: contenido inicial** → **Cargar contenido inicial**. Sube las 49 fotos y crea páginas, líneas, menú y textos (tarda un par de minutos, se ve el avance).
-4. **Ajustes → Aguicons**: revisar WhatsApp, email que recibe las consultas, dirección y (opcional) ID de Google Analytics.
+4. **Ajustes → Aguicons**: revisar WhatsApp, dirección y (opcional) ID de Google Analytics.
 5. **Ajustes → Generales**: confirmar el título y la dirección del sitio.
 
 ## ¿Dónde cambio cada cosa?
@@ -37,9 +37,9 @@ Escribirlos en un bloque “Shortcode” del editor:
 - `[aguicons_alquiler]` tarjetas y carrusel de todo lo que tiene cartel de alquiler
 - `[aguicons_lineas]` carrusel de líneas · `[aguicons_estadisticas]` · `[aguicons_testimonios]` · `[aguicons_contacto]` barra de contacto
 
-## Avisos por email
-Las consultas llegan al email de **Ajustes → Aguicons** y además quedan guardadas en **Consultas**.
-Si los emails no llegan o caen en spam, instalar el plugin gratuito **WP Mail SMTP** y configurar una casilla del dominio (es lo único que se recomienda instalar).
+## Formularios y WhatsApp
+Al enviar el formulario de **Contacto**, la consulta queda guardada en **Consultas** y se abre WhatsApp (al número de **Ajustes → Aguicons**) con el mensaje ya escrito: nombre, email, teléfono y la consulta. La persona solo toca “Enviar” en WhatsApp. Los formularios **ya no envían email**.
+Si el navegador bloquea la ventana, la persona ve un botón **Abrir WhatsApp** para continuar.
 
 ## Analytics y cookies
 Cargar el ID `G-XXXX` en **Ajustes → Aguicons**. Solo se activa si el visitante acepta el aviso de cookies. Se registran consultas, descargas de brochure y clics en WhatsApp.

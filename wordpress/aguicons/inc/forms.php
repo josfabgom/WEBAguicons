@@ -1,6 +1,7 @@
 <?php
 /**
- * Formularios (consulta por proyecto, brochure, contacto): se guardan en "Consultas" y se avisa por email.
+ * Formularios (consulta por proyecto, brochure, contacto): se guardan en "Consultas" y, al enviar,
+ * se abre WhatsApp con los datos ya escritos (no se envía email).
  */
 
 if (!defined('ABSPATH')) {
@@ -57,17 +58,13 @@ function agui_handle_lead(): void
         }
     }
 
-    // Aviso por email
-    $to = agui_opt('email_notify') ?: get_option('admin_email');
-    $body = "Nueva consulta recibida desde el sitio web:\n\n"
-        . "Tipo: $tipo\n" . ($proyecto ? "Proyecto: $proyecto\n" : '')
-        . "Nombre: $nombre\nEmail: $email\n" . ($tel ? "Teléfono: $tel\n" : '')
-        . ($msg ? "\nMensaje:\n$msg\n" : '')
-        . ($pagina ? "\nPágina: $pagina\n" : '');
-    $headers = ['Reply-To: ' . $nombre . ' <' . $email . '>', 'Content-Type: text/plain; charset=UTF-8'];
-    wp_mail($to, '[Aguicons web] ' . $tipo . ($proyecto ? ' - ' . $proyecto : ''), $body, $headers);
-
+    // WhatsApp con los datos ya escritos (la persona solo toca "Enviar" en WhatsApp).
     $resp = ['message' => 'ok'];
+    $wa = preg_replace('/\D+/', '', (string) agui_opt('whatsapp'));
+    if ($wa && $mode !== 'brochure') {
+        $text = 'Hola, soy ' . $nombre . '. Mi email: ' . $email . '.' . ($tel !== '' ? ' Mi teléfono: ' . $tel . '.' : '') . ($msg !== '' ? ' Consulta: ' . $msg : '');
+        $resp['whatsapp'] = 'https://wa.me/' . $wa . '?text=' . rawurlencode($text);
+    }
     if ($mode === 'brochure') {
         $file = $line_id ? (int) get_post_meta($line_id, '_agui_brochure_id', true) : 0;
         if ($file) {

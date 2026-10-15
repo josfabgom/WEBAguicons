@@ -223,6 +223,34 @@
     $$('.agui-slide', track_).forEach(function (el) { el.addEventListener('click', function () { open(parseInt(el.getAttribute('data-i'), 10) || 0); }); });
   });
 
+  /* ---------- Ventana "Conversá con nosotros" ---------- */
+  (function () {
+    var modal = $('#agui-lead-modal');
+    if (!modal) return;
+    var form = $('.agui-form', modal), done = $('.agui-form-done', modal), lastFocus = null;
+    function open(e) {
+      if (e) e.preventDefault();
+      lastFocus = document.activeElement;
+      form.hidden = false; done.hidden = true;
+      $('.agui-form-error', modal).hidden = true;
+      var btn = $('button[type=submit]', form); if (btn) btn.disabled = false;
+      form.reset();
+      modal.hidden = false;
+      document.body.classList.add('agui-modal-open');
+      var first = $('input[name=nombre]', form); if (first) first.focus();
+      track('open_contact_modal', {});
+    }
+    function close() {
+      modal.hidden = true;
+      document.body.classList.remove('agui-modal-open');
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    $$('.agui-open-lead').forEach(function (a) { a.addEventListener('click', open); });
+    $('.agui-modal-close', modal).addEventListener('click', close);
+    modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) close(); });
+  })();
+
   /* ---------- Formularios ---------- */
   $$('.agui-form').forEach(function (form) {
     form.addEventListener('submit', function (e) {
@@ -234,6 +262,8 @@
       btn.disabled = true;
       var data = new FormData(form);
       data.append('action', 'agui_lead');
+      // Se abre la pestaña ahora (con el clic) para que el navegador no la bloquee; luego se carga WhatsApp.
+      var waWin = (form.getAttribute('data-mode') !== 'brochure') ? window.open('', '_blank') : null;
       fetch(window.AGUI.ajax, { method: 'POST', body: data, credentials: 'same-origin' })
         .then(function (r) { return r.json(); })
         .then(function (res) {
@@ -249,13 +279,18 @@
             } else {
               text.textContent = 'Te enviaremos el brochure por email a la brevedad.';
             }
+          } else if (res.data && res.data.whatsapp) {
+            var wa = $('.agui-form-wa', done);
+            wa.href = res.data.whatsapp; wa.hidden = false;
+            if (waWin) { waWin.location.href = res.data.whatsapp; text.textContent = 'Se abrió WhatsApp con tu consulta. Tocá “Enviar” allí para que la recibamos.'; }
+            else { text.textContent = 'Tocá el botón para abrir WhatsApp con tu consulta y enviarla.'; }
           } else {
             text.textContent = 'Un asesor se comunicará con vos a la brevedad.';
           }
           form.hidden = true; done.hidden = false;
           track('generate_lead', { project: data.get('proyecto'), lead_type: mode });
         })
-        .catch(function () { err.hidden = false; btn.disabled = false; });
+        .catch(function () { if (waWin) { waWin.close(); } err.hidden = false; btn.disabled = false; });
     });
   });
 

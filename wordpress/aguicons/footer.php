@@ -25,6 +25,8 @@ $wa_text = $topic ? 'Hola, quiero más información sobre ' . $topic . '.' : 'Ho
     </a>
 <?php endif; ?>
 
+<?php echo agui_lead_modal(); ?>
+
 <?php wp_footer(); ?>
 </body>
 </html>
