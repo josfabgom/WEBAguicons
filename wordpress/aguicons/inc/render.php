@@ -355,7 +355,7 @@ function agui_lead_form(string $mode, string $project, string $title = '', int $
     <section class="agui-section agui-reveal">
         <div class="agui-container agui-form-wrap">
             <?php if ($contact && $title === 'Conversá con nosotros') : ?>
-                <h2 class="agui-h2">Dejá tu consulta<br>acá abajo</h2>
+                <h2 class="agui-h2">Dejá tu consulta acá abajo</h2>
             <?php else : ?>
                 <h2 class="agui-h2"><?php echo esc_html($title); ?></h2>
             <?php endif; ?>
