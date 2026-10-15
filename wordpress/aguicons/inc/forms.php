@@ -26,8 +26,8 @@ function agui_handle_lead(): void
     $ip = md5($_SERVER['REMOTE_ADDR'] ?? 'x');
     $key = 'agui_rl_' . $ip;
     $count = (int) get_transient($key);
-    if ($count >= 8) {
-        wp_send_json_error(['message' => 'Demasiados envíos'], 429);
+    if ($count >= 15) {
+        wp_send_json_error(['message' => 'Demasiados envíos seguidos. Probá de nuevo en un rato o escribinos por WhatsApp.'], 429);
     }
     set_transient($key, $count + 1, HOUR_IN_SECONDS);
 
@@ -62,7 +62,10 @@ function agui_handle_lead(): void
     $resp = ['message' => 'ok'];
     $wa = preg_replace('/\D+/', '', (string) agui_opt('whatsapp'));
     if ($wa && $mode !== 'brochure') {
-        $text = 'Hola, soy ' . $nombre . '. Mi email: ' . $email . '.' . ($tel !== '' ? ' Mi teléfono: ' . $tel . '.' : '') . ($msg !== '' ? ' Consulta: ' . $msg : '');
+        // Mensaje ordenado: un dato por línea (las líneas vacías se omiten).
+        $text = 'Hola, soy ' . $nombre . '.' . "\n" . 'Email: ' . $email
+            . ($tel !== '' ? "\n" . 'Teléfono: ' . $tel : '')
+            . ($msg !== '' ? "\n" . 'Consulta: ' . $msg : '');
         $resp['whatsapp'] = 'https://wa.me/' . $wa . '?text=' . rawurlencode($text);
     }
     if ($mode === 'brochure') {

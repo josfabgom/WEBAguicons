@@ -551,3 +551,22 @@ body.agui-modal-open { overflow: hidden; }
 
 /* Formulario enviado: se oculta (el estilo del formulario no debe pisar el atributo hidden) */
 .agui-form[hidden] { display: none !important; }
+
+/* Contacto: formulario simple (nombre, mail y consulta) y acceso a "Conversá con nosotros" */
+.agui-form.is-simple { border: 0; padding: 0; gap: 0.7rem; }
+.agui-form.is-simple input:not([type='hidden']), .agui-form.is-simple textarea { margin-top: 0; font-size: 0.8rem; letter-spacing: 0.04em; text-transform: none; border-radius: 4px; }
+.agui-form.is-simple input::placeholder, .agui-form.is-simple textarea::placeholder { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: #888; }
+.agui-form.is-simple textarea { min-height: 12rem; }
+.agui-form.is-simple button[type='submit'] { align-self: center; }
+.agui-or { margin: 2rem 0 0.9rem; text-align: center; text-transform: uppercase; font-size: 1.15rem; letter-spacing: 0.04em; }
+.agui-or-btn { text-align: center; margin: 0; }
+
+/* Contacto (versión final): campos más anchos, botones ENVIAR y CHAT DIRECTO */
+.agui-form-wrap:has(.agui-form.is-simple) { max-width: 52rem; }
+.agui-form.is-simple input:not([type='hidden']), .agui-form.is-simple textarea { border: 1px solid #555; border-radius: 2px; font-size: 0.9rem; padding: 0.7rem 0.9rem; }
+.agui-form.is-simple input::placeholder, .agui-form.is-simple textarea::placeholder { font-size: 0.85rem; color: #999; }
+.agui-form.is-simple textarea { min-height: 15rem; }
+.agui-form.is-simple .agui-small { text-align: center; }
+.agui-form.is-simple button[type='submit'] { min-width: 12rem; }
+.agui-or { text-transform: none; font-size: 1rem; margin: 1.6rem 0 1.1rem; }
+.agui-chat-direct { min-width: 18rem; text-align: center; }

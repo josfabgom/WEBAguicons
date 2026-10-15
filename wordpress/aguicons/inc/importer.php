@@ -311,8 +311,7 @@ function agui_import_content(): void
         . agui_b_shortcode('[aguicons_alquiler]');
     $p_alq = agui_upsert_page('alquiler', 'Alquiler', $c, [], 'Unidades, oficinas y locales comerciales en alquiler en las líneas de Aguicons.');
 
-    $c = agui_b_para('Dejanos tu consulta y te responderemos a la brevedad.', true)
-        . agui_b_shortcode('[aguicons_contacto_form]') . agui_b_shortcode('[aguicons_mapa]');
+    $c = agui_b_shortcode('[aguicons_contacto_form]') . agui_b_shortcode('[aguicons_mapa]');
     $p_cont = agui_upsert_page('contacto', 'Contacto', $c, [], 'Contactá a Aguicons: info@aguicons.com, Av. Antártida Argentina 876, Posadas.');
 
     $c = agui_b_heading('POLÍTICA DE PRIVACIDAD');

@@ -354,18 +354,28 @@ function agui_lead_form(string $mode, string $project, string $title = '', int $
     ?>
     <section class="agui-section agui-reveal">
         <div class="agui-container agui-form-wrap">
-            <h2 class="agui-h2"><?php echo esc_html($title); ?></h2>
-            <form class="agui-form" method="post" novalidate data-mode="<?php echo esc_attr($mode); ?>">
+            <?php if ($contact && $title === 'Conversá con nosotros') : ?>
+                <h2 class="agui-h2">Dejá tu consulta<br>acá abajo</h2>
+            <?php else : ?>
+                <h2 class="agui-h2"><?php echo esc_html($title); ?></h2>
+            <?php endif; ?>
+            <form class="agui-form<?php echo $contact ? ' is-simple' : ''; ?>" method="post" novalidate data-mode="<?php echo esc_attr($mode); ?>">
                 <input type="hidden" name="mode" value="<?php echo esc_attr($mode); ?>">
                 <input type="hidden" name="proyecto" value="<?php echo esc_attr($project); ?>">
                 <input type="hidden" name="line_id" value="<?php echo (int) $line_id; ?>">
                 <input type="hidden" name="pagina" value="<?php echo esc_attr(get_permalink() ?: home_url('/')); ?>">
                 <input type="hidden" name="t" value="<?php echo esc_attr((string) time()); ?>">
-                <label>Nombre y apellido*<input name="nombre" required autocomplete="name"></label>
-                <label>Email*<input name="email" type="email" required autocomplete="email"></label>
-                <?php if (!$brochure) : ?>
-                    <label>Teléfono<input name="telefono" type="tel" autocomplete="tel"></label>
-                    <label>Mensaje<?php echo $contact ? '*' : ''; ?><textarea name="mensaje" rows="4" <?php echo $contact ? 'required' : ''; ?>></textarea></label>
+                <?php if ($contact) : ?>
+                    <input name="nombre" required autocomplete="name" placeholder="NOMBRE Y APELLIDO" aria-label="Nombre y apellido">
+                    <input name="email" type="email" required autocomplete="email" placeholder="MAIL" aria-label="Mail">
+                    <textarea name="mensaje" rows="8" required placeholder="CONSULTA" aria-label="Consulta"></textarea>
+                <?php else : ?>
+                    <label>Nombre y apellido*<input name="nombre" required autocomplete="name"></label>
+                    <label>Email*<input name="email" type="email" required autocomplete="email"></label>
+                    <?php if (!$brochure) : ?>
+                        <label>Teléfono<input name="telefono" type="tel" autocomplete="tel"></label>
+                        <label>Mensaje<textarea name="mensaje" rows="4"></textarea></label>
+                    <?php endif; ?>
                 <?php endif; ?>
                 <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="agui-hp">
                 <p class="agui-small">Al enviar aceptás nuestra <a href="<?php echo esc_url(agui_privacy_url()); ?>">política de privacidad</a>.</p>
@@ -378,6 +388,13 @@ function agui_lead_form(string $mode, string $project, string $title = '', int $
                 <a class="agui-btn agui-form-download" href="#" download hidden>DESCARGAR BROCHURE</a>
                 <a class="agui-btn agui-form-wa" href="#" target="_blank" rel="noopener noreferrer" hidden>ABRIR WHATSAPP</a>
             </div>
+            <?php if ($contact) : ?>
+                <?php $wa_num = preg_replace('/\D+/', '', (string) agui_opt('whatsapp')); ?>
+                <p class="agui-or">ó</p>
+                <?php if ($wa_num) : ?>
+                    <p class="agui-or-btn"><a class="agui-btn agui-btn-outline agui-chat-direct" href="<?php echo esc_url('https://wa.me/' . $wa_num . '?text=' . rawurlencode('Hola, quiero más información sobre Aguicons.')); ?>" target="_blank" rel="noopener noreferrer">CHAT DIRECTO</a></p>
+                <?php endif; ?>
+            <?php endif; ?>
         </div>
     </section>
     <?php

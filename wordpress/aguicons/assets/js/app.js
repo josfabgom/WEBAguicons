@@ -267,7 +267,7 @@
       fetch(window.AGUI.ajax, { method: 'POST', body: data, credentials: 'same-origin' })
         .then(function (r) { return r.json(); })
         .then(function (res) {
-          if (!res.success) throw new Error('fail');
+          if (!res.success) { var ex = new Error('fail'); ex.msg = res.data && res.data.message; throw ex; }
           var mode = form.getAttribute('data-mode');
           var done = $('.agui-form-done', form.parentNode);
           var text = $('.agui-form-done-text', done);
@@ -291,7 +291,7 @@
           form.hidden = true; done.hidden = false;
           track('generate_lead', { project: data.get('proyecto'), lead_type: mode });
         })
-        .catch(function () { if (waWin) { waWin.close(); } err.hidden = false; btn.disabled = false; });
+        .catch(function (ex) { if (waWin) { waWin.close(); } if (ex && ex.msg && /Demasiados/.test(ex.msg)) { err.textContent = ex.msg; } err.hidden = false; btn.disabled = false; });
     });
   });
 
