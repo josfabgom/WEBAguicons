@@ -548,3 +548,6 @@ body.agui-modal-open { overflow: hidden; }
 
 /* Los botones ocultos (atributo hidden) no deben mostrarse aunque tengan estilo de botón */
 .agui-form-done [hidden], .agui-btn[hidden] { display: none !important; }
+
+/* Formulario enviado: se oculta (el estilo del formulario no debe pisar el atributo hidden) */
+.agui-form[hidden] { display: none !important; }

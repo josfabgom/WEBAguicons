@@ -287,6 +287,7 @@
           } else {
             text.textContent = 'Un asesor se comunicará con vos a la brevedad.';
           }
+          form.reset();
           form.hidden = true; done.hidden = false;
           track('generate_lead', { project: data.get('proyecto'), lead_type: mode });
         })
