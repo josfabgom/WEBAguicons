@@ -244,7 +244,7 @@ function agui_import_content(): void
     $opts = get_option('aguicons_opts', []);
     $opts = is_array($opts) ? $opts : [];
     if (empty($opts['hero_image'])) {
-        $opts['hero_image'] = agui_seed_id('PORTADA/Portada final.png');
+        $opts['hero_image'] = agui_seed_id('PORTADA/Portada nueva.png');
         $opts['hero_baked'] = '1';
     }
     update_option('aguicons_opts', $opts);
@@ -280,6 +280,23 @@ function agui_import_content(): void
             ['ÁREA ADMINISTRATIVA', 'Un grupo humano que aporta organización y control, gestionando los recursos económicos y financieros que sostienen el crecimiento de nuestra empresa.', 'NOSOTROS/AREAS AGUICONS - Admin.png'],
         ]);
     agui_upsert_page('nosotros', 'Nosotros', $c, ['_agui_bg' => 'gold'], 'Más de 15 años cambiando el skyline de las ciudades. Conocé al equipo de Aguicons.');
+
+    // Primeras obras: tarjetas de ejemplo con fotos de proyectos (reemplazar por las obras reales desde Estructura del sitio).
+    if (!get_option('aguicons_obras')) {
+        $ej = [
+            ['LINEAS EDILICIAS/BARADISE/EXTERIOR/Copia de 08.png', 'Nombre', 'Desarrollo propio'],
+            ['LINEAS EDILICIAS/BENROW/BENROW ACROS/Copia de 11.png', 'Nombre', 'Servicios a terceros'],
+            ['HOME/VELERIAN/Copia de 05.png', '', ''],
+            ['HOME/TIER/Copia de 17.png', '', ''],
+        ];
+        $rows = [];
+        foreach ($ej as [$k, $n, $t]) {
+            if (agui_seed_id($k)) {
+                $rows[] = ['img' => agui_seed_id($k), 'name' => $n, 'type' => $t];
+            }
+        }
+        update_option('aguicons_obras', $rows, false);
+    }
 
     $c = agui_b_heading('CONSTRUCCIÓN');
     foreach ($servicios as $p) {
@@ -337,7 +354,7 @@ function agui_import_content(): void
     $alarif = ['HOME/ALARIF/Copia de 1.png', 'HOME/ALARIF/Copia de 2.png'];
 
     agui_upsert_line(['slug' => 'baradise', 'logo' => 'LOGOS LINEAS/baradise.png', 'title' => 'Baradise', 'order' => 1, 'script' => true, 'text' => $baradiseText,
-        'amenities' => ['Piscina', 'Solarium', 'Gimnasio', 'Sum', 'Co-working', 'Terraza Verde'], 'thumb' => 'HOME/BARADISE/Copia de 03.png',
+        'amenities' => ['Piscina', 'Solarium', 'Gimnasio', 'Sum', 'Co-working', 'Terraza Verde'], 'thumb' => 'HOME/06. PORTADAS/baradise.png',
         'gallery' => array_merge($nums('BARADISE/EXTERIOR', ['08', '10', '15', '18', '20']), $nums('BARADISE/HALL DE INGRESO', ['05', '08']), $nums('BARADISE/INTERIOR', ['01', '07', '08', '10']))]);
 
     agui_upsert_line(['slug' => 'velerian', 'hide_contact' => true, 'logo' => 'LOGOS LINEAS/velerian.png', 'title' => 'Velerian', 'order' => 2, 'thumb' => 'HOME/VELERIAN/Copia de 06.png',

@@ -14,6 +14,7 @@ while (have_posts()) {
         $gallery = array_filter(array_map('intval', explode(',', (string) get_post_meta(get_the_ID(), '_agui_gallery', true))));
         echo agui_carousel('', $gallery, true);
         ?>
+        <?php echo is_page('nosotros') ? agui_obras_section() : ''; ?>
         <?php echo agui_contact_bar(true, false, '', !is_page('contacto')); ?>
     </article>
     <?php

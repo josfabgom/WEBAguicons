@@ -223,6 +223,54 @@
     $$('.agui-slide', track_).forEach(function (el) { el.addEventListener('click', function () { open(parseInt(el.getAttribute('data-i'), 10) || 0); }); });
   });
 
+  /* ---------- Equipo (Nosotros): clic en la foto para verla grande con su descripción ---------- */
+  (function () {
+    var team = $('.agui-team');
+    if (!team) return;
+    var items = $$('.wp-block-column', team).map(function (col) {
+      var img = $('.wp-block-group img', col);
+      var p = $(':scope > p', col);
+      var h = $(':scope > .wp-block-heading', col);
+      return { group: $('.wp-block-group', col), src: img ? img.currentSrc || img.src : '', title: h ? h.textContent.trim() : '', text: p ? p.textContent.trim() : '' };
+    }).filter(function (it) { return it.src; });
+    if (!items.length) return;
+    var box = null, current = 0;
+    function render() {
+      var it = items[current];
+      $('img', box).src = it.src; $('img', box).alt = it.title;
+      $('strong', box).textContent = it.title;
+      $('figcaption span', box).textContent = it.text;
+    }
+    function close() { if (box) { box.remove(); box = null; } document.body.style.overflow = ''; document.removeEventListener('keydown', onKey); }
+    function step(d) { current = (current + d + items.length) % items.length; render(); }
+    function onKey(e) { if (e.key === 'Escape') close(); if (e.key === 'ArrowRight') step(1); if (e.key === 'ArrowLeft') step(-1); }
+    function open(i) {
+      current = i;
+      box = document.createElement('div');
+      box.className = 'agui-lightbox is-team';
+      box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', 'Equipo');
+      box.innerHTML = '<button type="button" class="agui-lb-close" aria-label="Cerrar">×</button>' +
+        '<button type="button" class="agui-lb-prev" aria-label="Anterior">‹</button>' +
+        '<figure><img alt=""><figcaption><strong></strong><span></span></figcaption></figure>' +
+        '<button type="button" class="agui-lb-next" aria-label="Siguiente">›</button>';
+      box.addEventListener('click', function (e) { if (e.target === box) close(); });
+      $('.agui-lb-close', box).addEventListener('click', close);
+      $('.agui-lb-prev', box).addEventListener('click', function (e) { e.stopPropagation(); step(-1); });
+      $('.agui-lb-next', box).addEventListener('click', function (e) { e.stopPropagation(); step(1); });
+      document.body.appendChild(box);
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', onKey);
+      render();
+    }
+    items.forEach(function (it, i) {
+      it.group.setAttribute('tabindex', '0');
+      it.group.setAttribute('role', 'button');
+      it.group.setAttribute('aria-label', 'Ver foto grande: ' + it.title);
+      it.group.addEventListener('click', function () { open(i); });
+      it.group.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); } });
+    });
+  })();
+
   /* ---------- Ventana "Conversá con nosotros" ---------- */
   (function () {
     var modal = $('#agui-lead-modal');

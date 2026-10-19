@@ -401,6 +401,56 @@ function agui_lead_form(string $mode, string $project, string $title = '', int $
     return ob_get_clean();
 }
 
+/* --- Primeras obras (Nosotros): carrusel con nombre y tipo sobre cada foto -------------------- */
+
+/** Lista de obras cargadas desde Estructura del sitio: [['img' => id, 'name' => '', 'type' => ''], ...] */
+function agui_obras(): array
+{
+    $rows = get_option('aguicons_obras', []);
+    $out = [];
+    foreach ((array) $rows as $r) {
+        if (!empty($r['img'])) {
+            $out[] = ['img' => (int) $r['img'], 'name' => (string) ($r['name'] ?? ''), 'type' => (string) ($r['type'] ?? '')];
+        }
+    }
+    return $out;
+}
+
+function agui_obras_section(): string
+{
+    $obras = agui_obras();
+    if (!$obras) {
+        return '';
+    }
+    ob_start();
+    ?>
+    <section class="agui-section agui-obras agui-reveal">
+        <div class="agui-container">
+            <h2 class="agui-h2">PRIMERAS OBRAS</h2>
+            <div class="agui-obras-frame">
+                <div class="agui-carousel-wrap">
+                    <button type="button" class="agui-arrow agui-arrow-prev" aria-label="Anterior">‹</button>
+                    <button type="button" class="agui-arrow agui-arrow-next" aria-label="Siguiente">›</button>
+                    <div class="agui-carousel agui-gallery-track" data-speed="90">
+                        <?php foreach ($obras as $i => $o) :
+                            $full = wp_get_attachment_image_url($o['img'], 'full');
+                            ?>
+                            <button type="button" class="agui-slide agui-obra" data-full="<?php echo esc_url($full); ?>" aria-label="Ampliar: <?php echo esc_attr($o['name'] ?: 'obra ' . ($i + 1)); ?>">
+                                <?php echo agui_img($o['img'], 'agui-slide', ['draggable' => 'false', 'loading' => $i < 4 ? 'eager' : 'lazy', 'alt' => $o['name']]); ?>
+                                <?php if ($o['name'] !== '' || $o['type'] !== '') : ?>
+                                    <span class="agui-obra-cap"><?php if ($o['name'] !== '') : ?><strong><?php echo esc_html($o['name']); ?></strong><?php endif; ?><?php if ($o['type'] !== '') : ?><em><?php echo esc_html($o['type']); ?></em><?php endif; ?></span>
+                                <?php endif; ?>
+                            </button>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
+}
+
 /* --- Ventana "Conversá con nosotros" (nombre, email y teléfono; abre WhatsApp) --------------- */
 
 function agui_lead_modal(): string

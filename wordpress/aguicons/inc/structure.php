@@ -106,6 +106,27 @@ function agui_structure_page(): void
                 <?php endforeach; ?>
             </div>
 
+            <div class="agui-box" id="primeras-obras">
+                <h2>Primeras obras (página Nosotros)</h2>
+                <p class="description">Cada fila es una tarjeta del carrusel: foto, nombre y tipo (por ejemplo “Desarrollo propio” o “Servicios a terceros”). Las filas sin foto se ignoran. Se muestran en el orden de la lista.</p>
+                <?php
+                $obras_rows = get_option('aguicons_obras', []);
+                $obras_rows = is_array($obras_rows) ? array_values($obras_rows) : [];
+                $n_rows = max(8, count($obras_rows) + 2);
+                for ($i = 0; $i < $n_rows; $i++) :
+                    $r = $obras_rows[$i] ?? ['img' => 0, 'name' => '', 'type' => ''];
+                    ?>
+                    <div class="agui-obra-row" style="border-top:1px solid #ddd;padding:.75rem 0">
+                        <strong>Obra <?php echo (int) ($i + 1); ?></strong>
+                        <?php agui_field_image('obras[' . $i . '][img]', (int) ($r['img'] ?? 0), 'Foto', ''); ?>
+                        <div class="agui-grid">
+                            <p><label><strong>Nombre</strong><input type="text" name="obras[<?php echo (int) $i; ?>][name]" class="large-text" value="<?php echo esc_attr((string) ($r['name'] ?? '')); ?>"></label></p>
+                            <p><label><strong>Tipo</strong><input type="text" name="obras[<?php echo (int) $i; ?>][type]" class="large-text" value="<?php echo esc_attr((string) ($r['type'] ?? '')); ?>" placeholder="Desarrollo propio / Servicios a terceros"></label></p>
+                        </div>
+                    </div>
+                <?php endfor; ?>
+            </div>
+
             <div class="agui-box">
                 <h2>Contacto y pie de página</h2>
                 <div class="agui-grid">
@@ -154,6 +175,17 @@ add_action('admin_post_agui_structure_save', function () {
             update_post_meta((int) $pid, '_agui_gallery', implode(',', $clean));
         }
     }
+
+    // Primeras obras (Nosotros)
+    $obras = [];
+    foreach ((array) ($_POST['obras'] ?? []) as $r) {
+        $r = is_array($r) ? wp_unslash($r) : [];
+        $img = (int) ($r['img'] ?? 0);
+        if ($img) {
+            $obras[] = ['img' => $img, 'name' => sanitize_text_field($r['name'] ?? ''), 'type' => sanitize_text_field($r['type'] ?? '')];
+        }
+    }
+    update_option('aguicons_obras', $obras, false);
 
     // Orden y visibilidad del carrusel
     $order = array_map('intval', (array) ($_POST['lines_order'] ?? []));

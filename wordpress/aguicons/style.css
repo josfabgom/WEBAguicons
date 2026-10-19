@@ -570,3 +570,45 @@ body.agui-modal-open { overflow: hidden; }
 .agui-form.is-simple button[type='submit'] { min-width: 12rem; }
 .agui-or { text-transform: none; font-size: 1rem; margin: 1.6rem 0 1.1rem; }
 .agui-chat-direct { min-width: 18rem; text-align: center; }
+
+/* Primeras obras (Nosotros): marco con tarjetas verticales y nombre/tipo sobre la foto */
+.agui-obras .agui-container { max-width: 1200px; }
+.agui-obras-frame { border: 1px solid rgba(255, 255, 255, 0.85); padding: 0.9rem; }
+.agui-obras .agui-slide.agui-obra { position: relative; display: block; height: auto; width: calc((100% - 3rem) / 4); aspect-ratio: 4 / 5; overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.35); }
+.agui-obras .agui-slide.agui-obra img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 0; box-shadow: none; }
+.agui-obra-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.2rem 0.5rem 0.9rem; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; text-align: center; color: #fff; background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0)); }
+.agui-obra-cap strong { font-size: 1.1rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.agui-obra-cap em { font-style: normal; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; }
+@media (max-width: 720px) { .agui-obras .agui-slide.agui-obra { width: calc((100% - 1rem) / 1.6); } }
+
+/* Portada: se ve la foto completa (más cielo y más agua) y la franja blanca de arriba se desvanece más rápido */
+.agui-banner.has-title .agui-banner-img { max-height: none; object-position: 50% 50%; }
+.agui-banner.has-title .agui-banner-fade { height: 8rem; background: linear-gradient(to bottom, #fff 0%, #fff 38%, rgba(255, 255, 255, 0.8) 52%, rgba(255, 255, 255, 0.35) 76%, rgba(255, 255, 255, 0) 100%); }
+
+/* Equipo (Nosotros): fotos más grandes (la franja del equipo ocupa más ancho) y descripción siempre visible */
+.agui-team { width: min(1280px, calc(100vw - 2rem)); max-width: none; margin-left: 50%; transform: translateX(-50%); gap: 1.75rem; }
+.agui-team .wp-block-column { position: relative; transition: transform 0.4s ease; }
+.agui-team .wp-block-column > .wp-block-group { overflow: hidden; position: relative; cursor: zoom-in; transition: box-shadow 0.4s ease; }
+.agui-team .wp-block-group img { transition: transform 0.7s ease, filter 0.4s ease; }
+@media (hover: hover) {
+  .agui-team .wp-block-column:hover { transform: translateY(-8px); }
+  .agui-team .wp-block-column:hover > .wp-block-group { box-shadow: 0 0 0 3px #fff, 0 16px 28px rgba(0, 0, 0, 0.3); }
+  .agui-team .wp-block-column:hover .wp-block-group img { transform: scale(1.07); filter: brightness(1.05); }
+}
+.agui-team .wp-block-column > .wp-block-group:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .agui-team .wp-block-column, .agui-team .wp-block-group img { transition: none; } }
+@media (max-width: 781px) { .agui-team { width: 100%; margin-left: 0; transform: none; } }
+
+/* Portada: cubre todo el ancho; en pantallas grandes la altura se limita (se recorta un poco arriba y abajo) para que no quede enorme */
+.agui-banner.has-title .agui-banner-img { max-height: min(88vh, 880px); object-fit: cover; object-position: 50% 62%; }
+
+/* Equipo: foto ampliada con su descripción debajo */
+.agui-lightbox.is-team { flex-direction: column; gap: 0.9rem; }
+.agui-lightbox.is-team figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 0.9rem; max-width: 92vw; }
+.agui-lightbox.is-team img { max-height: 68vh; }
+.agui-lightbox.is-team figcaption { color: #fff; text-align: center; max-width: 46rem; padding: 0 1rem; }
+.agui-lightbox.is-team figcaption strong { display: block; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.35rem; }
+.agui-lightbox.is-team figcaption span { font-size: 0.95rem; line-height: 1.5; }
+.agui-lightbox.is-team .agui-lb-close { top: 1rem; right: 1rem; }
+.agui-lightbox.is-team .agui-lb-prev { left: 1rem; top: 50%; transform: translateY(-50%); }
+.agui-lightbox.is-team .agui-lb-next { right: 1rem; top: 50%; transform: translateY(-50%); }
