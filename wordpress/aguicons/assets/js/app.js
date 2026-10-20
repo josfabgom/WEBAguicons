@@ -189,6 +189,13 @@
       if (!box) return;
       $('img', box).src = slides[current].getAttribute('data-full');
       $('.agui-lb-count', box).textContent = (current + 1) + ' / ' + slides.length;
+      // Si la foto trae nombre y tipo (Primeras obras), se muestran debajo de la imagen ampliada.
+      var cap = $('.agui-obra-cap', slides[current]);
+      var capBox = $('.agui-lb-caption', box);
+      var nm = cap ? $('strong', cap) : null, tp = cap ? $('em', cap) : null;
+      $('strong', capBox).textContent = nm ? nm.textContent : '';
+      $('span', capBox).textContent = tp ? tp.textContent : '';
+      box.classList.toggle('has-caption', !!(nm || tp));
     }
     function close() {
       if (box) { box.remove(); box = null; }
@@ -209,7 +216,7 @@
       box.setAttribute('aria-modal', 'true');
       box.setAttribute('aria-label', 'Galería de imágenes');
       box.innerHTML = '<button type="button" class="agui-lb-close" aria-label="Cerrar">×</button>' +
-        '<button type="button" class="agui-lb-prev" aria-label="Anterior">‹</button><img alt="">' +
+        '<button type="button" class="agui-lb-prev" aria-label="Anterior">‹</button><img alt=""><div class="agui-lb-caption"><strong></strong><span></span></div>' +
         '<button type="button" class="agui-lb-next" aria-label="Siguiente">›</button><span class="agui-lb-count"></span>';
       box.addEventListener('click', function (e) { if (e.target === box) close(); });
       $('.agui-lb-close', box).addEventListener('click', close);

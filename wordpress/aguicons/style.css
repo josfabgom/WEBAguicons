@@ -612,3 +612,11 @@ body.agui-modal-open { overflow: hidden; }
 .agui-lightbox.is-team .agui-lb-close { top: 1rem; right: 1rem; }
 .agui-lightbox.is-team .agui-lb-prev { left: 1rem; top: 50%; transform: translateY(-50%); }
 .agui-lightbox.is-team .agui-lb-next { right: 1rem; top: 50%; transform: translateY(-50%); }
+
+/* Foto ampliada de una obra: nombre y tipo debajo de la imagen */
+.agui-lb-caption { display: none; color: #fff; text-align: center; max-width: 46rem; padding: 0 1rem; }
+.agui-lb-caption strong { display: block; font-size: 1.15rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.agui-lb-caption span { display: block; margin-top: 0.3rem; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; }
+.agui-lightbox.has-caption { flex-direction: column; gap: 0.9rem; padding-bottom: 3rem; }
+.agui-lightbox.has-caption img { max-height: 74vh; }
+.agui-lightbox.has-caption .agui-lb-caption { display: block; }

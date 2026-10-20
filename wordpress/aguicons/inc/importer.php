@@ -281,16 +281,47 @@ function agui_import_content(): void
         ]);
     agui_upsert_page('nosotros', 'Nosotros', $c, ['_agui_bg' => 'gold'], 'Más de 15 años cambiando el skyline de las ciudades. Conocé al equipo de Aguicons.');
 
-    // Primeras obras: tarjetas de ejemplo con fotos de proyectos (reemplazar por las obras reales desde Estructura del sitio).
+    // Primeras obras (Nosotros): antecedentes propios y obras de construcción para terceros, con nombre y período.
     if (!get_option('aguicons_obras')) {
-        $ej = [
-            ['LINEAS EDILICIAS/BARADISE/EXTERIOR/Copia de 08.png', 'Nombre', 'Desarrollo propio'],
-            ['LINEAS EDILICIAS/BENROW/BENROW ACROS/Copia de 11.png', 'Nombre', 'Servicios a terceros'],
-            ['HOME/VELERIAN/Copia de 05.png', '', ''],
-            ['HOME/TIER/Copia de 17.png', '', ''],
+        $obras = [
+            ['OBRAS/Nueva Bahía 2010-2011.JPG', 'Nueva Bahía', 'Desarrollo propio · 2010-2011'],
+            ['OBRAS/Bahia Azul -2012-2013.JPG', 'Bahía Azul', 'Desarrollo propio · 2012-2013'],
+            ['OBRAS/Bahia Itá 2014-2017.JPG', 'Bahía Itá', 'Desarrollo propio · 2014-2017'],
+            ['OBRAS/Edificio Multifamiliar 2009-2011.JPG', 'Edificio Multifamiliar', 'Servicios a terceros · 2009-2011'],
+            ['OBRAS/Barrio de Vivienda - Santa  Helena 2010-2012.JPG', 'Barrio de Viviendas Santa Helena', 'Servicios a terceros · 2010-2012'],
+            ['OBRAS/Escuela Tecnica- el dorado 2 2010-2011.jpg', 'Escuela Técnica El Dorado', 'Servicios a terceros · 2010-2011'],
+            ['OBRAS/Escuela Tecnica- el dorado 2010-2011.jpg', 'Escuela Técnica El Dorado', 'Servicios a terceros · 2010-2011'],
+            ['OBRAS/plaza 2011.JPG', 'Plaza', 'Servicios a terceros · 2011'],
+            ['OBRAS/Edificio Multifamiliar 2-2011-2013.JPG', 'Edificio Multifamiliar', 'Servicios a terceros · 2011-2013'],
+            ['OBRAS/Edificio Multifamiliar 6 -1-2011-2013.jpg', 'Edificio Multifamiliar', 'Servicios a terceros · 2011-2013'],
+            ['OBRAS/Edificio Multifamiliar 6 2011-2013.JPG', 'Edificio Multifamiliar', 'Servicios a terceros · 2011-2013'],
+            ['OBRAS/Edificio Multifamiliar 0. 2013-2015.jpg', 'Edificio Multifamiliar', 'Servicios a terceros · 2013-2015'],
+            ['OBRAS/Edificio Multifamiliar 0.1 2013-2015.JPG', 'Edificio Multifamiliar', 'Servicios a terceros · 2013-2015'],
+            ['OBRAS/Edificio Multifamiliar 2014-2015.JPG', 'Edificio Multifamiliar', 'Servicios a terceros · 2014-2015'],
+            ['OBRAS/Edificio Multifamiliar 3-2014-2017.jpeg', 'Edificio Multifamiliar', 'Servicios a terceros · 2014-2017'],
+            ['OBRAS/Vivienta Unifamiliar 01 2014.jpg', 'Vivienda Unifamiliar', 'Servicios a terceros · 2014'],
+            ['OBRAS/Vivienta Unifamiliar 01-1 2014.jpeg', 'Vivienda Unifamiliar', 'Servicios a terceros · 2014'],
+            ['OBRAS/Edificio Multifamiliar 2015-2017.JPG', 'Edificio Multifamiliar', 'Servicios a terceros · 2015-2017'],
+            ['OBRAS/Edificio Multifamiliar 4.1- 2015-2018.JPG', 'Edificio Multifamiliar', 'Servicios a terceros · 2015-2018'],
+            ['OBRAS/Edificio Multifamiliar 5 2015-2017.JPG', 'Edificio Multifamiliar', 'Servicios a terceros · 2015-2017'],
+            ['OBRAS/Edificio Multifamiliar 7- 2015-2017.JPG', 'Edificio Multifamiliar', 'Servicios a terceros · 2015-2017'],
+            ['OBRAS/Hospital- San Pedro 2015-2017.JPG', 'Hospital San Pedro', 'Servicios a terceros · 2015-2017'],
+            ['OBRAS/BANCO MACRO- Itaembe Mini 2015-2016.jpg', 'Banco Macro Itaembé Mini', 'Servicios a terceros · 2015-2016'],
+            ['OBRAS/Local Comercial 2021.jpg', 'Local Comercial', 'Servicios a terceros · 2021'],
+            ['OBRAS/Escuela Especial - Posadas 2023.JPG', 'Escuela Especial Posadas', 'Servicios a terceros · 2023'],
+            ['OBRAS/Edificio Multifamiliar 8 .1.2.jpg', 'Edificio Multifamiliar', 'Servicios a terceros'],
+            ['OBRAS/Edificio Multifamiliar 8.jpg', 'Edificio Multifamiliar', 'Servicios a terceros'],
+            ['OBRAS/BANCO MACRO - San antonio.JPG', 'Banco Macro San Antonio', 'Servicios a terceros'],
+            ['OBRAS/Ampliacion de Escuela.JPG', 'Ampliación de Escuela', 'Servicios a terceros'],
+            ['OBRAS/Edificio Ministerio del Agro.JPG', 'Edificio Ministerio del Agro', 'Servicios a terceros'],
+            ['OBRAS/Escuela - GRAMADO 1.JPG', 'Escuela Gramado', 'Servicios a terceros'],
+            ['OBRAS/Escuela - GRAMADO 1.1.JPG', 'Escuela Gramado', 'Servicios a terceros'],
+            ['OBRAS/Escuela - GRAMADO 1.3.JPG', 'Escuela Gramado', 'Servicios a terceros'],
+            ['OBRAS/Escuela- ITAEMBE GUAZU.JPG', 'Escuela Itaembé Guazú', 'Servicios a terceros'],
+            ['OBRAS/Vivienda Unifamiliar.jpeg', 'Vivienda Unifamiliar', 'Servicios a terceros'],
         ];
         $rows = [];
-        foreach ($ej as [$k, $n, $t]) {
+        foreach ($obras as [$k, $n, $t]) {
             if (agui_seed_id($k)) {
                 $rows[] = ['img' => agui_seed_id($k), 'name' => $n, 'type' => $t];
             }
