@@ -66,9 +66,6 @@
  "LINEAS EDILICIAS/BENROW/BENROW/BENROW.jpeg": "benrow-aerea.webp",
  "LINEAS EDILICIAS/ALARIF/ALARIF.png": "alarif-torre.webp",
  "LINEAS EDILICIAS/ALARIF/ALARIF TRENCH.png": "alarif-trench-torre.webp",
- "NOSOTROS/AREAS AGUICONS - Tecn.png": "nosotros-area-tecnica.webp",
- "NOSOTROS/AREAS AGUICONS - Admin.png": "nosotros-area-admin.webp",
- "NOSOTROS/AREAS AGUICONS - Comer.png": "nosotros-area-comercial.webp",
  "HOME/06. PORTADAS/baradise.png": "home-baradise-portada.webp",
  "PORTADA/Portada nueva.png": "portada-nueva.webp",
  "OBRAS/Nueva Bahía 2010-2011.JPG": "obra-01.webp",
@@ -105,5 +102,8 @@
  "OBRAS/Escuela- ITAEMBE GUAZU.JPG": "obra-32.webp",
  "OBRAS/Escuela Especial - Posadas 2023.JPG": "obra-33.webp",
  "OBRAS/Local Comercial 2021.jpg": "obra-34.webp",
- "OBRAS/Vivienda Unifamiliar.jpeg": "obra-35.webp"
+ "OBRAS/Vivienda Unifamiliar.jpeg": "obra-35.webp",
+ "NOSOTROS/COMERCIAL.png": "nosotros-equipo-comercial-v2.webp",
+ "NOSOTROS/TECNICA.png": "nosotros-equipo-tecnica-v2.webp",
+ "NOSOTROS/ADMINISTRATIVA.png": "nosotros-equipo-administrativa-v2.webp"
 }

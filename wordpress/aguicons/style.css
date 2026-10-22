@@ -620,3 +620,17 @@ body.agui-modal-open { overflow: hidden; }
 .agui-lightbox.has-caption { flex-direction: column; gap: 0.9rem; padding-bottom: 3rem; }
 .agui-lightbox.has-caption img { max-height: 74vh; }
 .agui-lightbox.has-caption .agui-lb-caption { display: block; }
+
+/* Celular (se ve bien dentro de Instagram): solo afecta pantallas angostas; en computadora no cambia nada */
+@media (max-width: 781px) {
+  /* Botón de WhatsApp más chico y pegado al borde para no tapar botones ni textos; en Contacto se oculta (ya está CHAT DIRECTO) */
+  .agui-whatsapp { width: 46px; height: 46px; right: 0.6rem; bottom: 0.9rem; }
+  .agui-whatsapp svg { width: 26px; height: 26px; }
+  .agui-whatsapp.is-hidden-mobile { display: none; }
+  .agui-footer { padding-bottom: 4rem; }
+  /* Portada un poco más alta (el título ya viene dibujado en la foto, por eso el recorte es chico) */
+  .agui-banner.has-title .agui-banner-img { aspect-ratio: 16 / 10; object-position: 50% 55%; }
+  /* Período de cada obra en un solo renglón */
+  .agui-obra-cap em { font-size: 0.5rem; letter-spacing: 0.04em; white-space: nowrap; }
+  .agui-obra-cap strong { font-size: 0.95rem; letter-spacing: 0.08em; }
+}
