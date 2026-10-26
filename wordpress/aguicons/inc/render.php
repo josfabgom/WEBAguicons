@@ -41,8 +41,10 @@ function agui_lines(array $args = []): array
 /** Nombre de una línea: el logo con su tipografía (en blanco por CSS) si lo tiene; si no, el texto. */
 function agui_line_name_html(WP_Post $p, string $name = ''): string
 {
+    $override = $name !== '' && mb_strtolower(trim($name)) !== mb_strtolower(trim($p->post_title));
     $name = trim($name !== '' ? $name : $p->post_title);
-    $logo = (int) get_post_meta($p->ID, '_agui_logo_id', true);
+    // Con un nombre distinto (ej. "Alarif" en Alquiler) no se usa el logo propio sino el de la línea que coincide con ese nombre.
+    $logo = $override ? 0 : (int) get_post_meta($p->ID, '_agui_logo_id', true);
     $suffix = '';
     if (!$logo && $p->post_parent) {
         $parent = get_post($p->post_parent);
@@ -253,7 +255,7 @@ function agui_cards(string $title, array $posts, bool $whatsapp = false): string
                                 echo get_the_post_thumbnail($p, 'agui-card', ['loading' => 'lazy', 'decoding' => 'async', 'alt' => $p->post_title]);
                             } ?>
                             <span class="agui-card-name"><?php echo agui_line_name_html($p, $whatsapp ? (string) get_post_meta($p->ID, '_agui_rental_name', true) : ''); ?></span>
-                            <?php echo agui_badge($p->ID); ?>
+                            <?php echo $whatsapp ? agui_badge($p->ID) : ''; // el cartel dorado va solo en la página de Alquiler ?>
                         </a>
                     <?php endforeach; ?>
                 </div>
