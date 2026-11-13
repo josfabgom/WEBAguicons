@@ -187,6 +187,8 @@ function agui_box_linea_side(WP_Post $post): void
     <p><input type="text" name="agui[badge_text]" class="widefat" value="<?php echo esc_attr($m('badge_text')); ?>" placeholder="Unidades"></p>
     <p><input type="text" name="agui[rental_name]" class="widefat" value="<?php echo esc_attr($m('rental_name')); ?>" placeholder="Nombre en la página Alquiler (si es distinto)"></p>
     <p class="description">Las líneas con cartel aparecen en la página de Alquiler.</p>
+    <hr>
+    <?php agui_field_file('agui[manual_id]', (int) $m('manual_id'), 'Manual de usuario (PDF)', 'El botón “Descargar – Manual de Usuario” aparece siempre debajo del texto. Sin archivo, al tocarlo avisa que todavía no está disponible.'); ?>
     <?php
 }
 
@@ -249,7 +251,7 @@ add_action('save_post', function ($post_id, $post) {
             update_post_meta($post_id, '_agui_' . $k, sanitize_textarea_field($in[$k]));
         }
     }
-    foreach (['logo_id', 'brochure_id'] as $k) {
+    foreach (['logo_id', 'brochure_id', 'manual_id'] as $k) {
         if (array_key_exists($k, $in)) {
             update_post_meta($post_id, '_agui_' . $k, (int) $in[$k]);
         }

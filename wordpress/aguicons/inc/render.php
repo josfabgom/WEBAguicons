@@ -217,6 +217,22 @@ function agui_line_intro(WP_Post $post): string
                 <h1 class="agui-intro-title<?php echo $m('script_title') === '1' ? ' is-script' : ''; ?>"><?php echo esc_html($post->post_title); ?></h1>
             <?php endif; ?>
             <div class="agui-intro-text"><?php foreach ($paras as $p) : ?><p><?php echo esc_html($p); ?></p><?php endforeach; ?></div>
+            <?php
+            // El botón es de los edificios: se muestra en los edificios y en las líneas que son un solo edificio,
+            // pero no en las líneas que agrupan varios edificios (Benrow, Tier, Alarif).
+            $es_linea_con_edificios = !$post->post_parent && count(get_children(['post_parent' => $post->ID, 'post_type' => 'linea', 'post_status' => 'publish', 'fields' => 'ids'])) > 0;
+            $manual_url = (int) $m('manual_id') ? wp_get_attachment_url((int) $m('manual_id')) : '';
+            if (!$es_linea_con_edificios) : ?>
+            <div class="agui-manual">
+                <span class="agui-manual-label">DESCARGAR</span>
+                <?php if ($manual_url) : ?>
+                    <a class="agui-manual-btn" href="<?php echo esc_url($manual_url); ?>" target="_blank" rel="noopener" download data-project="<?php echo esc_attr($post->post_title); ?>">Manual de Usuario</a>
+                <?php else : ?>
+                    <button type="button" class="agui-manual-btn is-pending" aria-expanded="false" data-project="<?php echo esc_attr($post->post_title); ?>">Manual de Usuario</button>
+                    <span class="agui-manual-note" role="status" hidden>El manual de usuario de este edificio todavía no está disponible. Pronto vas a poder descargarlo acá.</span>
+                <?php endif; ?>
+            </div>
+            <?php endif; ?>
             <?php if ($amen) : ?>
                 <ul class="agui-amenities"><?php foreach ($amen as $a) : ?><li><?php echo esc_html($a); ?></li><?php endforeach; ?></ul>
             <?php endif; ?>

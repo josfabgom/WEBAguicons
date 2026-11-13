@@ -278,6 +278,19 @@
     });
   })();
 
+  /* ---------- Manual de Usuario: se registra la descarga; si todavía no hay PDF, se avisa ---------- */
+  $$('.agui-manual-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (btn.classList.contains('is-pending')) {
+        var note = $('.agui-manual-note', btn.parentNode);
+        if (note) { note.hidden = !note.hidden; btn.setAttribute('aria-expanded', note.hidden ? 'false' : 'true'); }
+        track('manual_sin_archivo', { project: btn.getAttribute('data-project') || '' });
+        return;
+      }
+      track('file_download', { project: btn.getAttribute('data-project') || '', file_name: 'manual_de_usuario' });
+    });
+  });
+
   /* ---------- Ventana "Conversá con nosotros" ---------- */
   (function () {
     var modal = $('#agui-lead-modal');
