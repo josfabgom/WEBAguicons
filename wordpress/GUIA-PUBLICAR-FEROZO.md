@@ -121,7 +121,7 @@ Se hace con un plugin de migración (por ejemplo *All-in-One WP Migration* o *Du
 
 # Actualizar un sitio que ya está en Ferozo con la versión nueva
 
-Para cuando el tema Aguicons ya está activo en `aguicons.com` y se quiere llevar lo último (textos de líneas y edificios, Nosotros con fotos y obras, portada nueva, botón de Manual de Usuario, etc.). El archivo es `wordpress/aguicons.zip` (unos 13 MB).
+Para cuando el tema Aguicons ya está activo en `aguicons.com` y se quiere llevar lo último (textos de líneas y edificios, Nosotros con fotos y obras, portada nueva, botón de Manual de Usuario, etc.). El archivo es `wordpress/aguicons.zip` (unos 25 MB).
 
 ## A. Antes de empezar
 1. **Copia de seguridad** de archivos y base de datos (Paso 1 de esta guía). No se salta.
@@ -130,11 +130,11 @@ Para cuando el tema Aguicons ya está activo en `aguicons.com` y se quiere lleva
 ## B. Subir el tema nuevo
 1. En WordPress: Apariencia → Temas → Añadir nuevo → **Subir tema** → elegir `aguicons.zip`.
 2. Como ya existe un tema "Aguicons", WordPress ofrece **"Reemplazar el actual con el cargado"**. Elegí esa opción.
-3. Si dice "Archivo incompatible" o falla por tamaño: pedir a Ferozo que suba el límite de subida a 32 MB, o subir por FTP la carpeta `aguicons` a `wp-content/themes/` (pisando la anterior).
+3. Si dice "Archivo incompatible" o falla por tamaño: pedir a Ferozo que suba el límite de subida a 64 MB, o subir por FTP la carpeta `aguicons` a `wp-content/themes/` (pisando la anterior).
 
 ## C. Cargar el contenido nuevo
-1. Herramientas → **"Aguicons: contenido inicial"** → botón. Esperá a que termine (sube unas 130 fotos; no cierres la pestaña).
-2. Qué hace: vuelve a escribir los textos de las páginas iniciales (Inicio, Nosotros, Contacto, Alquiler, etc.), los textos y fotos de las líneas y edificios, el menú y las obras de Nosotros (si solo tenía las de ejemplo). **No pisa** los datos de contacto, el WhatsApp ni las obras que se hayan editado a mano.
+1. Herramientas → **"Aguicons: contenido inicial"** → botón. Esperá a que termine (sube unas 160 fotos y puede tardar varios minutos; no cierres la pestaña).
+2. Qué hace: vuelve a escribir los textos de las páginas iniciales (Inicio, Nosotros, Contacto, Alquiler, etc.), los textos y fotos de las líneas y edificios, el menú y las obras de Nosotros (si solo tenía las de ejemplo). Las galerías de fotos de cada línea y edificio se reemplazan por las nuevas **una sola vez**; después se editan desde el panel y no se pisan. **No pisa** los datos de contacto, el WhatsApp ni las obras que se hayan editado a mano.
 3. Si alguna página tuvo cambios hechos a mano en WordPress, se pierden: por eso va la copia de seguridad.
 
 ## D. Ajustes que hay que revisar a mano (la carga no los toca)
@@ -153,7 +153,8 @@ Si todavía están activos, pueden duplicar cosas o tapar el diseño nuevo:
 ## F. Revisión final (con Ctrl+F5, en computadora y en celular)
 - [ ] Inicio: portada nueva a todo el ancho, carrusel de líneas, estadísticas nuevas.
 - [ ] Nosotros: texto nuevo, áreas en orden Administrativa, Técnica, Comercial, con sus fotos, y "Primeras obras" con 30 obras.
-- [ ] Líneas y edificios: texto real en todos, logos blancos, botón "Manual de Usuario" solo en edificios.
+- [ ] Líneas y edificios: texto real, logo blanco y carrusel con fotos nuevas en todos (incluidos Benrow y Alarif edificio), botón "Manual de Usuario" solo en edificios.
+- [ ] Pendiente de fotos: AMENITIES de Baradise y Velerian (cuando el cliente las envíe).
 - [ ] Alquiler: 4 tarjetas con cartelito dorado (solo ahí) y botón de WhatsApp que abre el chat con el mensaje.
 - [ ] Contacto: formulario simple y CHAT DIRECTO; al enviar queda guardada la consulta (Aguicons → Consultas) y se abre WhatsApp.
 - [ ] Un solo botón verde de WhatsApp en pantalla (en Contacto, en celular, no aparece).
