@@ -116,3 +116,48 @@ Se hace con un plugin de migración (por ejemplo *All-in-One WP Migration* o *Du
 - Con la copia del Paso 1 se vuelve al estado anterior.
 - No borres la carpeta `/public_html/` ni la base de datos sin tener la copia.
 - Si no estás seguro de un paso, pará y consultá antes de seguir.
+
+---
+
+# Actualizar un sitio que ya está en Ferozo con la versión nueva
+
+Para cuando el tema Aguicons ya está activo en `aguicons.com` y se quiere llevar lo último (textos de líneas y edificios, Nosotros con fotos y obras, portada nueva, botón de Manual de Usuario, etc.). El archivo es `wordpress/aguicons.zip` (unos 13 MB).
+
+## A. Antes de empezar
+1. **Copia de seguridad** de archivos y base de datos (Paso 1 de esta guía). No se salta.
+2. Elegí un momento de poco movimiento: la carga de contenido tarda unos minutos y durante ese rato el sitio puede verse a medias.
+
+## B. Subir el tema nuevo
+1. En WordPress: Apariencia → Temas → Añadir nuevo → **Subir tema** → elegir `aguicons.zip`.
+2. Como ya existe un tema "Aguicons", WordPress ofrece **"Reemplazar el actual con el cargado"**. Elegí esa opción.
+3. Si dice "Archivo incompatible" o falla por tamaño: pedir a Ferozo que suba el límite de subida a 32 MB, o subir por FTP la carpeta `aguicons` a `wp-content/themes/` (pisando la anterior).
+
+## C. Cargar el contenido nuevo
+1. Herramientas → **"Aguicons: contenido inicial"** → botón. Esperá a que termine (sube unas 130 fotos; no cierres la pestaña).
+2. Qué hace: vuelve a escribir los textos de las páginas iniciales (Inicio, Nosotros, Contacto, Alquiler, etc.), los textos y fotos de las líneas y edificios, el menú y las obras de Nosotros (si solo tenía las de ejemplo). **No pisa** los datos de contacto, el WhatsApp ni las obras que se hayan editado a mano.
+3. Si alguna página tuvo cambios hechos a mano en WordPress, se pierden: por eso va la copia de seguridad.
+
+## D. Ajustes que hay que revisar a mano (la carga no los toca)
+- **Portada:** Aguicons → Estructura del sitio → Portada del inicio. Si sigue la foto vieja, elegí **"portada-nueva"** de la biblioteca y tildá "La imagen ya incluye el título".
+- **Estadísticas:** Aguicons → Ajustes (Dato 1, 2 y 3): `+350 Unidades`, `+80 Propietarios`, `+130 Inversores`.
+- **WhatsApp y teléfono:** `5493765009075` y `+54 9 3765 009075`.
+- **Manuales de Usuario:** cada edificio → cuadro lateral → *Manual de usuario (PDF)*. Hasta que se cargue, el botón avisa que todavía no está disponible.
+- **Primeras obras:** Aguicons → Estructura del sitio → Primeras obras, por si se quiere ajustar nombres u orden.
+
+## E. Limpieza de plugins del sitio anterior
+Si todavía están activos, pueden duplicar cosas o tapar el diseño nuevo:
+- **Joinchat** muestra un segundo botón de WhatsApp: desactivarlo.
+- **Elementor** y **Header Footer Elementor**: mantener desactivados (si no, Elementor vuelve a tapar páginas).
+- Si hay un plugin de caché, usar "Vaciar caché".
+
+## F. Revisión final (con Ctrl+F5, en computadora y en celular)
+- [ ] Inicio: portada nueva a todo el ancho, carrusel de líneas, estadísticas nuevas.
+- [ ] Nosotros: texto nuevo, áreas en orden Administrativa, Técnica, Comercial, con sus fotos, y "Primeras obras" con 30 obras.
+- [ ] Líneas y edificios: texto real en todos, logos blancos, botón "Manual de Usuario" solo en edificios.
+- [ ] Alquiler: 4 tarjetas con cartelito dorado (solo ahí) y botón de WhatsApp que abre el chat con el mensaje.
+- [ ] Contacto: formulario simple y CHAT DIRECTO; al enviar queda guardada la consulta (Aguicons → Consultas) y se abre WhatsApp.
+- [ ] Un solo botón verde de WhatsApp en pantalla (en Contacto, en celular, no aparece).
+
+## G. Si algo falla
+- Reactivar el tema anterior desde Apariencia → Temas, o restaurar la copia de seguridad.
+- Anotar qué página o paso falló y mandar una captura.
