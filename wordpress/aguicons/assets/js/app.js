@@ -5,7 +5,21 @@
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+  /* Contador propio (sin cookies): visita, clic en WhatsApp y descargas. */
+  var hit = function (ev) {
+    try {
+      if (!window.AGUI || !window.AGUI.stats) return;
+      var d = new FormData();
+      d.append('action', 'agui_hit'); d.append('ev', ev);
+      d.append('path', location.pathname); d.append('ref', document.referrer || '');
+      if (navigator.sendBeacon) navigator.sendBeacon(window.AGUI.ajax, d);
+      else fetch(window.AGUI.ajax, { method: 'POST', body: d, keepalive: true });
+    } catch (e) { /* sin estadísticas */ }
+  };
+  hit('view');
   var track = function (name, params) {
+    if (name === 'whatsapp_click') hit('whatsapp');
+    else if (name === 'file_download') hit('download');
     try { if (window.gtag) window.gtag('event', name, params || {}); } catch (e) { /* sin analytics */ }
   };
 

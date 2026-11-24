@@ -46,6 +46,7 @@ function agui_handle_lead(): void
 
     $tipos = ['inquiry' => 'Consulta por proyecto', 'brochure' => 'Descarga de brochure', 'contact' => 'Contacto'];
     $tipo = $tipos[$mode];
+    agui_stats_lead();
 
     $id = wp_insert_post([
         'post_type' => 'consulta',

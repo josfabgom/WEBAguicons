@@ -46,6 +46,9 @@ Si el navegador bloquea la ventana, la persona ve un botón **Abrir WhatsApp** p
 ## Analytics y cookies
 Cargar el ID `G-XXXX` en **Ajustes → Aguicons**. Solo se activa si el visitante acepta el aviso de cookies. Se registran consultas, descargas de brochure y clics en WhatsApp.
 
+## Visitas (contador propio, sin Google)
+En **Aguicons → Visitas** se ven, de los últimos 7, 30 o 90 días o del último año: visitas, visitantes, clics en WhatsApp, consultas enviadas y descargas, además de las páginas más vistas, de dónde llegan (Google, Instagram, WhatsApp, directo…), celular o computadora y qué páginas generan contacto. Funciona solo, sin cargar nada: no usa cookies, no guarda la IP y no cuenta a quien está logueado ni a los robots conocidos. Los números pueden diferir de Google Analytics.
+
 ## Pendientes de contenido
 Textos de Velerian, Benrow, Tier y Alarif (hoy lorem ipsum), datos de la ficha técnica (hoy “A confirmar”), logos de cada línea, fotos del equipo, PDF de brochure y testimonios reales. La política de privacidad es un texto base: conviene revisión legal.
 

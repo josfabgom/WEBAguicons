@@ -15,6 +15,7 @@ require_once get_theme_file_path('inc/render.php');
 require_once get_theme_file_path('inc/forms.php');
 require_once get_theme_file_path('inc/extras.php');
 require_once get_theme_file_path('inc/importer.php');
+require_once get_theme_file_path('inc/stats.php');
 require_once get_theme_file_path('inc/panel.php');
 
 add_action('after_setup_theme', function () {
@@ -47,6 +48,7 @@ add_action('wp_enqueue_scripts', function () {
         'ajax' => admin_url('admin-ajax.php'),
         'ga' => agui_opt('ga_id'),
         'privacy' => agui_privacy_url(),
+        'stats' => !current_user_can('edit_posts'),
     ]);
 });
 
