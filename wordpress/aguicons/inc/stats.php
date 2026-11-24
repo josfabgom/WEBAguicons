@@ -116,9 +116,49 @@ function agui_stats_lead(): void
  * Pantalla "Visitas" en el panel
  * ------------------------------------------------------------------------------------------- */
 
+/**
+ * Rol "Estadísticas": una persona que solo puede ver Visitas (no edita nada ni ve consultas).
+ * Se crea desde Usuarios → Añadir nuevo, eligiendo el rol "Estadísticas (solo visitas)".
+ */
+add_action('init', function () {
+    if (get_option('agui_stats_role') === '1') {
+        return;
+    }
+    add_role('agui_estadisticas', 'Estadísticas (solo visitas)', ['read' => true, 'agui_view_stats' => true]);
+    get_role('administrator')->add_cap('agui_view_stats');
+    update_option('agui_stats_role', '1', false);
+});
+
 add_action('admin_menu', function () {
-    add_submenu_page(AGUI_PANEL, 'Visitas', 'Visitas', 'manage_options', 'aguicons-stats', 'agui_stats_page');
+    if (current_user_can('manage_options')) {
+        add_submenu_page(AGUI_PANEL, 'Visitas', 'Visitas', 'agui_view_stats', 'aguicons-stats', 'agui_stats_page');
+    } elseif (current_user_can('agui_view_stats')) {
+        add_menu_page('Visitas', 'Visitas', 'agui_view_stats', 'aguicons-stats', 'agui_stats_page', 'dashicons-chart-bar', 3);
+    }
 }, 22);
+
+/** Quien solo ve estadísticas entra directo a esa pantalla y no ve el escritorio ni el perfil de otros. */
+add_filter('login_redirect', function ($to, $req, $user) {
+    if ($user instanceof WP_User && !user_can($user, 'manage_options') && user_can($user, 'agui_view_stats')) {
+        return admin_url('admin.php?page=aguicons-stats');
+    }
+    return $to;
+}, 10, 3);
+
+add_action('admin_init', function () {
+    if (current_user_can('manage_options') || !current_user_can('agui_view_stats') || wp_doing_ajax()) {
+        return;
+    }
+    global $pagenow;
+    if ($pagenow === 'index.php') {
+        wp_safe_redirect(admin_url('admin.php?page=aguicons-stats'));
+        exit;
+    }
+});
+
+add_filter('show_admin_bar', function ($show) {
+    return current_user_can('manage_options') || !current_user_can('agui_view_stats') ? $show : false;
+});
 
 function agui_stats_page(): void
 {
