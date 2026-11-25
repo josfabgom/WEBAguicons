@@ -15,6 +15,7 @@ require_once get_theme_file_path('inc/render.php');
 require_once get_theme_file_path('inc/forms.php');
 require_once get_theme_file_path('inc/extras.php');
 require_once get_theme_file_path('inc/importer.php');
+require_once get_theme_file_path('inc/roles.php');
 require_once get_theme_file_path('inc/stats.php');
 require_once get_theme_file_path('inc/panel.php');
 

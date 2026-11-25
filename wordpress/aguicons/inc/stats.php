@@ -130,7 +130,7 @@ add_action('init', function () {
 });
 
 add_action('admin_menu', function () {
-    if (current_user_can('manage_options')) {
+    if (current_user_can('agui_manage')) {
         add_submenu_page(AGUI_PANEL, 'Visitas', 'Visitas', 'agui_view_stats', 'aguicons-stats', 'agui_stats_page');
     } elseif (current_user_can('agui_view_stats')) {
         add_menu_page('Visitas', 'Visitas', 'agui_view_stats', 'aguicons-stats', 'agui_stats_page', 'dashicons-chart-bar', 3);
@@ -139,14 +139,14 @@ add_action('admin_menu', function () {
 
 /** Quien solo ve estadísticas entra directo a esa pantalla y no ve el escritorio ni el perfil de otros. */
 add_filter('login_redirect', function ($to, $req, $user) {
-    if ($user instanceof WP_User && !user_can($user, 'manage_options') && user_can($user, 'agui_view_stats')) {
+    if ($user instanceof WP_User && !user_can($user, 'agui_manage') && user_can($user, 'agui_view_stats')) {
         return admin_url('admin.php?page=aguicons-stats');
     }
     return $to;
 }, 10, 3);
 
 add_action('admin_init', function () {
-    if (current_user_can('manage_options') || !current_user_can('agui_view_stats') || wp_doing_ajax()) {
+    if (current_user_can('agui_manage') || !current_user_can('agui_view_stats') || wp_doing_ajax()) {
         return;
     }
     global $pagenow;
@@ -157,7 +157,7 @@ add_action('admin_init', function () {
 });
 
 add_filter('show_admin_bar', function ($show) {
-    return current_user_can('manage_options') || !current_user_can('agui_view_stats') ? $show : false;
+    return current_user_can('agui_manage') || !current_user_can('agui_view_stats') ? $show : false;
 });
 
 function agui_stats_page(): void

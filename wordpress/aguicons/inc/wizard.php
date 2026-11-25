@@ -204,7 +204,7 @@ function agui_wizard_apply(int $id, array $w): void
 
 add_action('wp_ajax_agui_wizard_save', function () {
     check_ajax_referer('agui_wizard', 'nonce');
-    if (!current_user_can('manage_options')) {
+    if (!current_user_can('agui_manage')) {
         wp_send_json_error('Sin permiso', 403);
     }
     $w = isset($_POST['w']) && is_array($_POST['w']) ? wp_unslash($_POST['w']) : [];

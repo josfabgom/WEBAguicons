@@ -51,6 +51,9 @@ En **Aguicons → Visitas** se ven, de los últimos 7, 30 o 90 días o del últi
 
 Para que alguien (por ejemplo, un socio o el marketing) vea solo las visitas: **Usuarios → Añadir nuevo** y elegir el rol **Estadísticas (solo visitas)**. Esa persona entra directo a Visitas y no puede ver consultas ni editar nada.
 
+## Usuario que administra solo Aguicons
+**Usuarios → Añadir nuevo** y elegir el rol **Gestor Aguicons (solo el panel de Aguicons)**. Esa persona entra directo al Panel de Aguicons y puede usar todo el menú Aguicons (líneas, testimonios, preguntas, asistente, estructura, consultas, contenido, ajustes y visitas) y subir fotos a Medios. No ve plugins, temas, usuarios ni ajustes generales de WordPress. Para quien solo debe mirar las visitas, usar el rol Estadísticas.
+
 ## Pendientes de contenido
 Textos de Velerian, Benrow, Tier y Alarif (hoy lorem ipsum), datos de la ficha técnica (hoy “A confirmar”), logos de cada línea, fotos del equipo, PDF de brochure y testimonios reales. La política de privacidad es un texto base: conviene revisión legal.
 

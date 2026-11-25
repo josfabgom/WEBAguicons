@@ -87,7 +87,7 @@ function agui_option_fields(): array
 }
 
 add_action('admin_menu', function () {
-    add_options_page('Aguicons', 'Aguicons', 'manage_options', 'aguicons', 'agui_render_options_page');
+    add_options_page('Aguicons', 'Aguicons', 'agui_manage', 'aguicons', 'agui_render_options_page');
 });
 
 add_action('admin_init', function () {

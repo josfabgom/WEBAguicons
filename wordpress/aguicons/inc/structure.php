@@ -155,7 +155,7 @@ function agui_service_pages(): array
 
 add_action('admin_post_agui_structure_save', function () {
     check_admin_referer('agui_structure');
-    if (!current_user_can('manage_options')) {
+    if (!current_user_can('agui_manage')) {
         wp_die('Sin permiso');
     }
     // Opciones (se mezclan con las existentes para no perder el resto)

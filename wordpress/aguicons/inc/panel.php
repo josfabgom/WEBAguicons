@@ -19,22 +19,22 @@ const AGUI_PANEL = 'aguicons-panel';
 add_action('admin_menu', function () {
     $new = agui_new_leads_count();
     $badge = $new ? ' <span class="awaiting-mod">' . $new . '</span>' : '';
-    add_menu_page('Aguicons', 'Aguicons' . $badge, 'manage_options', AGUI_PANEL, 'agui_dashboard_page', 'dashicons-building', 3);
-    add_submenu_page(AGUI_PANEL, 'Panel', 'Panel', 'manage_options', AGUI_PANEL, 'agui_dashboard_page');
+    add_menu_page('Aguicons', 'Aguicons' . $badge, 'agui_manage', AGUI_PANEL, 'agui_dashboard_page', 'dashicons-building', 3);
+    add_submenu_page(AGUI_PANEL, 'Panel', 'Panel', 'agui_manage', AGUI_PANEL, 'agui_dashboard_page');
 }, 5);
 
 add_action('admin_menu', function () {
-    add_submenu_page(AGUI_PANEL, 'Nueva línea', '➕ Nueva línea (asistente)', 'manage_options', 'aguicons-wizard', 'agui_wizard_page');
-    add_submenu_page(AGUI_PANEL, 'Estructura del sitio', 'Estructura del sitio', 'manage_options', 'aguicons-structure', 'agui_structure_page');
-    add_submenu_page(AGUI_PANEL, 'Consultas', 'Consultas' . (agui_new_leads_count() ? ' <span class="awaiting-mod">' . agui_new_leads_count() . '</span>' : ''), 'manage_options', 'aguicons-leads', 'agui_leads_page');
-    add_submenu_page(AGUI_PANEL, 'Contenido', 'Contenido', 'manage_options', 'aguicons-content', 'agui_content_page');
-    add_submenu_page(AGUI_PANEL, 'Ayuda', 'Ayuda', 'manage_options', 'aguicons-help', 'agui_help_page');
+    add_submenu_page(AGUI_PANEL, 'Nueva línea', '➕ Nueva línea (asistente)', 'agui_manage', 'aguicons-wizard', 'agui_wizard_page');
+    add_submenu_page(AGUI_PANEL, 'Estructura del sitio', 'Estructura del sitio', 'agui_manage', 'aguicons-structure', 'agui_structure_page');
+    add_submenu_page(AGUI_PANEL, 'Consultas', 'Consultas' . (agui_new_leads_count() ? ' <span class="awaiting-mod">' . agui_new_leads_count() . '</span>' : ''), 'agui_manage', 'aguicons-leads', 'agui_leads_page');
+    add_submenu_page(AGUI_PANEL, 'Contenido', 'Contenido', 'agui_manage', 'aguicons-content', 'agui_content_page');
+    add_submenu_page(AGUI_PANEL, 'Ayuda', 'Ayuda', 'agui_manage', 'aguicons-help', 'agui_help_page');
 }, 20);
 
 /** Ajustes pasa a vivir dentro del menú Aguicons. */
 add_action('admin_menu', function () {
     remove_submenu_page('options-general.php', 'aguicons');
-    add_submenu_page(AGUI_PANEL, 'Ajustes', 'Ajustes', 'manage_options', 'aguicons', 'agui_render_options_page');
+    add_submenu_page(AGUI_PANEL, 'Ajustes', 'Ajustes', 'agui_manage', 'aguicons', 'agui_render_options_page');
 }, 21);
 
 function agui_is_panel_screen(): bool
@@ -187,7 +187,7 @@ add_action('manage_linea_posts_custom_column', function ($col, $id) {
 add_action('admin_post_agui_duplicate', function () {
     $id = (int) ($_GET['id'] ?? 0);
     check_admin_referer('agui_dup_' . $id);
-    if (!current_user_can('manage_options') || !($src = get_post($id))) {
+    if (!current_user_can('agui_manage') || !($src = get_post($id))) {
         wp_die('Sin permiso');
     }
     $new = wp_insert_post([
@@ -207,7 +207,7 @@ add_action('admin_post_agui_toggle', function () {
     $id = (int) ($_GET['id'] ?? 0);
     check_admin_referer('agui_tog_' . $id);
     $p = get_post($id);
-    if (!current_user_can('manage_options') || !$p) {
+    if (!current_user_can('agui_manage') || !$p) {
         wp_die('Sin permiso');
     }
     wp_update_post(['ID' => $id, 'post_status' => $p->post_status === 'publish' ? 'draft' : 'publish']);
@@ -287,7 +287,7 @@ function agui_leads_page(): void
 add_action('admin_post_agui_lead_state', function () {
     $id = (int) ($_GET['id'] ?? 0);
     check_admin_referer('agui_lead_' . $id);
-    if (!current_user_can('manage_options')) {
+    if (!current_user_can('agui_manage')) {
         wp_die('Sin permiso');
     }
     update_post_meta($id, '_agui_estado', ($_GET['to'] ?? '') === 'atendida' ? 'atendida' : 'nueva');
@@ -297,7 +297,7 @@ add_action('admin_post_agui_lead_state', function () {
 
 add_action('admin_post_agui_export', function () {
     check_admin_referer('agui_export');
-    if (!current_user_can('manage_options')) {
+    if (!current_user_can('agui_manage')) {
         wp_die('Sin permiso');
     }
     $q = agui_leads_query([
