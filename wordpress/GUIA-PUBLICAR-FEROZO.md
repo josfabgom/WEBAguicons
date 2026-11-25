@@ -2,7 +2,7 @@
 
 Situación actual: `aguicons.com` ya tiene un sitio publicado (WordPress en `/public_html/`). El sitio nuevo **no se instala encima**: primero se prueba aparte y recién cuando está aprobado se hace el cambio.
 
-Archivo que se sube: `wordpress/aguicons.zip` (el tema completo, unos 8 MB).
+Archivo que se sube: `wordpress/aguicons.zip` (el tema completo, unos 24 MB).
 
 > Las contraseñas se escriben solo en el panel de Ferozo o en el programa de FTP. No las compartas en chats ni mails.
 
@@ -121,7 +121,7 @@ Se hace con un plugin de migración (por ejemplo *All-in-One WP Migration* o *Du
 
 # Actualizar un sitio que ya está en Ferozo con la versión nueva
 
-Para cuando el tema Aguicons ya está activo en `aguicons.com` y se quiere llevar lo último (textos de líneas y edificios, Nosotros con fotos y obras, portada nueva, botón de Manual de Usuario, etc.). El archivo es `wordpress/aguicons.zip` (unos 25 MB).
+Para cuando el tema Aguicons ya está activo en `aguicons.com` y se quiere llevar lo último (textos de líneas y edificios, Nosotros con fotos y obras, portada nueva, botón de Manual de Usuario, contador de visitas propio, etc.). El archivo es `wordpress/aguicons.zip` (unos 24 MB).
 
 ## A. Antes de empezar
 1. **Copia de seguridad** de archivos y base de datos (Paso 1 de esta guía). No se salta.
@@ -143,6 +143,8 @@ Para cuando el tema Aguicons ya está activo en `aguicons.com` y se quiere lleva
 - **WhatsApp y teléfono:** `5493765009075` y `+54 9 3765 009075`.
 - **Manuales de Usuario:** cada edificio → cuadro lateral → *Manual de usuario (PDF)*. Hasta que se cargue, el botón avisa que todavía no está disponible.
 - **Primeras obras:** Aguicons → Estructura del sitio → Primeras obras, por si se quiere ajustar nombres u orden.
+- **Visitas:** no hay que configurar nada. Aguicons → Visitas muestra el tráfico (sin Google, sin cookies); empieza a contar desde que se sube el tema. Para dar acceso solo a las estadísticas: Usuarios → Añadir nuevo → rol **Estadísticas (solo visitas)**.
+- **Google Analytics:** es opcional. Si se carga el ID en Ajustes aparece el aviso de cookies; si no se carga, no hay aviso y el contador propio igual funciona.
 
 ## E. Limpieza de plugins del sitio anterior
 Si todavía están activos, pueden duplicar cosas o tapar el diseño nuevo:
@@ -158,6 +160,7 @@ Si todavía están activos, pueden duplicar cosas o tapar el diseño nuevo:
 - [ ] Alquiler: 4 tarjetas con cartelito dorado (solo ahí) y botón de WhatsApp que abre el chat con el mensaje.
 - [ ] Contacto: formulario simple y CHAT DIRECTO; al enviar queda guardada la consulta (Aguicons → Consultas) y se abre WhatsApp.
 - [ ] Un solo botón verde de WhatsApp en pantalla (en Contacto, en celular, no aparece).
+- [ ] Aguicons → Visitas: navegá el sitio desde un celular (sin estar logueado) y comprobá que la visita aparece. Quien está logueado como administrador no se cuenta.
 
 ## G. Si algo falla
 - Reactivar el tema anterior desde Apariencia → Temas, o restaurar la copia de seguridad.
